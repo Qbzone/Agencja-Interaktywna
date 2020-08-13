@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgencjaInteraktywna", "AgencjaInteraktywna\AgencjaInteraktywna.csproj", "{A1F96C56-FB8F-4D9B-B874-EB59C38E2097}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1F96C56-FB8F-4D9B-B874-EB59C38E2097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F96C56-FB8F-4D9B-B874-EB59C38E2097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F96C56-FB8F-4D9B-B874-EB59C38E2097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F96C56-FB8F-4D9B-B874-EB59C38E2097}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA0CD1D5-3674-408D-B8DE-234FEBE3B9C3}
+	EndGlobalSection
+EndGlobal
