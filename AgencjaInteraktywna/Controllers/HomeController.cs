@@ -23,7 +23,25 @@ namespace AgencjaInteraktywna.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(Osoba osoba)
+        {
+            return View(osoba);
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
         {
             return View();
         }
