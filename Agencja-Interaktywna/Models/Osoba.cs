@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Agencja_Interaktywna.Models
+{
+    public partial class Osoba
+    {
+        public int Idosoba { get; set; }
+        public string Imie { get; set; }
+        public string Nazwisko { get; set; }
+        public string NumerTelefonuPrywatny { get; set; }
+        public string NumerTelefonuSluzbowego { get; set; }
+        public string AdresEmail { get; set; }
+        public string Haslo { get; set; }
+        public bool CzyEmailZweryfikowane { get; set; }
+        public Guid KodAktywacyjny { get; set; }
+
+        public virtual Klient Klient { get; set; }
+        public virtual Pracownik Pracownik { get; set; }
+    }
+}
