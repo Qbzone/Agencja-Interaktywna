@@ -33,6 +33,18 @@ namespace AgencjaInteraktywna.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(Osoba osoba)
         {
+            bool Status = false;
+            string Message = "";
+
+            if (ModelState.IsValid)
+            {
+
+            }
+            else
+            {
+                Message = "Invalid Request";
+            }
+
             return View(osoba);
         }
 
@@ -50,6 +62,14 @@ namespace AgencjaInteraktywna.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [NonAction]
+        public bool IsEmailExist(string Email)
+        {
+            using (s16693Context dc = new s16693Context){
+                var check = dc.Osoba.Where(e => e.AdresEmail == AdresEmail).FirstOrDefault();
+            }
         }
     }
 }
