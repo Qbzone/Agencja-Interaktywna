@@ -55,7 +55,7 @@ namespace Agencja_Interaktywna.Controllers
 
                 osoba.CzyEmailZweryfikowane = false;
 
-                using (s16693Context dc = new s16693Context)
+                s16693Context dc = new s16693Context();
                 {
                     dc.Osoba.Add(osoba);
                     dc.SaveChanges();
@@ -91,7 +91,7 @@ namespace Agencja_Interaktywna.Controllers
         [NonAction]
         public bool IsEmailExist(string Email)
         {
-            using (s16693Context dc = new s16693Context())
+            s16693Context dc = new s16693Context();
             {
                 var check = dc.Osoba.Where(e => e.AdresEmail == Email).FirstOrDefault();
 
@@ -103,7 +103,6 @@ namespace Agencja_Interaktywna.Controllers
         public void SendVerificationLink(string Email, string Code)
         {
             var verifyUrl = "Osoba/VerifyAccount/" + Code;
-            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
         }
 
