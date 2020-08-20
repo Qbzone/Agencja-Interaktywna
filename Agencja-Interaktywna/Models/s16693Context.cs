@@ -61,9 +61,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("firma");
 
-                entity.Property(e => e.Idfirma)
-                    .HasColumnName("idfirma")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idfirma).HasColumnName("idfirma");
 
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
@@ -125,9 +123,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("jezykprogramowania");
 
-                entity.Property(e => e.Idjezyk)
-                    .HasColumnName("idjezyk")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idjezyk).HasColumnName("idjezyk");
 
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
@@ -221,9 +217,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("osoba");
 
-                entity.Property(e => e.Idosoba)
-                    .HasColumnName("idosoba")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idosoba).HasColumnName("idosoba");
 
                 entity.Property(e => e.AdresEmail)
                     .IsRequired()
@@ -259,9 +253,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("pakiet");
 
-                entity.Property(e => e.Idpakiet)
-                    .HasColumnName("idpakiet")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idpakiet).HasColumnName("idpakiet");
 
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
@@ -509,9 +501,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("projekt");
 
-                entity.Property(e => e.Idprojekt)
-                    .HasColumnName("idprojekt")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idprojekt).HasColumnName("idprojekt");
 
                 entity.Property(e => e.FirmaIdFirma).HasColumnName("Firma_IdFirma");
 
@@ -552,9 +542,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("tag");
 
-                entity.Property(e => e.Idtag)
-                    .HasColumnName("idtag")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idtag).HasColumnName("idtag");
 
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
@@ -589,9 +577,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("umowa");
 
-                entity.Property(e => e.Idumowa)
-                    .HasColumnName("idumowa")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idumowa).HasColumnName("idumowa");
 
                 entity.Property(e => e.Rodzajumowy)
                     .IsRequired()
@@ -606,9 +592,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("usluga");
 
-                entity.Property(e => e.Idusluga)
-                    .HasColumnName("idusluga")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idusluga).HasColumnName("idusluga");
 
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
@@ -627,9 +611,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("zadanie");
 
-                entity.Property(e => e.Idzadanie)
-                    .HasColumnName("idzadanie")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idzadanie).HasColumnName("idzadanie");
 
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
@@ -684,9 +666,7 @@ namespace Agencja_Interaktywna.Models
 
                 entity.ToTable("zespol");
 
-                entity.Property(e => e.Idzespol)
-                    .HasColumnName("idzespol")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Idzespol).HasColumnName("idzespol");
 
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
