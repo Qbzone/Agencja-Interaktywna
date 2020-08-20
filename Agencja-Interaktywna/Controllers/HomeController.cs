@@ -34,10 +34,11 @@ namespace Agencja_Interaktywna.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(Osoba osoba)
         {
-            ModelState.Remove(nameof(Osoba.CzyEmailZweryfikowane));
-            ModelState.Remove(nameof(Osoba.KodAktywacyjny));
             bool Status = false;
             string Message = "";
+
+            ModelState.Remove(nameof(Osoba.CzyEmailZweryfikowane));
+            ModelState.Remove(nameof(Osoba.KodAktywacyjny));
 
             if (ModelState.IsValid)
             {
@@ -50,9 +51,7 @@ namespace Agencja_Interaktywna.Controllers
                 }
 
                 osoba.KodAktywacyjny = Guid.NewGuid();
-
                 osoba.Haslo = Hash(osoba.Haslo);
-
                 osoba.CzyEmailZweryfikowane = false;
 
                 s16693Context dc = new s16693Context();
