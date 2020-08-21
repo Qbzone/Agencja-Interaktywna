@@ -36,6 +36,7 @@ namespace Agencja_Interaktywna.Controllers
         {
             bool Status = false;
             string Message = "";
+            s16693Context context = new s16693Context();
 
             ModelState.Remove(nameof(Osoba.CzyEmailZweryfikowane));
             ModelState.Remove(nameof(Osoba.KodAktywacyjny));
@@ -47,7 +48,7 @@ namespace Agencja_Interaktywna.Controllers
 
                 if (isExist)
                 {
-                    ModelState.AddModelError("Email.Exist", "Email already exist");
+                    ModelState.AddModelError("Email.Exist", "Podany adres email już istnieje");
                 }
 
                 osoba.KodAktywacyjny = Guid.NewGuid();
@@ -59,7 +60,7 @@ namespace Agencja_Interaktywna.Controllers
                     dc.Osoba.Add(osoba);
                     dc.SaveChanges();
 
-                    SendVerificationLink(osoba.AdresEmail, osoba.KodAktywacyjny.ToString());
+                    //SendVerificationLink(osoba.AdresEmail, osoba.KodAktywacyjny.ToString());
                 }
 
             }
@@ -98,12 +99,12 @@ namespace Agencja_Interaktywna.Controllers
             }
         }
 
-        [NonAction]
+        /*[NonAction]
         public void SendVerificationLink(string Email, string Code)
         {
             var verifyUrl = "Osoba/VerifyAccount/" + Code;
 
-        }
+        }*/
 
         public static string Hash(string Value)
         {

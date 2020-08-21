@@ -1,17 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Agencja_Interaktywna.Models
 {
     public partial class Osoba
     {
         public int Idosoba { get; set; }
+        [Required(ErrorMessage = "Proszę podać swoje imię")]
+        [MaxLength(25)]
         public string Imie { get; set; }
+        [MaxLength(50)]
+        [Required(ErrorMessage = "Proszę podać swoje nazwisko")]
         public string Nazwisko { get; set; }
+        [MinLength(9, ErrorMessage = "Numer telefonu może posiadać maks 9 znaków")]
+        [MaxLength(9)]
         public string NumerTelefonuPrywatny { get; set; }
+        [Required(ErrorMessage = "Proszę podać swój numer telefonu służbowego")]
+        [MinLength(9, ErrorMessage = "Numer telefonu może posiadać maks 9 znaków")]
+        [MaxLength(9)]
         public string NumerTelefonuSluzbowego { get; set; }
+        [Required(ErrorMessage = "Proszę podać swój adres e-mail")]
+        [MaxLength(50)]
         public string AdresEmail { get; set; }
+        [Required(ErrorMessage = "Proszę wprowadzić hasło")]
+        [MinLength(6, ErrorMessage = "Hasło musi posiadać co najmniej 6 znaków")]
         public string Haslo { get; set; }
+        [NotMapped]
+        [Required(ErrorMessage = "Proszę potwierdzić hasło")]
+        [MinLength(6, ErrorMessage = "Hasło musi posiadać co najmniej 6 znaków")]
+        [Compare("Haslo", ErrorMessage = "Hasła muszą być takie same")]
+        public string PotwierdzHaslo { get; set; }
         public bool CzyEmailZweryfikowane { get; set; }
         public Guid KodAktywacyjny { get; set; }
 
