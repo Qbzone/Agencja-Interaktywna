@@ -43,22 +43,25 @@ namespace Agencja_Interaktywna.Controllers
 
             if (ModelState.IsValid)
             {
-                
-                var isExist = IsEmailExist(osoba.AdresEmail);
 
-                if (isExist)
+                s16693Context context1 = new s16693Context();
                 {
-                    ModelState.AddModelError("Email.Exist", "Podany adres email już istnieje");
+                    var check = context1.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
+
+                    if (check != null)
+                    {
+                        ModelState.AddModelError("AdresEmail", "Podany adres e-mail już istnieje");
+                    }
                 }
 
                 osoba.KodAktywacyjny = Guid.NewGuid();
                 osoba.Haslo = Hash(osoba.Haslo);
                 osoba.CzyEmailZweryfikowane = false;
 
-                s16693Context dc = new s16693Context();
+                s16693Context context2 = new s16693Context();
                 {
-                    dc.Osoba.Add(osoba);
-                    dc.SaveChanges();
+                    context2.Osoba.Add(osoba);
+                    context2.SaveChanges();
 
                     //SendVerificationLink(osoba.AdresEmail, osoba.KodAktywacyjny.ToString());
                 }
@@ -88,7 +91,7 @@ namespace Agencja_Interaktywna.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [NonAction]
+        /*[NonAction]
         public bool IsEmailExist(string Email)
         {
             s16693Context dc = new s16693Context();
@@ -97,7 +100,7 @@ namespace Agencja_Interaktywna.Controllers
 
                 return check != null;
             }
-        }
+        }*/
 
         /*[NonAction]
         public void SendVerificationLink(string Email, string Code)
@@ -110,6 +113,6 @@ namespace Agencja_Interaktywna.Controllers
         {
             return Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(Value)));
         }
-        
+
     }
 }
