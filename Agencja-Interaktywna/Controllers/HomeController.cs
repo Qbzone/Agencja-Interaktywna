@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Agencja_Interaktywna.Models;
+using System.Net.Mail;
+using System.Net;
 
 namespace Agencja_Interaktywna.Controllers
 {
@@ -63,15 +65,18 @@ namespace Agencja_Interaktywna.Controllers
                     context2.Osoba.Add(osoba);
                     context2.SaveChanges();
 
-                    //SendVerificationLink(osoba.AdresEmail, osoba.KodAktywacyjny.ToString());
+                    SendVerificationLink(osoba);
+                    Message = "Registration succesfully done. Account activation link has been sent to your email: " + osoba.AdresEmail;
+                    Status = true;
                 }
-
             }
             else
             {
                 Message = "Invalid Request";
             }
 
+            ViewBag.Message = Message;
+            ViewBag.Status = Status;
             return View(osoba);
         }
 
@@ -96,23 +101,36 @@ namespace Agencja_Interaktywna.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        /*[NonAction]
-        public bool IsEmailExist(string Email)
+        [NonAction]
+        public void SendVerificationLink(Osoba osoba)
         {
-            s16693Context dc = new s16693Context();
+            var fromEmail = new MailAddress("johnytestin@gmail.com");
+            var toEmail = new MailAddress(osoba.AdresEmail);
+            var fromEmaiilPassword = "123qwER#$";
+            string confirmationLink = Url.Action("ConfirmEmail", "Account", new { id = osoba.Idosoba, token = osoba.KodAktywacyjny });
+            string subject = "Twoje je konto jest w pełni utworzone";
+            string body = "<br/><br/>We are excited to tell you that your account is" +
+                " succesfully created. Please click on the lint to verify your account" +
+                " <br/><br/><a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
+            var smtp = new SmtpClient
             {
-                var check = dc.Osoba.Where(e => e.AdresEmail == Email).FirstOrDefault();
+                Host = "smtp.gmail.com",
+                Port = 465,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromEmail.Address, fromEmaiilPassword)
+            };
 
-                return check != null;
-            }
-        }*/
+            using (var message = new MailMessage(fromEmail, toEmail)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            }) smtp.Send(message);
 
-        /*[NonAction]
-        public void SendVerificationLink(string Email, string Code)
-        {
-            var verifyUrl = "Osoba/VerifyAccount/" + Code;
-
-        }*/
+            
+        }
 
         public static string Hash(string Value)
         {
