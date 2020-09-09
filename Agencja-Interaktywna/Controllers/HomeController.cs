@@ -54,20 +54,22 @@ namespace Agencja_Interaktywna.Controllers
                     {
                         ModelState.AddModelError("AdresEmail", "Podany adres e-mail już istnieje");
                     }
-                }
+                    else
+                    {
+                        osoba.KodAktywacyjny = Guid.NewGuid();
+                        osoba.Haslo = Hash(osoba.Haslo);
+                        osoba.CzyEmailZweryfikowane = false;
 
-                osoba.KodAktywacyjny = Guid.NewGuid();
-                osoba.Haslo = Hash(osoba.Haslo);
-                osoba.CzyEmailZweryfikowane = false;
+                        s16693Context context2 = new s16693Context();
+                        {
+                            context2.Osoba.Add(osoba);
+                            context2.SaveChanges();
 
-                s16693Context context2 = new s16693Context();
-                {
-                    context2.Osoba.Add(osoba);
-                    context2.SaveChanges();
-
-                    SendVerificationLink(osoba);
-                    Message = "Registration succesfully done. Account activation link has been sent to your email: " + osoba.AdresEmail;
-                    Status = true;
+                            SendVerificationLink(osoba);
+                            Message = "Registration succesfully done. Account activation link has been sent to your email: " + osoba.AdresEmail;
+                            Status = true;
+                        }
+                    }
                 }
             }
             else
@@ -101,35 +103,26 @@ namespace Agencja_Interaktywna.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [NonAction]
         public void SendVerificationLink(Osoba osoba)
         {
-            var fromEmail = new MailAddress("johnytestin@gmail.com");
-            var toEmail = new MailAddress(osoba.AdresEmail);
-            var fromEmaiilPassword = "123qwER#$";
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
             string confirmationLink = Url.Action("ConfirmEmail", "Account", new { id = osoba.Idosoba, token = osoba.KodAktywacyjny });
-            string subject = "Twoje je konto jest w pełni utworzone";
-            string body = "<br/><br/>We are excited to tell you that your account is" +
+
+            mail.From = new MailAddress("johnytestin@gmail.com");
+            mail.To.Add(osoba.AdresEmail);
+            mail.Subject = "Twoje konto jest w pełni utworzone";
+            mail.Body = "<br/><br/>We are excited to tell you that your account is" +
                 " succesfully created. Please click on the lint to verify your account" +
                 " <br/><br/><a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 465,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromEmail.Address, fromEmaiilPassword)
-            };
+            mail.IsBodyHtml = true;
 
-            using (var message = new MailMessage(fromEmail, toEmail)
-            {
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            }) smtp.Send(message);
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("johnytestin@gmail.com", "123qwER#$");
+            SmtpServer.EnableSsl = true;
 
-            
+            SmtpServer.Send(mail);
         }
 
         public static string Hash(string Value)
