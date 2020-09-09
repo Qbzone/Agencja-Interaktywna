@@ -114,7 +114,7 @@ namespace Agencja_Interaktywna.Controllers
             mail.To.Add(osoba.AdresEmail);
             mail.Subject = "Twoje konto jest w pełni utworzone";
             mail.Body = "<br/><br/>We are excited to tell you that your account is" +
-                " succesfully created. Please click on the lint to verify your account" +
+                " succesfully created. Please click on the link to verify your account" +
                 " <br/><br/><a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
             mail.IsBodyHtml = true;
 
