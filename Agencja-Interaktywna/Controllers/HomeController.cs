@@ -82,6 +82,30 @@ namespace Agencja_Interaktywna.Controllers
             return View(osoba);
         }
 
+        [HttpGet]
+        public ActionResult Verify(String id)
+        {
+            bool Status = false;
+            using (s16693Context dc = new s16693Context())
+            {
+                var v = dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
+
+                if(v != null)
+                {
+                    v.CzyEmailZweryfikowane = true;
+                    dc.SaveChanges();
+                    Status = true;
+                }
+                else
+                {
+                    ViewBag.Message = "Nieprawidłowe żądanie";
+                }
+            }
+
+            ViewBag.Status = Status;
+            return View();
+        }
+
         public IActionResult Login()
         {
             return View();
@@ -108,7 +132,7 @@ namespace Agencja_Interaktywna.Controllers
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            string confirmationLink = Url.Action("ConfirmEmail", "Account", new { id = osoba.Idosoba, token = osoba.KodAktywacyjny });
+            string confirmationLink = Url.Action("Verify" + new { osoba.KodAktywacyjny}, "Osoba", Request.Scheme);
 
             mail.From = new MailAddress("johnytestin@gmail.com");
             mail.To.Add(osoba.AdresEmail);
