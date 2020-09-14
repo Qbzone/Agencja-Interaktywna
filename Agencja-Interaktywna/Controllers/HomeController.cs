@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using Agencja_Interaktywna.Models;
 using System.Net.Mail;
 using System.Net;
+using Agencja_Interaktywna.Models.Functional;
+using System.Web.Helpers;
 
 namespace Agencja_Interaktywna.Controllers
 {
@@ -106,8 +108,38 @@ namespace Agencja_Interaktywna.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Login()
         {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(OsobaLogin login)
+        {
+            string message = "";
+            using (s16693Context dc = new s16693Context())
+            {
+                var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
+                if(v != null)
+                {
+                    if(string.Compare(Crypto.Hash(login.Haslo), v.Haslo) == 0)
+                    {
+                        var ticket = new FormsAuthenticationTicket();
+
+                    }
+                    else
+                    {
+                        message = "Podano błędne dane";
+                    }
+                }
+                else
+                {
+                    message = "Podano błędne dane";
+                }
+            }
+            ViewBag.Message = message;
             return View();
         }
 
