@@ -14,10 +14,12 @@ namespace Agencja_Interaktywna.Models
         [MaxLength(50)]
         [Required(ErrorMessage = "Proszę podać swoje nazwisko")]
         public string Nazwisko { get; set; }
+        [RegularExpression("^[0-9]*$", ErrorMessage = "W numerze telefonu mogą występować tylko cyfry")]
         [MinLength(9, ErrorMessage = "Numer telefonu może posiadać maks 9 znaków")]
         [MaxLength(9)]
         public string NumerTelefonuPrywatny { get; set; }
         [Required(ErrorMessage = "Proszę podać swój numer telefonu służbowego")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "W numerze telefonu mogą występować tylko cyfry")]
         [MinLength(9, ErrorMessage = "Numer telefonu może posiadać maks 9 znaków")]
         [MaxLength(9)]
         public string NumerTelefonuSluzbowego { get; set; }
