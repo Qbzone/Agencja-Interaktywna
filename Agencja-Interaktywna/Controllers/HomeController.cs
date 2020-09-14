@@ -132,7 +132,7 @@ namespace Agencja_Interaktywna.Controllers
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            string confirmationLink = Url.Action("Verify", "Osoba", new {osoba.KodAktywacyjny}, Request.Scheme);
+            string confirmationLink = Request.Scheme + "://" + Request.Host + "/Home/Verify/" + osoba.KodAktywacyjny;
 
             mail.From = new MailAddress("johnytestin@gmail.com");
             mail.To.Add(osoba.AdresEmail);
