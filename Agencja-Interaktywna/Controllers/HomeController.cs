@@ -125,8 +125,7 @@ namespace Agencja_Interaktywna.Controllers
                 if(v != null)
                 {
                     if(string.Compare(Crypto.Hash(login.Haslo), v.Haslo) == 0)
-                    {
-                        var ticket = new FormsAuthenticationTicket();
+                    { 
 
                     }
                     else
