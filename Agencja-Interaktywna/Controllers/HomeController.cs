@@ -66,7 +66,7 @@ namespace Agencja_Interaktywna.Controllers
                             context2.SaveChanges();
 
                             SendVerificationLink(osoba);
-                            Message = "Registration succesfully done. Account activation link has been sent to your email: " + osoba.AdresEmail;
+                            Message = "Rejestracja zakończona pomyślnie. Link do aktywacji konta został przesłany na twój adres e-mail " + osoba.AdresEmail;
                             Status = true;
                         }
                     }
@@ -90,7 +90,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 var v = dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
 
-                if(v != null)
+                if (v != null)
                 {
                     v.CzyEmailZweryfikowane = true;
                     dc.SaveChanges();
@@ -137,9 +137,9 @@ namespace Agencja_Interaktywna.Controllers
             mail.From = new MailAddress("johnytestin@gmail.com");
             mail.To.Add(osoba.AdresEmail);
             mail.Subject = "Twoje konto jest w pełni utworzone";
-            mail.Body = "<br/><br/>We are excited to tell you that your account is" +
-                " succesfully created. Please click on the link to verify your account" +
-                " <br/><br/><a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
+            mail.Body = "<br/><br/>Z dumą informujemy, iż twoje konto zostało pomyślnie utworzone. " + "" +
+                "Prosimy o wejście w wysłany przez nas link w celu aktywacji twojego konta. <br/><br/><a href='" +
+                confirmationLink + "'>" + confirmationLink + "</a>";
             mail.IsBodyHtml = true;
 
             SmtpServer.Port = 587;
