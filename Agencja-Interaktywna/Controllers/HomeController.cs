@@ -10,7 +10,9 @@ using Agencja_Interaktywna.Models;
 using System.Net.Mail;
 using System.Net;
 using Agencja_Interaktywna.Models.Functional;
-using System.Web.Helpers;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Agencja_Interaktywna.Controllers
 {
@@ -47,7 +49,6 @@ namespace Agencja_Interaktywna.Controllers
 
             if (ModelState.IsValid)
             {
-
                 s16693Context context1 = new s16693Context();
                 {
                     var check = context1.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
@@ -76,7 +77,7 @@ namespace Agencja_Interaktywna.Controllers
             }
             else
             {
-                Message = "Invalid Request";
+                Message = "Nieprawidłowe żądanie";
             }
 
             ViewBag.Message = Message;
@@ -115,31 +116,32 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Login(OsobaLogin login)
         {
-            string message = "";
+            string Message = "";
             using (s16693Context dc = new s16693Context())
             {
                 var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
-                if(v != null)
+                if (v != null)
                 {
-                    if(string.Compare(Crypto.Hash(login.Haslo), v.Haslo) == 0)
-                    { 
-
-                    }
-                    else
-                    {
-                        message = "Podano błędne dane";
-                    }
+                    var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, login.AdresEmail)
+                        };
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    var props = new AuthenticationProperties();
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
+                    return RedirectToAction("Index", "Klient");
                 }
                 else
                 {
-                    message = "Podano błędne dane";
+                    Message = "Podany adres e-mail nie istnieje";
                 }
             }
-            ViewBag.Message = message;
-            return View();
+
+            ViewBag.Message = Message;
+            return View(login);
         }
 
         public IActionResult Contact()
