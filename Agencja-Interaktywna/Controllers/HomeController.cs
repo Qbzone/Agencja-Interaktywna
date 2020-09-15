@@ -42,7 +42,6 @@ namespace Agencja_Interaktywna.Controllers
         {
             bool Status = false;
             string Message = "";
-            s16693Context context = new s16693Context();
 
             ModelState.Remove(nameof(Osoba.CzyEmailZweryfikowane));
             ModelState.Remove(nameof(Osoba.KodAktywacyjny));
@@ -118,29 +117,40 @@ namespace Agencja_Interaktywna.Controllers
         [HttpPost]
         public IActionResult Login(OsobaLogin login)
         {
-            string Message = "";
             using (s16693Context dc = new s16693Context())
             {
                 var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
-                if (v != null)
+                if (v.CzyEmailZweryfikowane != false)
                 {
-                    var claims = new List<Claim>
+                    if (v != null)
+                    {
+                        if (Hash(login.Haslo) == v.Haslo)
+                        {
+                            var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, login.AdresEmail)
                         };
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
-                    var props = new AuthenticationProperties();
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
-                    return RedirectToAction("Index", "Klient");
+                            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                            var principal = new ClaimsPrincipal(identity);
+                            var props = new AuthenticationProperties();
+                            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
+                            return RedirectToAction("Index", "Klient");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Haslo", "Podane hasło jest niepoprawne");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie istnieje");
+                    }
                 }
                 else
                 {
-                    Message = "Podany adres e-mail nie istnieje";
+                    ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie został jeszcze zweryfikowany");
                 }
             }
-
-            ViewBag.Message = Message;
             return View(login);
         }
 
