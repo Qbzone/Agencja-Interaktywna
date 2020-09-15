@@ -85,7 +85,7 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public ActionResult Verify(String id)
+        public ActionResult Verify(string id)
         {
             bool Status = false;
             using (s16693Context dc = new s16693Context())
@@ -103,7 +103,6 @@ namespace Agencja_Interaktywna.Controllers
                     ViewBag.Message = "Nieprawidłowe żądanie";
                 }
             }
-
             ViewBag.Status = Status;
             return View();
         }
@@ -120,9 +119,9 @@ namespace Agencja_Interaktywna.Controllers
             using (s16693Context dc = new s16693Context())
             {
                 var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
-                if (v.CzyEmailZweryfikowane != false)
+                if (v != null)
                 {
-                    if (v != null)
+                    if (v.CzyEmailZweryfikowane != false)
                     {
                         if (Hash(login.Haslo) == v.Haslo)
                         {
@@ -143,12 +142,12 @@ namespace Agencja_Interaktywna.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie istnieje");
+                        ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie został jeszcze zweryfikowany");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie został jeszcze zweryfikowany");
+                    ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie istnieje");
                 }
             }
             return View(login);
@@ -159,9 +158,87 @@ namespace Agencja_Interaktywna.Controllers
             return View();
         }
 
-        public IActionResult ForgottenPassword()
+        [HttpGet]
+        public IActionResult Token()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Token(OsobaToken osoba)
+        {
+            bool Status = false;
+            string Message = "";
+
+            using (s16693Context dc = new s16693Context())
+            {
+                var v = dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
+                if (v != null)
+                {
+                    SendPasswordReset(osoba);
+                    Message = "Link do zmiany hasła został przesłany na twój adres e-mail " + osoba.AdresEmail;
+                    Status = true;
+                }
+                else
+                {
+                    ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie istnieje");
+                }
+            }
+            ViewBag.Message = Message;
+            ViewBag.Status = Status;
+            return View(osoba);
+        }
+
+        [HttpGet]
+        public IActionResult ForgottenPassword(string name)
+        {
+            using (s16693Context dc = new s16693Context())
+            {
+                var v = dc.Osoba.Where(e => e.AdresEmail == name).FirstOrDefault();
+
+                if (v != null)
+                {
+                    OsobaForgottenPassword oFP = new OsobaForgottenPassword();
+                    oFP.AdresEmail = name;
+                    return View(oFP);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ForgottenPassword(OsobaForgottenPassword password)
+        {
+            bool Status = false;
+            if (ModelState.IsValid)
+            {
+                using (s16693Context dc = new s16693Context())
+                {
+                    var v = dc.Osoba.Where(e => e.AdresEmail == password.AdresEmail).FirstOrDefault();
+                    password.Haslo = Hash(password.Haslo);
+
+                    if (v != null)
+                    {
+                        v.Haslo = password.Haslo;
+                        dc.SaveChanges();
+                        Status = true;
+                        return RedirectToAction("Login", "Home");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Nieprawidłowe żądanie";
+                    }
+                }
+            }
+            else
+            {
+                ViewBag.Message = "Nieprawidłowe żądanie";
+            }
+            ViewBag.Status = Status;
+            return View(password);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -183,6 +260,28 @@ namespace Agencja_Interaktywna.Controllers
             mail.Body = "<br/><br/>Z dumą informujemy, iż twoje konto zostało pomyślnie utworzone. " + "" +
                 "Prosimy o wejście w wysłany przez nas link w celu aktywacji twojego konta. <br/><br/><a href='" +
                 confirmationLink + "'>" + confirmationLink + "</a>";
+            mail.IsBodyHtml = true;
+
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("johnytestin@gmail.com", "123qwER#$");
+            SmtpServer.EnableSsl = true;
+
+            SmtpServer.Send(mail);
+        }
+
+        public void SendPasswordReset(OsobaToken osoba)
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+            string resetLink = Request.Scheme + "://" + Request.Host + "/Home/ForgottenPassword/" + osoba.AdresEmail;
+
+            mail.From = new MailAddress("johnytestin@gmail.com");
+            mail.To.Add(osoba.AdresEmail);
+            mail.Subject = "Resetowanie hasła";
+            mail.Body = "<br/><br/>Na ten adres e-mail złożono prośbę o zmianę hasła. " + "" +
+                "W celu zmiany hasła przypisanego do konta należy wejść w ten link. <br/><br/><a href='" +
+                resetLink + "'>" + resetLink + "</a>";
             mail.IsBodyHtml = true;
 
             SmtpServer.Port = 587;
