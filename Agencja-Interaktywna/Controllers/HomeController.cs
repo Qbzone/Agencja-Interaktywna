@@ -175,7 +175,7 @@ namespace Agencja_Interaktywna.Controllers
                 var v = dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
                 if (v != null)
                 {
-                    SendPasswordReset(osoba);
+                    SendPasswordReset(v);
                     Message = "Link do zmiany hasła został przesłany na twój adres e-mail " + osoba.AdresEmail;
                     Status = true;
                 }
@@ -190,16 +190,16 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult ForgottenPassword(string name)
+        public IActionResult ForgottenPassword(string id)
         {
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osoba.Where(e => e.AdresEmail == name).FirstOrDefault();
+                var v = dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
 
                 if (v != null)
                 {
                     OsobaForgottenPassword oFP = new OsobaForgottenPassword();
-                    oFP.AdresEmail = name;
+                    oFP.AdresEmail = v.AdresEmail;
                     return View(oFP);
                 }
                 else
@@ -210,35 +210,32 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpPost]
-        public IActionResult ForgottenPassword(OsobaForgottenPassword password)
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgottenPassword(OsobaForgottenPassword oFP)
         {
-            bool Status = false;
+            var Message = "";
             if (ModelState.IsValid)
             {
                 using (s16693Context dc = new s16693Context())
                 {
-                    var v = dc.Osoba.Where(e => e.AdresEmail == password.AdresEmail).FirstOrDefault();
-                    password.Haslo = Hash(password.Haslo);
+                    var v = dc.Osoba.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefault();
 
                     if (v != null)
                     {
-                        v.Haslo = password.Haslo;
+                        oFP.Haslo = Hash(oFP.Haslo);
+                        v.Haslo = oFP.Haslo;
                         dc.SaveChanges();
-                        Status = true;
-                        return RedirectToAction("Login", "Home");
-                    }
-                    else
-                    {
-                        ViewBag.Message = "Nieprawidłowe żądanie";
+                        //return RedirectToAction("Login", "Home");
+                        Message = "Hasło zostało zaktualizowane pomyślnie";
                     }
                 }
             }
             else
             {
-                ViewBag.Message = "Nieprawidłowe żądanie";
+                Message = "Nieprawidłowe żądanie";
             }
-            ViewBag.Status = Status;
-            return View(password);
+            ViewBag.Message = Message;
+            return View(oFP);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -269,12 +266,12 @@ namespace Agencja_Interaktywna.Controllers
             SmtpServer.Send(mail);
         }
 
-        public void SendPasswordReset(OsobaToken osoba)
+        public void SendPasswordReset(Osoba osoba)
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            string resetLink = Request.Scheme + "://" + Request.Host + "/Home/ForgottenPassword/" + osoba.AdresEmail;
+            string resetLink = Request.Scheme + "://" + Request.Host + "/Home/ForgottenPassword/" + osoba.KodAktywacyjny;
 
             mail.From = new MailAddress("johnytestin@gmail.com");
             mail.To.Add(osoba.AdresEmail);
