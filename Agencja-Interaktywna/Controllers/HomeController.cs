@@ -68,6 +68,7 @@ namespace Agencja_Interaktywna.Controllers
                             context2.SaveChanges();
 
                             SendVerificationLink(osoba);
+
                             Message = "Rejestracja zakończona pomyślnie. Link do aktywacji konta został przesłany na twój adres e-mail " + osoba.AdresEmail;
                             Status = true;
                         }
@@ -104,6 +105,7 @@ namespace Agencja_Interaktywna.Controllers
                 }
             }
             ViewBag.Status = Status;
+
             return View();
         }
 
@@ -119,6 +121,7 @@ namespace Agencja_Interaktywna.Controllers
             using (s16693Context dc = new s16693Context())
             {
                 var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
+
                 if (v != null)
                 {
                     if (v.CzyEmailZweryfikowane != false)
@@ -132,7 +135,9 @@ namespace Agencja_Interaktywna.Controllers
                             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                             var principal = new ClaimsPrincipal(identity);
                             var props = new AuthenticationProperties();
+
                             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
+
                             return RedirectToAction("Index", "Klient");
                         }
                         else
@@ -173,6 +178,7 @@ namespace Agencja_Interaktywna.Controllers
             using (s16693Context dc = new s16693Context())
             {
                 var v = dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
+
                 if (v != null)
                 {
                     SendPasswordReset(v);
@@ -214,6 +220,7 @@ namespace Agencja_Interaktywna.Controllers
         public IActionResult ForgottenPassword(OsobaForgottenPassword oFP)
         {
             var Message = "";
+
             if (ModelState.IsValid)
             {
                 using (s16693Context dc = new s16693Context())
