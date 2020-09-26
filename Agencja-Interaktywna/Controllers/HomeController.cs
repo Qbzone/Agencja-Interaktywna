@@ -190,8 +190,10 @@ namespace Agencja_Interaktywna.Controllers
                     ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie istnieje");
                 }
             }
+
             ViewBag.Message = Message;
             ViewBag.Status = Status;
+            
             return View(osoba);
         }
 
