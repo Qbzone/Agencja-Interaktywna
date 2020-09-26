@@ -244,6 +244,7 @@ namespace Agencja_Interaktywna.Controllers
                 Message = "Nieprawidłowe żądanie";
             }
             ViewBag.Message = Message;
+
             return View(oFP);
         }
 
