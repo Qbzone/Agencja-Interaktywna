@@ -233,8 +233,9 @@ namespace Agencja_Interaktywna.Controllers
                     {
                         oFP.Haslo = Hash(oFP.Haslo);
                         v.Haslo = oFP.Haslo;
+                        dc.Update(v);
                         dc.SaveChanges();
-                        //return RedirectToAction("Login", "Home");
+                        return RedirectToAction("Login", "Home");
                         Message = "Hasło zostało zaktualizowane pomyślnie";
                     }
                 }
