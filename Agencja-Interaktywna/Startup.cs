@@ -31,6 +31,7 @@ namespace Agencja_Interaktywna
                 e.LoginPath = "/Home/Login";
                 e.Cookie.Name = "Ciacho";
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
