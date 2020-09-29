@@ -96,6 +96,11 @@ namespace Agencja_Interaktywna.Controllers
                 if (v != null)
                 {
                     v.CzyEmailZweryfikowane = true;
+                    Klient klient = new Klient();
+                    klient.Idklient = v.Idosoba;
+                    klient.Priorytet = "nie";
+
+                    dc.Klient.Add(klient);
                     dc.SaveChanges();
                     Status = true;
                 }
@@ -138,7 +143,30 @@ namespace Agencja_Interaktywna.Controllers
 
                             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
 
-                            return RedirectToAction("Index", "Klient");
+                            if (v.Idosoba >= 1 && v.Idosoba < 100)
+                            {
+                                return RedirectToAction("Index", "Szef");
+                            }
+                            else if (v.Idosoba >= 100 && v.Idosoba < 350)
+                            {
+                                return RedirectToAction("Index", "Programista");
+                            }
+                            else if (v.Idosoba >= 350 && v.Idosoba < 600)
+                            {
+                                return RedirectToAction("Index", "Grafik");
+                            }
+                            else if (v.Idosoba >= 600 && v.Idosoba < 800)
+                            {
+                                return RedirectToAction("Index", "Pozycjoner");
+                            }
+                            else if (v.Idosoba >= 800 && v.Idosoba < 1000)
+                            {
+                                return RedirectToAction("Index", "Tester");
+                            }
+                            else
+                            {
+                                return RedirectToAction("Index", "Klient");
+                            }
                         }
                         else
                         {
@@ -193,7 +221,7 @@ namespace Agencja_Interaktywna.Controllers
 
             ViewBag.Message = Message;
             ViewBag.Status = Status;
-            
+
             return View(osoba);
         }
 
@@ -235,8 +263,8 @@ namespace Agencja_Interaktywna.Controllers
                         v.Haslo = oFP.Haslo;
                         dc.Update(v);
                         dc.SaveChanges();
-                        return RedirectToAction("Login", "Home");
                         Message = "Hasło zostało zaktualizowane pomyślnie";
+                        return RedirectToAction("Login", "Home");
                     }
                 }
             }
