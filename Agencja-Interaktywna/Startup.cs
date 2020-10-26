@@ -34,11 +34,10 @@ namespace Agencja_Interaktywna
                 e.Cookie.Name = "Ciacho";
             });
 
-            services.AddMvc(config => {
-                var policy = new AuthorizationPolicyBuilder()
-                                .RequireAuthenticatedUser()
-                                .Build();
-                config.Filters.Add(new AuthorizeFilter(policy));
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireKlientRole",
+                     policy => policy.RequireRole("Klient"));
             });
 
         }
