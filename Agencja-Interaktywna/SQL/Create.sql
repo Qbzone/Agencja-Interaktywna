@@ -298,6 +298,25 @@ ALTER TABLE ZespolProjekt ADD constraint zespolprojektpk PRIMARY KEY CLUSTERED (
      ALLOW_PAGE_LOCKS = ON , 
      ALLOW_ROW_LOCKS = ON )
 
+CREATE TABLE rola 
+    (
+    idrola   INTEGER NOT NULL IDENTITY (1,1),
+    nazwa    nvarchar (50) NOT null )
+
+ALTER TABLE Rola ADD constraint rolapk PRIMARY KEY CLUSTERED (idrola)
+     WITH (
+     ALLOW_PAGE_LOCKS = ON , 
+     ALLOW_ROW_LOCKS = ON )
+
+CREATE TABLE rolaosoba(
+	idrola INTEGER NOT NULL,
+	idosoba INTEGER NOT NULL)
+
+ALTER TABLE rolaosoba ADD constraint rolaosobapk PRIMARY KEY CLUSTERED (idrola, idosoba)
+     WITH (
+     ALLOW_PAGE_LOCKS = ON , 
+     ALLOW_ROW_LOCKS = ON )
+
 ALTER TABLE FirmaTag
     ADD CONSTRAINT firmatagfirmafk FOREIGN KEY ( idfirma )
         REFERENCES firma ( idfirma )
@@ -463,5 +482,17 @@ ON DELETE NO ACTION
 ALTER TABLE ZespolProjekt
     ADD CONSTRAINT zespolprojektzespolfk FOREIGN KEY ( idzespol )
         REFERENCES zespol ( idzespol )
+ON DELETE NO ACTION 
+    ON UPDATE no action
+
+ALTER TABLE FirmaTag
+    ADD CONSTRAINT firmatagfirmafk FOREIGN KEY ( idfirma )
+        REFERENCES firma ( idfirma )
+ON DELETE NO ACTION 
+    ON UPDATE no action
+
+ALTER TABLE FirmaTag
+    ADD CONSTRAINT firmatagtagfk FOREIGN KEY ( idtag )
+        REFERENCES tag ( idtag )
 ON DELETE NO ACTION 
     ON UPDATE no action
