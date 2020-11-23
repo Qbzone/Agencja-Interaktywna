@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Agencja_Interaktywna.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TesterController : Controller
     {
         public IActionResult Index()

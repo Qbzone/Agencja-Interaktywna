@@ -7,10 +7,6 @@ namespace Agencja_Interaktywna.Models
 {
     public partial class Osoba
     {
-        public Osoba()
-        {
-            Rolaosoba = new HashSet<Rolaosoba>();
-        }
 
         public int Idosoba { get; set; }
         [Required(ErrorMessage = "Proszę podać swoje imię")]
@@ -45,6 +41,5 @@ namespace Agencja_Interaktywna.Models
         public virtual Klient Klient { get; set; }
         public virtual Pracownik Pracownik { get; set; }
 
-        public virtual ICollection<Rolaosoba> Rolaosoba { get; set; }
     }
 }
