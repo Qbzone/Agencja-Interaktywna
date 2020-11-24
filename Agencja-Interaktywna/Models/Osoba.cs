@@ -37,6 +37,7 @@ namespace Agencja_Interaktywna.Models
         public string PotwierdzHaslo { get; set; }
         public bool CzyEmailZweryfikowane { get; set; }
         public Guid KodAktywacyjny { get; set; }
+        public string Rola { get; set; }
 
         public virtual Klient Klient { get; set; }
         public virtual Pracownik Pracownik { get; set; }

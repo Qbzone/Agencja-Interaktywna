@@ -63,6 +63,7 @@ namespace Agencja_Interaktywna.Controllers
                         osoba.KodAktywacyjny = Guid.NewGuid();
                         osoba.Haslo = Hash(osoba.Haslo);
                         osoba.CzyEmailZweryfikowane = false;
+                        osoba.Rola = "Klient";
 
                         s16693Context context2 = new s16693Context();
                         {
