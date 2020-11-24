@@ -81,6 +81,7 @@ CREATE TABLE osoba
 	 Haslo NVARCHAR (MAX) NOT NULL,
 	 CzyEmailZweryfikowane BIT NOT NULL,
 	 KodAktywacyjny UNIQUEIDENTIFIER NOT NULL,
+     Rola NVARCHAR (25) NOT NULL,
 	 )
 
 ALTER TABLE Osoba ADD constraint osobapk PRIMARY KEY CLUSTERED (IdOsoba)
@@ -294,25 +295,6 @@ CREATE TABLE zespolprojekt (
 )
 
 ALTER TABLE ZespolProjekt ADD constraint zespolprojektpk PRIMARY KEY CLUSTERED (DataPrzypisaniaZespolu, IdProjekt, IdZespol)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE rola 
-    (
-    idrola   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa    nvarchar (50) NOT null )
-
-ALTER TABLE Rola ADD constraint rolapk PRIMARY KEY CLUSTERED (idrola)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE rolaosoba(
-	idrola INTEGER NOT NULL,
-	idosoba INTEGER NOT NULL)
-
-ALTER TABLE rolaosoba ADD constraint rolaosobapk PRIMARY KEY CLUSTERED (idrola, idosoba)
      WITH (
      ALLOW_PAGE_LOCKS = ON , 
      ALLOW_ROW_LOCKS = ON )
