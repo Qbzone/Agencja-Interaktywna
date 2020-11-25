@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Agencja_Interaktywna.Controllers
 {
-    //[Authorize(Policy = "RequireKlientRole")]
+    [Authorize(Roles = "Klient")]
     public class KlientController : Controller
     {
         public IActionResult Index()

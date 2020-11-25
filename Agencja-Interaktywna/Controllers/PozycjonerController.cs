@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Agencja_Interaktywna.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Pozycjoner")]
     public class PozycjonerController : Controller
     {
         public IActionResult Index()

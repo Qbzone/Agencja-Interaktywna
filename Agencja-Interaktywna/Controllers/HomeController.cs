@@ -129,47 +129,105 @@ namespace Agencja_Interaktywna.Controllers
             using (s16693Context dc = new s16693Context())
             {
                 var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
-
                 if (v != null)
                 {
                     if (v.CzyEmailZweryfikowane != false)
                     {
                         if (Hash(login.Haslo) == v.Haslo)
                         {
-                            var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name, login.AdresEmail)
-                        };
-                            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                            var principal = new ClaimsPrincipal(identity);
-                            var props = new AuthenticationProperties();
-
-                            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
-
-                            if (v.Idosoba >= 1 && v.Idosoba < 100)
+                            ClaimsIdentity identity = null;
+                            bool isAutheticate = false;
+                            if (v.Rola == "Klient")
                             {
-                                return RedirectToAction("Index", "Szef");
-                            }
-                            else if (v.Idosoba >= 100 && v.Idosoba < 350)
-                            {
-                                return RedirectToAction("Index", "Programista");
-                            }
-                            else if (v.Idosoba >= 350 && v.Idosoba < 600)
-                            {
-                                return RedirectToAction("Index", "Grafik");
-                            }
-                            else if (v.Idosoba >= 600 && v.Idosoba < 800)
-                            {
-                                return RedirectToAction("Index", "Pozycjoner");
-                            }
-                            else if (v.Idosoba >= 800 && v.Idosoba < 1000)
-                            {
-                                return RedirectToAction("Index", "Tester");
-                            }
-                            else
-                            {
+                                identity = new ClaimsIdentity(new[]
+                                    {
+                                        new Claim(ClaimTypes.Name, v.AdresEmail),
+                                        new Claim(ClaimTypes.Role, v.Rola)
+                                    }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                isAutheticate = true;
+                                if (isAutheticate)
+                                {
+                                    var principal = new ClaimsPrincipal(identity);
+                                    var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                }
                                 return RedirectToAction("Index", "Klient");
                             }
+                            else if (v.Rola == "Szef")
+                            {
+                                identity = new ClaimsIdentity(new[]
+                                    {
+                                        new Claim(ClaimTypes.Name, v.AdresEmail),
+                                        new Claim(ClaimTypes.Role, v.Rola)
+                                    }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                isAutheticate = true;
+                                if (isAutheticate)
+                                {
+                                    var principal = new ClaimsPrincipal(identity);
+                                    var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                }
+                                return RedirectToAction("Index", "Szef");
+                            }
+                            else if (v.Rola == "Programista")
+                            {
+                                identity = new ClaimsIdentity(new[]
+                                    {
+                                        new Claim(ClaimTypes.Name, v.AdresEmail),
+                                        new Claim(ClaimTypes.Role, v.Rola)
+                                    }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                isAutheticate = true;
+                                if (isAutheticate)
+                                {
+                                    var principal = new ClaimsPrincipal(identity);
+                                    var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                }
+                                return RedirectToAction("Index", "Programista");
+                            }
+                            else if (v.Rola == "Grafik")
+                            {
+                                identity = new ClaimsIdentity(new[]
+                                    {
+                                        new Claim(ClaimTypes.Name, v.AdresEmail),
+                                        new Claim(ClaimTypes.Role, v.Rola)
+                                    }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                isAutheticate = true;
+                                if (isAutheticate)
+                                {
+                                    var principal = new ClaimsPrincipal(identity);
+                                    var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                }
+                                return RedirectToAction("Index", "Grafik");
+                            }
+                            else if (v.Rola == "Pozycjoner")
+                            {
+                                identity = new ClaimsIdentity(new[]
+                                    {
+                                        new Claim(ClaimTypes.Name, v.AdresEmail),
+                                        new Claim(ClaimTypes.Role, v.Rola)
+                                    }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                isAutheticate = true;
+                                if (isAutheticate)
+                                {
+                                    var principal = new ClaimsPrincipal(identity);
+                                    var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                }
+                                return RedirectToAction("Index", "Pozycjoner");
+                            }
+                            else if (v.Rola == "Tester")
+                            {
+                                identity = new ClaimsIdentity(new[]
+                                    {
+                                        new Claim(ClaimTypes.Name, v.AdresEmail),
+                                        new Claim(ClaimTypes.Role, v.Rola)
+                                    }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                isAutheticate = true;
+                                if (isAutheticate)
+                                {
+                                    var principal = new ClaimsPrincipal(identity);
+                                    var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                }
+                                return RedirectToAction("Index", "Tester");
+                            }
+
                         }
                         else
                         {

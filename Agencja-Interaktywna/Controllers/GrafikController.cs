@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Agencja_Interaktywna.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Grafik")]
     public class GrafikController : Controller
     {
         public IActionResult Index()
