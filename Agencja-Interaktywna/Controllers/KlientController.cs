@@ -16,11 +16,27 @@ namespace Agencja_Interaktywna.Controllers
             return View();
         }
 
+        public IActionResult Meetings()
+        {
+            return View();
+        }
+
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
     }
 }
