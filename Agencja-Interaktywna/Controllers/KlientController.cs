@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Agencja_Interaktywna.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agencja_Interaktywna.Controllers
 {
@@ -23,7 +25,9 @@ namespace Agencja_Interaktywna.Controllers
 
         public IActionResult Profile()
         {
+
             return View();
+
         }
 
         public IActionResult Contact()
@@ -35,8 +39,8 @@ namespace Agencja_Interaktywna.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+
             return RedirectToAction("Index", "Home");
         }
-
     }
 }
