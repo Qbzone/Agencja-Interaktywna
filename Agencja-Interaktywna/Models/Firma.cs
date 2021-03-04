@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
     public partial class Firma
     {
         public Firma()
         {
-            Firmatag = new HashSet<Firmatag>();
-            Klientfirma = new HashSet<Klientfirma>();
-            Projekt = new HashSet<Projekt>();
+            FirmaTags = new HashSet<FirmaTag>();
+            KlientFirmas = new HashSet<KlientFirma>();
+            Projekts = new HashSet<Projekt>();
         }
 
-        public int Idfirma { get; set; }
+        public int IdFirma { get; set; }
         public string Nazwa { get; set; }
 
-        public virtual ICollection<Firmatag> Firmatag { get; set; }
-        public virtual ICollection<Klientfirma> Klientfirma { get; set; }
-        public virtual ICollection<Projekt> Projekt { get; set; }
+        public virtual ICollection<FirmaTag> FirmaTags { get; set; }
+        public virtual ICollection<KlientFirma> KlientFirmas { get; set; }
+        public virtual ICollection<Projekt> Projekts { get; set; }
     }
 }

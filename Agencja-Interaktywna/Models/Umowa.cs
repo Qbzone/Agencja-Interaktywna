@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
     public partial class Umowa
     {
         public Umowa()
         {
-            Pracownikumowa = new HashSet<Pracownikumowa>();
+            PracownikUmowas = new HashSet<PracownikUmowa>();
         }
 
-        public int Idumowa { get; set; }
-        public string Rodzajumowy { get; set; }
+        public int IdUmowa { get; set; }
+        public string RodzajUmowy { get; set; }
 
-        public virtual ICollection<Pracownikumowa> Pracownikumowa { get; set; }
+        public virtual ICollection<PracownikUmowa> PracownikUmowas { get; set; }
     }
 }

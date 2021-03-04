@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
     public partial class Zadanie
     {
         public Zadanie()
         {
-            Zadanieprojekt = new HashSet<Zadanieprojekt>();
+            ZadanieProjekts = new HashSet<ZadanieProjekt>();
         }
 
-        public int Idzadanie { get; set; }
+        public int IdZadanie { get; set; }
         public string Nazwa { get; set; }
 
-        public virtual ICollection<Zadanieprojekt> Zadanieprojekt { get; set; }
+        public virtual ICollection<ZadanieProjekt> ZadanieProjekts { get; set; }
     }
 }

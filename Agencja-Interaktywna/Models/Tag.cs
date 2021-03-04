@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
     public partial class Tag
     {
         public Tag()
         {
-            Firmatag = new HashSet<Firmatag>();
+            FirmaTags = new HashSet<FirmaTag>();
         }
 
-        public int Idtag { get; set; }
+        public int IdTag { get; set; }
         public string Nazwa { get; set; }
 
-        public virtual ICollection<Firmatag> Firmatag { get; set; }
+        public virtual ICollection<FirmaTag> FirmaTags { get; set; }
     }
 }

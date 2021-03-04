@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
     public partial class Usluga
     {
         public Usluga()
         {
-            Pakietusluga = new HashSet<Pakietusluga>();
+            PakietUslugas = new HashSet<PakietUsluga>();
         }
 
-        public int Idusluga { get; set; }
+        public int IdUsluga { get; set; }
         public string Nazwa { get; set; }
         public string Opis { get; set; }
 
-        public virtual ICollection<Pakietusluga> Pakietusluga { get; set; }
+        public virtual ICollection<PakietUsluga> PakietUslugas { get; set; }
     }
 }

@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
-    public partial class Pracownikumowa
+    public partial class PracownikUmowa
     {
-        public int Idpracownik { get; set; }
-        public int Idumowa { get; set; }
-        public DateTime Datapodpisaniaumowy { get; set; }
-        public DateTime Datawygasnieciaumowy { get; set; }
+        public int IdPracownik { get; set; }
+        public int IdUmowa { get; set; }
+        public DateTime DataPodpisaniaUmowy { get; set; }
+        public DateTime DataZakonczeniaUmowy { get; set; }
 
-        public virtual Pracownik IdpracownikNavigation { get; set; }
-        public virtual Umowa IdumowaNavigation { get; set; }
+        public virtual Pracownik IdPracownikNavigation { get; set; }
+        public virtual Umowa IdUmowaNavigation { get; set; }
     }
 }

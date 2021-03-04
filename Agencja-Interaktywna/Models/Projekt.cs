@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
     public partial class Projekt
     {
         public Projekt()
         {
-            Zadanieprojekt = new HashSet<Zadanieprojekt>();
-            Zespolprojekt = new HashSet<Zespolprojekt>();
+            ZadanieProjekts = new HashSet<ZadanieProjekt>();
+            ZespolProjekts = new HashSet<ZespolProjekt>();
         }
 
-        public int Idprojekt { get; set; }
+        public int IdProjekt { get; set; }
         public string Nazwa { get; set; }
-        public int FirmaIdFirma { get; set; }
+        public int IdFirma { get; set; }
 
-        public virtual Firma FirmaIdFirmaNavigation { get; set; }
-        public virtual ICollection<Zadanieprojekt> Zadanieprojekt { get; set; }
-        public virtual ICollection<Zespolprojekt> Zespolprojekt { get; set; }
+        public virtual Firma IdFirmaNavigation { get; set; }
+        public virtual ICollection<ZadanieProjekt> ZadanieProjekts { get; set; }
+        public virtual ICollection<ZespolProjekt> ZespolProjekts { get; set; }
     }
 }

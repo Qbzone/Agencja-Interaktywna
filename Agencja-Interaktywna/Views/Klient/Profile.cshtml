@@ -1,7 +1,29 @@
-﻿
+﻿@model Agencja_Interaktywna.Models.Klient
 @{
     ViewData["Title"] = "Profile";
 }
 
 <h1>Profile</h1>
-
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Contact">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Imię: +48 544 455 454</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Nazwisko: </label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Numer telefonu prywatny: @Html.DisplayNameFor(model => model.IdKlientNavigation.Imie)</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Numer telefonu służbowy: </label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Adres e-mail: </label>
+            </div>
+        </form>
+    </div>
+</div>

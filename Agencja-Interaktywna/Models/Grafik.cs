@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
     public partial class Grafik
     {
-        public int Idpracownik { get; set; }
+        public int IdPracownik { get; set; }
         public string Specjalizacja { get; set; }
 
-        public virtual Pracownik IdpracownikNavigation { get; set; }
+        public virtual Pracownik IdPracownikNavigation { get; set; }
     }
 }

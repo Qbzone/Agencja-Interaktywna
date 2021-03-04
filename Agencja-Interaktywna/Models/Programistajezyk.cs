@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Agencja_Interaktywna.Models
 {
-    public partial class Programistajezyk
+    public partial class ProgramistaJezyk
     {
-        public int Idpracownik { get; set; }
-        public int Idjezyk { get; set; }
+        public int IdPracownik { get; set; }
+        public int IdJezyk { get; set; }
         public int Staz { get; set; }
 
-        public virtual Jezykprogramowania IdjezykNavigation { get; set; }
-        public virtual Programista IdpracownikNavigation { get; set; }
+        public virtual JezykProgramowania IdJezykNavigation { get; set; }
+        public virtual Programista IdPracownikNavigation { get; set; }
     }
 }
