@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Agencja_Interaktywna.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -54,21 +53,6 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             return View(model);
-        }
-
-        public IActionResult Meetings()
-        {
-            using (s16693Context context = new s16693Context())
-            {
-                var klient = context.Klient.FirstOrDefaultAsync(e => e.IdklientNavigation.AdresEmail == ClaimTypes.Name);
-
-                if (klient == null)
-                {
-                    return NotFound();
-                }
-
-                return View(klient);
-            }
         }
         
 
