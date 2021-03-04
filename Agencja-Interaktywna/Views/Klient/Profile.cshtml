@@ -1,9 +1,10 @@
 ﻿@model Agencja_Interaktywna.Models.Klient
 @{
-    ViewData["Title"] = "Profile";
+ViewData["Title"] = "Profile";
 }
 
 <h1>Profile</h1>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,7 +17,11 @@
                 <label class="control-label">Nazwisko: </label>
             </div>
             <div class="form-group">
+
                 <label class="control-label">Numer telefonu prywatny: @Html.DisplayNameFor(model => model.IdKlientNavigation.Imie)</label>
+
+                <label class="control-label">Numer telefonu prywatny: @Html.DisplayNameFor(model => model.IdKlientNavigation.Imie)</label>
+
             </div>
             <div class="form-group">
                 <label class="control-label">Numer telefonu służbowy: </label>
@@ -26,4 +31,8 @@
             </div>
         </form>
     </div>
+
 </div>
+
+</div>
+

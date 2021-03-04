@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Agencja_Interaktywna.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -57,7 +58,17 @@ namespace Agencja_Interaktywna.Controllers
 
         public IActionResult Meetings()
         {
-            return View();
+            using (s16693Context context = new s16693Context())
+            {
+                var klient = context.Klient.FirstOrDefaultAsync(e => e.IdklientNavigation.AdresEmail == ClaimTypes.Name);
+
+                if (klient == null)
+                {
+                    return NotFound();
+                }
+
+                return View(klient);
+            }
         }
         
 
@@ -70,8 +81,8 @@ namespace Agencja_Interaktywna.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+
             return RedirectToAction("Index", "Home");
         }
-
     }
 }
