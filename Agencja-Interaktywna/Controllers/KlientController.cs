@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using Agencja_Interaktywna.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,57 +17,56 @@ namespace Agencja_Interaktywna.Controllers
     [Authorize(Roles = "Klient")]
     public class KlientController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public KlientController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly s16693Context _s16693context = new s16693Context();
+        public ActionResult Index()
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            ViewBag.userEmail = HttpContext.User.Identity.Name;
+            return View();
         }
-        public async Task<IActionResult> Index(Klient model)
+
+        public IActionResult Meetings()
         {
-            if (ModelState.IsValid)
-            {
-                // Copy data from RegisterViewModel to IdentityUser
-                var user = new IdentityUser
-                {
-                    UserName = model.IdKlientNavigation.AdresEmail,
-                    Email = model.IdKlientNavigation.AdresEmail
-                };
-
-                // Store user data in AspNetUsers database table
-                var result = await _userManager.CreateAsync(user, model.IdKlientNavigation.Haslo);
-
-                // If user is successfully created, sign-in the user using
-                // SignInManager and redirect to index action of HomeController
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index","Klient");
-                }
-
-                // If there are any errors, add them to the ModelState object
-                // which will be displayed by the validation summary tag helper
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-
-            return View(model);
+            return View();
         }
-        
+
+        public IActionResult Profile()
+        {
+            //Klient kl = _s16693context.Klients.Where(x => x.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value).FirstOrDefault();
+
+            //ViewBag.userEmail = HttpContext.User.Identity.Name;
+            //ViewBag.rola = HttpContext.User.FindFirst(ClaimTypes.Role);
+
+            var kl = _s16693context.Klients
+                .Include(o => o.IdKlientNavigation)
+                .FirstOrDefault(i => i.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+
+            //var usr = HttpContext.User.FindFirst(ClaimTypes.Name).Value;
+
+            //if(user == null)
+            //{
+            //return NotFound();
+            //}
+            //else
+            //{
+            return View(kl);
+            //}
+
+        }
 
         public IActionResult Contact()
         {
             return View();
         }
 
+        private async Task<Osoba> GetCurrentUser()
+        {
+            return await _s16693context.GetUserAsync(HttpContext.User);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Index", "Home");
         }

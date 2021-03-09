@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -588,6 +590,11 @@ namespace Agencja_Interaktywna.Models
             });
 
             OnModelCreatingPartial(modelBuilder);
+        }
+
+        internal Task<Osoba> GetUserAsync(ClaimsPrincipal user)
+        {
+            throw new NotImplementedException();
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
