@@ -21,7 +21,16 @@ namespace Agencja_Interaktywna.Controllers
         public ActionResult Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
-            return View();
+
+            var pr = _s16693context.Projekts
+                .Include(f => f.IdFirmaNavigation)
+                    .ThenInclude(kf => kf.KlientFirmas)
+                        .ThenInclude(k => k.IdKlientNavigation)
+                            .ThenInclude(o => o.IdKlientNavigation)
+                .Where(x => x.IdFirmaNavigation.KlientFirmas.Any(e => e.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value))
+                .ToList();
+            
+            return View(pr);
         }
 
         public IActionResult Meetings()
@@ -29,27 +38,25 @@ namespace Agencja_Interaktywna.Controllers
             return View();
         }
 
+        public IActionResult Teams()
+        {
+            return View();
+        }
+
         public IActionResult Profile()
         {
-            //Klient kl = _s16693context.Klients.Where(x => x.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value).FirstOrDefault();
-
-            //ViewBag.userEmail = HttpContext.User.Identity.Name;
-            //ViewBag.rola = HttpContext.User.FindFirst(ClaimTypes.Role);
-
             var kl = _s16693context.Klients
                 .Include(o => o.IdKlientNavigation)
                 .FirstOrDefault(i => i.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
-
-            //var usr = HttpContext.User.FindFirst(ClaimTypes.Name).Value;
-
-            //if(user == null)
-            //{
-            //return NotFound();
-            //}
-            //else
-            //{
-            return View(kl);
-            //}
+           
+            if(kl == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(kl);
+            }
 
         }
 

@@ -1,8 +1,25 @@
-﻿@model Agencja_Interaktywna.Models.Klient
+﻿@model List<Agencja_Interaktywna.Models.Projekt>
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Witaj @ViewBag.userEmail </h1>
 
+<table>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>
+                    @item.Nazwa
+                </td>
+
+                <td>
+                    <a asp-action="ProjectDetails" asp-route-id="@item.IdProjekt">Podgląd</a>
+
+                </td>
+            </tr>
+}
+    </tbody>
+</table>
 

@@ -1,480 +1,367 @@
-﻿CREATE TABLE firma 
-    (
-    idfirma   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa     nvarchar (50) NOT null )
-
-ALTER TABLE Firma ADD constraint firmapk PRIMARY KEY CLUSTERED (IdFirma)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE firmatag (
-    idfirma   INTEGER NOT NULL,
-    idtag     INTEGER NOT NULL
-)
-
-ALTER TABLE FirmaTag ADD constraint firmatagpk PRIMARY KEY CLUSTERED (IdFirma, IdTag)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE grafik 
-    (
-    idpracownik     INTEGER NOT NULL,
-    specjalizacja   nvarchar (50) NOT null )
-
-ALTER TABLE Grafik ADD constraint grafikpk PRIMARY KEY CLUSTERED (IdPracownik)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE jezykprogramowania 
-    (
-    idjezyk   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa     nvarchar (50) NOT null )
-
-ALTER TABLE JezykProgramowania ADD constraint jezykprogramowaniapk PRIMARY KEY CLUSTERED (IdJezyk)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE klient 
-    (
-    idklient    INTEGER NOT NULL,
-    priorytet   nvarchar (50) NOT null )
-
-ALTER TABLE Klient ADD constraint klientpk PRIMARY KEY CLUSTERED (IdKlient)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE klientfirma (
-    idklient   INTEGER NOT NULL,
-    idfirma    INTEGER NOT NULL
-)
-
-ALTER TABLE KlientFirma ADD constraint klientfirmapk PRIMARY KEY CLUSTERED (IdKlient, IdFirma)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE klientpakiet (
-    idklient                    INTEGER NOT NULL,
-    idpakiet                    INTEGER NOT NULL,
-    datarozpoczeciawspolpracy   DATE NOT NULL,
-    datazakonczeniawspolpracy   DATE
-)
-
-ALTER TABLE KlientPakiet ADD constraint klientpakietpk PRIMARY KEY CLUSTERED (DataRozpoczeciaWspolpracy, IdKlient, IdPakiet)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE osoba 
-    (
-    idosoba   INTEGER NOT NULL IDENTITY (1,1),
-    imie      nvarchar (25) NOT NULL , 
-     Nazwisko NVARCHAR (50) NOT NULL , 
-     NumerTelefonuPrywatny CHAR (9) , 
-     NumerTelefonuSluzbowego CHAR (9) NOT NULL , 
-     AdresEmail NVARCHAR (50) NOT null,
-	 Haslo NVARCHAR (MAX) NOT NULL,
-	 CzyEmailZweryfikowane BIT NOT NULL,
-	 KodAktywacyjny UNIQUEIDENTIFIER NOT NULL,
-     Rola NVARCHAR (25) NOT NULL,
-	 )
-
-ALTER TABLE Osoba ADD constraint osobapk PRIMARY KEY CLUSTERED (IdOsoba)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE pakiet 
-    (
-    idpakiet   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa      nvarchar (50) NOT NULL , 
-     Oplata INTEGER NOT NULL , 
-     RodzajOplaty NVARCHAR (50) NOT null )
-
-ALTER TABLE Pakiet ADD constraint pakietpk PRIMARY KEY CLUSTERED (IdPakiet)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE pakietusluga (
-    idpakiet   INTEGER NOT NULL,
-    idusluga   INTEGER NOT NULL
-)
-
-ALTER TABLE PakietUsluga ADD constraint pakietuslugapk PRIMARY KEY CLUSTERED (IdPakiet, IdUsluga)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE pozycjoner 
-    (
-    idpracownik       INTEGER NOT NULL,
-    pelnionafunkcja   nvarchar (50) NOT null )
-
-ALTER TABLE Pozycjoner ADD constraint pozycjonerpk PRIMARY KEY CLUSTERED (IdPracownik)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE pracownik 
-    (
-    idpracownik         INTEGER NOT NULL,
-    adreszamieszkania   nvarchar (100) NOT NULL , 
-     Pensja INTEGER NOT NULL , 
-     Premia INTEGER , 
-     PESEL CHAR (11) NOT NULL , 
-     StazPracy INTEGER NOT null )
-
-ALTER TABLE Pracownik ADD constraint pracownikpk PRIMARY KEY CLUSTERED (IdPracownik)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE pracownikklient 
-    (
-    idpracownik                INTEGER NOT NULL,
-    idklient                   INTEGER NOT NULL,
-    datarozpoczeciaspotkania   datetime NOT NULL,
-    datazakonczeniaspotkania   datetime,
-    miejscespotkania           nvarchar (50) NOT null )
-
-ALTER TABLE PracownikKlient ADD constraint pracownikklientpk PRIMARY KEY CLUSTERED (DataRozpoczeciaSpotkania, IdPracownik, IdKlient)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE pracownikumowa (
-    idpracownik            INTEGER NOT NULL,
-    idumowa                INTEGER NOT NULL,
-    datapodpisaniaumowy    DATE NOT NULL,
-    datawygasnieciaumowy   DATE NOT NULL
-)
-
-ALTER TABLE PracownikUmowa ADD constraint pracownikumowapk PRIMARY KEY CLUSTERED (DataPodpisaniaUmowy, IdPracownik, IdUmowa)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE pracownikzespol (
-    idpracownik                 INTEGER NOT NULL,
-    idzespol                    INTEGER NOT NULL,
-    dataprzypisaniapracownika   DATE NOT NULL,
-    datawypisaniapracownika     DATE,
-    menadzer                    bit NOT NULL
-)
-
-ALTER TABLE PracownikZespol ADD constraint pracownikzespolpk PRIMARY KEY CLUSTERED (DataPrzypisaniaPracownika, IdPracownik, IdZespol)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE programista 
-    (
-    idpracownik           INTEGER NOT NULL,
-    poziomzaawansowania   nvarchar (50) NOT null )
-
-ALTER TABLE Programista ADD constraint programistapk PRIMARY KEY CLUSTERED (IdPracownik)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE programistajezyk (
-    idpracownik   INTEGER NOT NULL,
-    idjezyk       INTEGER NOT NULL,
-    staz          INTEGER NOT NULL
-)
-
-ALTER TABLE ProgramistaJezyk ADD constraint programistajezykpk PRIMARY KEY CLUSTERED (IdPracownik, IdJezyk)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE projekt 
-    (
-    idprojekt   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa       nvarchar (50) NOT NULL , 
-     Firma_IdFirma INTEGER NOT null )
-
-ALTER TABLE Projekt ADD constraint projektpk PRIMARY KEY CLUSTERED (IdProjekt)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE szef (
-    idpracownik INTEGER NOT NULL
-)
-
-ALTER TABLE Szef ADD constraint szefpk PRIMARY KEY CLUSTERED (IdPracownik)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE tag 
-    (
-    idtag   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa   nvarchar (50) NOT null )
-
-ALTER TABLE Tag ADD constraint tagpk PRIMARY KEY CLUSTERED (IdTag)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE tester (
-    idpracownik           INTEGER NOT NULL,
-    testerdoswiadczenie   INTEGER NOT NULL
-)
-
-ALTER TABLE Tester ADD constraint testerpk PRIMARY KEY CLUSTERED (IdPracownik)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE umowa 
-    (
-    idumowa       INTEGER NOT NULL IDENTITY (1,1),
-    rodzajumowy   nvarchar (50) NOT null )
-
-ALTER TABLE Umowa ADD constraint umowapk PRIMARY KEY CLUSTERED (IdUmowa)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE usluga 
-    (
-    idusluga   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa      nvarchar (50) NOT NULL , opis nvarchar(100) )
-
-ALTER TABLE Usluga ADD constraint uslugapk PRIMARY KEY CLUSTERED (IdUsluga)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE zadanie 
-    (
-    idzadanie   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa       nvarchar (50) NOT null )
-
-ALTER TABLE Zadanie ADD constraint zadaniepk PRIMARY KEY CLUSTERED (IdZadanie)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE zadanieprojekt 
-    (
-    idzadanie                INTEGER NOT NULL,
-    idprojekt                INTEGER NOT NULL,
-    datarozpoczeciazadania   datetime NOT NULL,
-    datazakonczeniazadania   datetime,
-    status                   nvarchar (50) , opis nvarchar(100) )
-
-ALTER TABLE ZadanieProjekt ADD constraint zadanieprojektpk PRIMARY KEY CLUSTERED (IdProjekt, IdZadanie, DataRozpoczeciaZadania)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE zespol 
-    (
-    idzespol   INTEGER NOT NULL IDENTITY (1,1),
-    nazwa      nvarchar (50) NOT null )
-
-ALTER TABLE Zespol ADD constraint zespolpk PRIMARY KEY CLUSTERED (IdZespol)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-CREATE TABLE zespolprojekt (
-    idzespol                 INTEGER NOT NULL,
-    idprojekt                INTEGER NOT NULL,
-    dataprzypisaniazespolu   DATE NOT NULL,
-    dataoddaniaprojektu      DATE
-)
-
-ALTER TABLE ZespolProjekt ADD constraint zespolprojektpk PRIMARY KEY CLUSTERED (DataPrzypisaniaZespolu, IdProjekt, IdZespol)
-     WITH (
-     ALLOW_PAGE_LOCKS = ON , 
-     ALLOW_ROW_LOCKS = ON )
-
-ALTER TABLE FirmaTag
-    ADD CONSTRAINT firmatagfirmafk FOREIGN KEY ( idfirma )
-        REFERENCES firma ( idfirma )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE FirmaTag
-    ADD CONSTRAINT firmatagtagfk FOREIGN KEY ( idtag )
-        REFERENCES tag ( idtag )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE Grafik
-    ADD CONSTRAINT grafikpracownikfk FOREIGN KEY ( idpracownik )
-        REFERENCES pracownik ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE KlientFirma
-    ADD CONSTRAINT klientfirmafirmafk FOREIGN KEY ( idfirma )
-        REFERENCES firma ( idfirma )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE KlientFirma
-    ADD CONSTRAINT klientfirmaklientfk FOREIGN KEY ( idklient )
-        REFERENCES klient ( idklient )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE Klient
-    ADD CONSTRAINT klientosobafk FOREIGN KEY ( idklient )
-        REFERENCES osoba ( idosoba )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE KlientPakiet
-    ADD CONSTRAINT klientpakietklientfk FOREIGN KEY ( idklient )
-        REFERENCES klient ( idklient )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE KlientPakiet
-    ADD CONSTRAINT klientpakietpakietfk FOREIGN KEY ( idpakiet )
-        REFERENCES pakiet ( idpakiet )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE PakietUsluga
-    ADD CONSTRAINT pakietuslugapakietfk FOREIGN KEY ( idpakiet )
-        REFERENCES pakiet ( idpakiet )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE PakietUsluga
-    ADD CONSTRAINT pakietuslugauslugafk FOREIGN KEY ( idusluga )
-        REFERENCES usluga ( idusluga )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE Pozycjoner
-    ADD CONSTRAINT pozycjonerpracownikfk FOREIGN KEY ( idpracownik )
-        REFERENCES pracownik ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE PracownikKlient
-    ADD CONSTRAINT pracownikklientklientfk FOREIGN KEY ( idklient )
-        REFERENCES klient ( idklient )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE PracownikKlient
-    ADD CONSTRAINT pracownikklientpracownikfk FOREIGN KEY ( idpracownik )
-        REFERENCES pracownik ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE Pracownik
-    ADD CONSTRAINT pracownikosobafk FOREIGN KEY ( idpracownik )
-        REFERENCES osoba ( idosoba )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE PracownikUmowa
-    ADD CONSTRAINT pracownikumowapracownikfk FOREIGN KEY ( idpracownik )
-        REFERENCES pracownik ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE PracownikUmowa
-    ADD CONSTRAINT pracownikumowaumowafk FOREIGN KEY ( idumowa )
-        REFERENCES umowa ( idumowa )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE PracownikZespol
-    ADD CONSTRAINT pracownikzespolpracownikfk FOREIGN KEY ( idpracownik )
-        REFERENCES pracownik ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE PracownikZespol
-    ADD CONSTRAINT pracownikzespolzespolfk FOREIGN KEY ( idzespol )
-        REFERENCES zespol ( idzespol )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE ProgramistaJezyk
-    ADD CONSTRAINT programistajezykjezykprogrfk FOREIGN KEY ( idjezyk )
-        REFERENCES jezykprogramowania ( idjezyk )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE ProgramistaJezyk
-    ADD CONSTRAINT programistajezykprogramistafk FOREIGN KEY ( idpracownik )
-        REFERENCES programista ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE Programista
-    ADD CONSTRAINT programistapracownikfk FOREIGN KEY ( idpracownik )
-        REFERENCES pracownik ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE Projekt
-    ADD CONSTRAINT projekt_firma_fk FOREIGN KEY ( firma_idfirma )
-        REFERENCES firma ( idfirma )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE Szef
-    ADD CONSTRAINT szefpracownikfk FOREIGN KEY ( idpracownik )
-        REFERENCES pracownik ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE Tester
-    ADD CONSTRAINT testerpracownikfk FOREIGN KEY ( idpracownik )
-        REFERENCES pracownik ( idpracownik )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE ZadanieProjekt
-    ADD CONSTRAINT zadanieprojektprojektfk FOREIGN KEY ( idprojekt )
-        REFERENCES projekt ( idprojekt )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE ZadanieProjekt
-    ADD CONSTRAINT zadanieprojektzadaniefk FOREIGN KEY ( idzadanie )
-        REFERENCES zadanie ( idzadanie )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE ZespolProjekt
-    ADD CONSTRAINT zespolprojektprojektfk FOREIGN KEY ( idprojekt )
-        REFERENCES projekt ( idprojekt )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE ZespolProjekt
-    ADD CONSTRAINT zespolprojektzespolfk FOREIGN KEY ( idzespol )
-        REFERENCES zespol ( idzespol )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE FirmaTag
-    ADD CONSTRAINT firmatagfirmafk FOREIGN KEY ( idfirma )
-        REFERENCES firma ( idfirma )
-ON DELETE NO ACTION 
-    ON UPDATE no action
-
-ALTER TABLE FirmaTag
-    ADD CONSTRAINT firmatagtagfk FOREIGN KEY ( idtag )
-        REFERENCES tag ( idtag )
-ON DELETE NO ACTION 
-    ON UPDATE no action
+-- Created by Vertabelo (http://vertabelo.com)
+-- Last modification date: 2021-03-02 15:28:20.651
+
+-- tables
+-- Table: Firma
+CREATE TABLE Firma (
+    IdFirma int  NOT NULL IDENTITY,
+    Nazwa nvarchar(50)  NOT NULL,
+    CONSTRAINT Firma_pk PRIMARY KEY  (IdFirma)
+);
+
+-- Table: FirmaTag
+CREATE TABLE FirmaTag (
+    IdFirma int  NOT NULL,
+    IdTag int  NOT NULL,
+    CONSTRAINT FirmaTag_pk PRIMARY KEY  (IdFirma,IdTag)
+);
+
+-- Table: Grafik
+CREATE TABLE Grafik (
+    IdPracownik int  NOT NULL,
+    Specjalizacja nvarchar(50)  NOT NULL,
+    CONSTRAINT Grafik_pk PRIMARY KEY  (IdPracownik)
+);
+
+-- Table: JezykProgramowania
+CREATE TABLE JezykProgramowania (
+    IdJezyk int  NOT NULL IDENTITY,
+    Nazwa nvarchar(50)  NOT NULL,
+    CONSTRAINT JezykProgramowania_pk PRIMARY KEY  (IdJezyk)
+);
+
+-- Table: Klient
+CREATE TABLE Klient (
+    IdKlient int  NOT NULL,
+    Priorytet nvarchar(50)  NOT NULL,
+    CONSTRAINT Klient_pk PRIMARY KEY  (IdKlient)
+);
+
+-- Table: KlientFirma
+CREATE TABLE KlientFirma (
+    IdKlient int  NOT NULL,
+    IdFirma int  NOT NULL,
+    CONSTRAINT KlientFirma_pk PRIMARY KEY  (IdKlient,IdFirma)
+);
+
+-- Table: KlientPakiet
+CREATE TABLE KlientPakiet (
+    IdKlient int  NOT NULL,
+    IdPakiet int  NOT NULL,
+    DataZakonczeniaWspolpracy date  NULL,
+    DataRozpoczeciaWspolpracy date  NOT NULL,
+    CONSTRAINT KlientPakiet_pk PRIMARY KEY  (IdKlient,IdPakiet,DataRozpoczeciaWspolpracy)
+);
+
+-- Table: Osoba
+CREATE TABLE Osoba (
+    IdOsoba int  NOT NULL IDENTITY,
+    Imie nvarchar(25)  NOT NULL,
+    Nazwisko nvarchar(50)  NOT NULL,
+    NumerTelefonuPrywatny char(9)  NULL,
+    NumerTelefonuSluzbowego char(9)  NOT NULL,
+    AdresEmail nvarchar(50)  NOT NULL,
+    Haslo nvarchar(max)  NOT NULL,
+    CzyEmailZweryfikowany bit  NOT NULL,
+    KodAktywacyjny uniqueidentifier  NOT NULL,
+    Rola nvarchar(25)  NOT NULL,
+    CONSTRAINT Osoba_pk PRIMARY KEY  (IdOsoba)
+);
+
+-- Table: Pakiet
+CREATE TABLE Pakiet (
+    IdPakiet int  NOT NULL IDENTITY,
+    Nazwa nvarchar(50)  NOT NULL,
+    Oplata int  NOT NULL,
+    RodzajOplaty nvarchar(50)  NOT NULL,
+    CONSTRAINT Pakiet_pk PRIMARY KEY  (IdPakiet)
+);
+
+-- Table: PakietUsluga
+CREATE TABLE PakietUsluga (
+    IdPakiet int  NOT NULL,
+    IdUsluga int  NOT NULL,
+    CONSTRAINT PakietUsluga_pk PRIMARY KEY  (IdPakiet,IdUsluga)
+);
+
+-- Table: Pozycjoner
+CREATE TABLE Pozycjoner (
+    IdPracownik int  NOT NULL,
+    PelnionaFunkcja nvarchar(50)  NOT NULL,
+    CONSTRAINT Pozycjoner_pk PRIMARY KEY  (IdPracownik)
+);
+
+-- Table: Pracownik
+CREATE TABLE Pracownik (
+    IdPracownik int  NOT NULL,
+    AdresZamieszkania nvarchar(100)  NOT NULL,
+    Pensja int  NOT NULL,
+    Premia int  NOT NULL,
+    Pesel char(11)  NOT NULL,
+    StazPracy int  NOT NULL,
+    CONSTRAINT Pracownik_pk PRIMARY KEY  (IdPracownik)
+);
+
+-- Table: PracownikKlient
+CREATE TABLE PracownikKlient (
+    IdPracownik int  NOT NULL,
+    IdKlient int  NOT NULL,
+    DataRozpoczeciaSpotkania date  NOT NULL,
+    DataZakonczeniaSpotkania date  NOT NULL,
+    MiejsceSpotkania nvarchar(50)  NOT NULL,
+    CONSTRAINT PracownikKlient_pk PRIMARY KEY  (IdKlient,IdPracownik)
+);
+
+-- Table: PracownikUmowa
+CREATE TABLE PracownikUmowa (
+    IdPracownik int  NOT NULL,
+    IdUmowa int  NOT NULL,
+    DataPodpisaniaUmowy date  NOT NULL,
+    DataZakonczeniaUmowy date  NOT NULL,
+    CONSTRAINT PracownikUmowa_pk PRIMARY KEY  (IdPracownik,IdUmowa,DataPodpisaniaUmowy)
+);
+
+-- Table: PracownikZespol
+CREATE TABLE PracownikZespol (
+    IdPracownik int  NOT NULL,
+    IdZespol int  NOT NULL,
+    DataPrzypisaniaPracownika date  NOT NULL,
+    DataWypisaniaPracownika date  NULL,
+    CONSTRAINT PracownikZespol_pk PRIMARY KEY  (IdPracownik,IdZespol,DataPrzypisaniaPracownika)
+);
+
+-- Table: Programista
+CREATE TABLE Programista (
+    IdPracownik int  NOT NULL,
+    PoziomZaawansowania nvarchar(50)  NOT NULL,
+    CONSTRAINT Programista_pk PRIMARY KEY  (IdPracownik)
+);
+
+-- Table: ProgramistaJezyk
+CREATE TABLE ProgramistaJezyk (
+    IdPracownik int  NOT NULL,
+    IdJezyk int  NOT NULL,
+    Staz int  NOT NULL,
+    CONSTRAINT ProgramistaJezyk_pk PRIMARY KEY  (IdPracownik,IdJezyk)
+);
+
+-- Table: Projekt
+CREATE TABLE Projekt (
+    IdProjekt int  NOT NULL IDENTITY,
+    Nazwa nvarchar(50)  NOT NULL,
+    IdFirma int  NOT NULL,
+    CONSTRAINT Projekt_pk PRIMARY KEY  (IdProjekt)
+);
+
+-- Table: Szef
+CREATE TABLE Szef (
+    IdPracownik int  NOT NULL,
+    CONSTRAINT Szef_pk PRIMARY KEY  (IdPracownik)
+);
+
+-- Table: Tag
+CREATE TABLE Tag (
+    IdTag int  NOT NULL IDENTITY,
+    Nazwa nvarchar(50)  NOT NULL,
+    CONSTRAINT Tag_pk PRIMARY KEY  (IdTag)
+);
+
+-- Table: Tester
+CREATE TABLE Tester (
+    IdPracownik int  NOT NULL,
+    TesterDoswiadczenie int  NOT NULL,
+    CONSTRAINT Tester_pk PRIMARY KEY  (IdPracownik)
+);
+
+-- Table: Umowa
+CREATE TABLE Umowa (
+    IdUmowa int  NOT NULL IDENTITY,
+    RodzajUmowy nvarchar(50)  NOT NULL,
+    CONSTRAINT Umowa_pk PRIMARY KEY  (IdUmowa)
+);
+
+-- Table: Usluga
+CREATE TABLE Usluga (
+    IdUsluga int  NOT NULL IDENTITY,
+    Nazwa nvarchar(50)  NOT NULL,
+    Opis nvarchar(100)  NOT NULL,
+    CONSTRAINT Usluga_pk PRIMARY KEY  (IdUsluga)
+);
+
+-- Table: Zadanie
+CREATE TABLE Zadanie (
+    IdZadanie int  NOT NULL IDENTITY,
+    Nazwa nvarchar(50)  NOT NULL,
+    CONSTRAINT Zadanie_pk PRIMARY KEY  (IdZadanie)
+);
+
+-- Table: ZadanieProjekt
+CREATE TABLE ZadanieProjekt (
+    IdProjekt int  NOT NULL,
+    dZadanie int  NOT NULL,
+    DataPrzypisaniaZadania date  NOT NULL,
+    DataZakonczeniaZadania date  NULL,
+    Status nvarchar(30)  NOT NULL,
+    Opis nvarchar(max)  NOT NULL,
+    CONSTRAINT ZadanieProjekt_pk PRIMARY KEY  (IdProjekt,dZadanie,DataPrzypisaniaZadania)
+);
+
+-- Table: Zespol
+CREATE TABLE Zespol (
+    IdZespol int  NOT NULL IDENTITY,
+    Nazwa nvarchar(50)  NOT NULL,
+    CONSTRAINT Zespol_pk PRIMARY KEY  (IdZespol)
+);
+
+-- Table: ZespolProjekt
+CREATE TABLE ZespolProjekt (
+    IdZespol int  NOT NULL,
+    IdProjekt int  NOT NULL,
+    DataPrzypisaniaZespolu date  NOT NULL,
+    DataWypisaniaZespolu date  NOT NULL,
+    CONSTRAINT ZespolProjekt_pk PRIMARY KEY  (IdZespol,IdProjekt,DataPrzypisaniaZespolu)
+);
+
+-- foreign keys
+-- Reference: FirmaTag_Firma (table: FirmaTag)
+ALTER TABLE FirmaTag ADD CONSTRAINT FirmaTag_Firma
+    FOREIGN KEY (IdFirma)
+    REFERENCES Firma (IdFirma);
+
+-- Reference: FirmaTag_Tag (table: FirmaTag)
+ALTER TABLE FirmaTag ADD CONSTRAINT FirmaTag_Tag
+    FOREIGN KEY (IdTag)
+    REFERENCES Tag (IdTag);
+
+-- Reference: KlientFirma_Firma (table: KlientFirma)
+ALTER TABLE KlientFirma ADD CONSTRAINT KlientFirma_Firma
+    FOREIGN KEY (IdFirma)
+    REFERENCES Firma (IdFirma);
+
+-- Reference: KlientFirma_Klient (table: KlientFirma)
+ALTER TABLE KlientFirma ADD CONSTRAINT KlientFirma_Klient
+    FOREIGN KEY (IdKlient)
+    REFERENCES Klient (IdKlient);
+
+-- Reference: KlientPakiet_Klient (table: KlientPakiet)
+ALTER TABLE KlientPakiet ADD CONSTRAINT KlientPakiet_Klient
+    FOREIGN KEY (IdKlient)
+    REFERENCES Klient (IdKlient);
+
+-- Reference: KlientPakiet_Pakiet (table: KlientPakiet)
+ALTER TABLE KlientPakiet ADD CONSTRAINT KlientPakiet_Pakiet
+    FOREIGN KEY (IdPakiet)
+    REFERENCES Pakiet (IdPakiet);
+
+-- Reference: Klient_Osoba (table: Klient)
+ALTER TABLE Klient ADD CONSTRAINT Klient_Osoba
+    FOREIGN KEY (IdKlient)
+    REFERENCES Osoba (IdOsoba);
+
+-- Reference: PakietUsluga_Pakiet (table: PakietUsluga)
+ALTER TABLE PakietUsluga ADD CONSTRAINT PakietUsluga_Pakiet
+    FOREIGN KEY (IdPakiet)
+    REFERENCES Pakiet (IdPakiet);
+
+-- Reference: PakietUsluga_Usluga (table: PakietUsluga)
+ALTER TABLE PakietUsluga ADD CONSTRAINT PakietUsluga_Usluga
+    FOREIGN KEY (IdUsluga)
+    REFERENCES Usluga (IdUsluga);
+
+-- Reference: PracownikKlient_Klient (table: PracownikKlient)
+ALTER TABLE PracownikKlient ADD CONSTRAINT PracownikKlient_Klient
+    FOREIGN KEY (IdKlient)
+    REFERENCES Klient (IdKlient);
+
+-- Reference: PracownikKlient_Pracownik (table: PracownikKlient)
+ALTER TABLE PracownikKlient ADD CONSTRAINT PracownikKlient_Pracownik
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Pracownik (IdPracownik);
+
+-- Reference: PracownikUmowa_Pracownik (table: PracownikUmowa)
+ALTER TABLE PracownikUmowa ADD CONSTRAINT PracownikUmowa_Pracownik
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Pracownik (IdPracownik);
+
+-- Reference: PracownikUmowa_Umowa (table: PracownikUmowa)
+ALTER TABLE PracownikUmowa ADD CONSTRAINT PracownikUmowa_Umowa
+    FOREIGN KEY (IdUmowa)
+    REFERENCES Umowa (IdUmowa);
+
+-- Reference: Pracownik_Osoba (table: Pracownik)
+ALTER TABLE Pracownik ADD CONSTRAINT Pracownik_Osoba
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Osoba (IdOsoba);
+
+-- Reference: Pracownik_Szef (table: Szef)
+ALTER TABLE Szef ADD CONSTRAINT Pracownik_Szef
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Pracownik (IdPracownik);
+
+-- Reference: Projekt_Firma (table: Projekt)
+ALTER TABLE Projekt ADD CONSTRAINT Projekt_Firma
+    FOREIGN KEY (IdFirma)
+    REFERENCES Firma (IdFirma);
+
+-- Reference: Table_14_Pracownik (table: Tester)
+ALTER TABLE Tester ADD CONSTRAINT Table_14_Pracownik
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Pracownik (IdPracownik);
+
+-- Reference: Table_15_Pracownik (table: Pozycjoner)
+ALTER TABLE Pozycjoner ADD CONSTRAINT Table_15_Pracownik
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Pracownik (IdPracownik);
+
+-- Reference: Table_16_Pracownik (table: Grafik)
+ALTER TABLE Grafik ADD CONSTRAINT Table_16_Pracownik
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Pracownik (IdPracownik);
+
+-- Reference: Table_17_Pracownik (table: Programista)
+ALTER TABLE Programista ADD CONSTRAINT Table_17_Pracownik
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Pracownik (IdPracownik);
+
+-- Reference: Table_18_JezykProgramowania (table: ProgramistaJezyk)
+ALTER TABLE ProgramistaJezyk ADD CONSTRAINT Table_18_JezykProgramowania
+    FOREIGN KEY (IdJezyk)
+    REFERENCES JezykProgramowania (IdJezyk);
+
+-- Reference: Table_18_Programista (table: ProgramistaJezyk)
+ALTER TABLE ProgramistaJezyk ADD CONSTRAINT Table_18_Programista
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Programista (IdPracownik);
+
+-- Reference: Table_22_Pracownik (table: PracownikZespol)
+ALTER TABLE PracownikZespol ADD CONSTRAINT Table_22_Pracownik
+    FOREIGN KEY (IdPracownik)
+    REFERENCES Pracownik (IdPracownik);
+
+-- Reference: Table_22_Zespol (table: PracownikZespol)
+ALTER TABLE PracownikZespol ADD CONSTRAINT Table_22_Zespol
+    FOREIGN KEY (IdZespol)
+    REFERENCES Zespol (IdZespol);
+
+-- Reference: Table_24_Projekt (table: ZespolProjekt)
+ALTER TABLE ZespolProjekt ADD CONSTRAINT Table_24_Projekt
+    FOREIGN KEY (IdProjekt)
+    REFERENCES Projekt (IdProjekt);
+
+-- Reference: Table_24_Zespol (table: ZespolProjekt)
+ALTER TABLE ZespolProjekt ADD CONSTRAINT Table_24_Zespol
+    FOREIGN KEY (IdZespol)
+    REFERENCES Zespol (IdZespol);
+
+-- Reference: Table_26_Projekt (table: ZadanieProjekt)
+ALTER TABLE ZadanieProjekt ADD CONSTRAINT Table_26_Projekt
+    FOREIGN KEY (IdProjekt)
+    REFERENCES Projekt (IdProjekt);
+
+-- Reference: Table_26_Zadanie (table: ZadanieProjekt)
+ALTER TABLE ZadanieProjekt ADD CONSTRAINT Table_26_Zadanie
+    FOREIGN KEY (dZadanie)
+    REFERENCES Zadanie (IdZadanie);
+
+-- End of file.
+
