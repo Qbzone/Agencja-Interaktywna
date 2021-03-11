@@ -1,0 +1,9 @@
+﻿@model Agencja_Interaktywna.Models.Projekt
+@{
+    ViewData["Title"] = "ProjectDetails";
+}
+<h3>Nazwa projektu  @Html.DisplayFor(model => model.Nazwa)</h3>
+<label>Obrazek</label>
+
+<a asp-action="Team" asp-route-id="@Model.IdProjekt">Wyświetl zespół</a>
+<a asp-action="Contract" asp-route-id="@Model.IdProjekt">Wyświetl umowę</a>

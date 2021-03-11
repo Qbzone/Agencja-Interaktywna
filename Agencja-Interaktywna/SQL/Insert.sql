@@ -77,4 +77,12 @@ VALUES(2,1,'2020-10-20','','Rozpoczete','Trzeba posadzic marchew');
 INSERT INTO ZadanieProjekt
 VALUES(2,2,'2020-10-21','','Rozpoczete','Trzeba posadzic ogorki');
 
+INSERT INTO PracownikKlient
+VALUES (4,1,'2021-03-10','2021-03-11','pokoj nr 8');
+INSERT INTO PracownikKlient
+VALUES (5,1,'2021-03-11','2021-03-12','pokoj nr 10');
 
+INSERT INTO Pakiet
+VALUES ('Pakiet usług sadzenia warzyw',1000,'abonament');
+INSERT INTO Pakiet
+VALUES ('Pakiet usług sadzenia warzyw i roślin',2000,'abonament');

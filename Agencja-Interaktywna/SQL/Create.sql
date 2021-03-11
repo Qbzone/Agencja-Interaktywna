@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-03-02 15:28:20.651
+-- Last modification date: 2021-03-11 13:33:25.099
 
 -- tables
 -- Table: Firma
@@ -48,8 +48,8 @@ CREATE TABLE KlientFirma (
 CREATE TABLE KlientPakiet (
     IdKlient int  NOT NULL,
     IdPakiet int  NOT NULL,
-    DataZakonczeniaWspolpracy date  NULL,
     DataRozpoczeciaWspolpracy date  NOT NULL,
+    DataZakonczeniaWspolpracy date  NULL,
     CONSTRAINT KlientPakiet_pk PRIMARY KEY  (IdKlient,IdPakiet,DataRozpoczeciaWspolpracy)
 );
 
@@ -109,7 +109,7 @@ CREATE TABLE PracownikKlient (
     DataRozpoczeciaSpotkania date  NOT NULL,
     DataZakonczeniaSpotkania date  NOT NULL,
     MiejsceSpotkania nvarchar(50)  NOT NULL,
-    CONSTRAINT PracownikKlient_pk PRIMARY KEY  (IdKlient,IdPracownik)
+    CONSTRAINT PracownikKlient_pk PRIMARY KEY  (IdKlient,IdPracownik,DataRozpoczeciaSpotkania)
 );
 
 -- Table: PracownikUmowa
@@ -198,12 +198,12 @@ CREATE TABLE Zadanie (
 -- Table: ZadanieProjekt
 CREATE TABLE ZadanieProjekt (
     IdProjekt int  NOT NULL,
-    dZadanie int  NOT NULL,
+    IdZadanie int  NOT NULL,
     DataPrzypisaniaZadania date  NOT NULL,
     DataZakonczeniaZadania date  NULL,
     Status nvarchar(30)  NOT NULL,
     Opis nvarchar(max)  NOT NULL,
-    CONSTRAINT ZadanieProjekt_pk PRIMARY KEY  (IdProjekt,dZadanie,DataPrzypisaniaZadania)
+    CONSTRAINT ZadanieProjekt_pk PRIMARY KEY  (IdProjekt,IdZadanie,DataPrzypisaniaZadania)
 );
 
 -- Table: Zespol
@@ -360,7 +360,7 @@ ALTER TABLE ZadanieProjekt ADD CONSTRAINT Table_26_Projekt
 
 -- Reference: Table_26_Zadanie (table: ZadanieProjekt)
 ALTER TABLE ZadanieProjekt ADD CONSTRAINT Table_26_Zadanie
-    FOREIGN KEY (dZadanie)
+    FOREIGN KEY (IdZadanie)
     REFERENCES Zadanie (IdZadanie);
 
 -- End of file.

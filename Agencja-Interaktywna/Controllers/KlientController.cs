@@ -35,11 +35,59 @@ namespace Agencja_Interaktywna.Controllers
 
         public IActionResult Meetings()
         {
-            return View();
+            var meet = _s16693context.PracownikKlients
+                .Include(k => k.IdKlientNavigation)
+                    .ThenInclude(o => o.IdKlientNavigation)
+                .Include(p => p.IdPracownikNavigation)
+                    .ThenInclude(po => po.IdPracownikNavigation)
+                .Where(x => x.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)
+                .ToList();
+            return View(meet);
         }
 
-        public IActionResult Teams()
+        public IActionResult ProjectDetails(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = _s16693context.Projekts
+            .FirstOrDefault(e => e.IdProjekt == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(project);
+            }
+
+
+        }
+
+        public IActionResult Team(int? id)
+        {
+            var team = _s16693context.ZespolProjekts
+                .Include(p => p.IdProjektNavigation)
+                .Include(z => z.IdZespolNavigation)
+                .FirstOrDefault(x => x.IdProjekt == id);
+
+            var members = _s16693context.PracownikZespols
+                .Include(z => z.IdZespolNavigation)
+                .Include(p => p.IdPracownikNavigation)
+                    .ThenInclude(o => o.IdPracownikNavigation)
+                    .Where(x => x.IdZespol == team.IdZespol)
+                    .ToList();
+
+            return View(members);
+
+        }
+
+        public IActionResult Contract()
+        {
+
             return View();
         }
 

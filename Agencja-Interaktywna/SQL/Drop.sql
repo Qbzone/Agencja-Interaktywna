@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-03-02 15:28:20.651
+-- Last modification date: 2021-03-11 13:33:25.099
 
 -- foreign keys
 ALTER TABLE FirmaTag DROP CONSTRAINT FirmaTag_Firma;
