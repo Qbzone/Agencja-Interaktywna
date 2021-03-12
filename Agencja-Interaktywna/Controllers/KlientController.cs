@@ -22,12 +22,12 @@ namespace Agencja_Interaktywna.Controllers
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
-            var pr = _s16693context.Projekts
+            var pr = _s16693context.Projekt
                 .Include(f => f.IdFirmaNavigation)
-                    .ThenInclude(kf => kf.KlientFirmas)
+                    .ThenInclude(kf => kf.KlientFirma)
                         .ThenInclude(k => k.IdKlientNavigation)
                             .ThenInclude(o => o.IdKlientNavigation)
-                .Where(x => x.IdFirmaNavigation.KlientFirmas.Any(e => e.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value))
+                .Where(x => x.IdFirmaNavigation.KlientFirma.Any(e => e.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value))
                 .ToList();
             
             return View(pr);
@@ -35,7 +35,7 @@ namespace Agencja_Interaktywna.Controllers
 
         public IActionResult Meetings()
         {
-            var meet = _s16693context.PracownikKlients
+            var meet = _s16693context.PracownikKlient
                 .Include(k => k.IdKlientNavigation)
                     .ThenInclude(o => o.IdKlientNavigation)
                 .Include(p => p.IdPracownikNavigation)
@@ -52,7 +52,7 @@ namespace Agencja_Interaktywna.Controllers
                 return NotFound();
             }
 
-            var project = _s16693context.Projekts
+            var project = _s16693context.Projekt
             .FirstOrDefault(e => e.IdProjekt == id);
 
             if (project == null)
@@ -69,12 +69,12 @@ namespace Agencja_Interaktywna.Controllers
 
         public IActionResult Team(int? id)
         {
-            var team = _s16693context.ZespolProjekts
+            var team = _s16693context.ZespolProjekt
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdZespolNavigation)
                 .FirstOrDefault(x => x.IdProjekt == id);
 
-            var members = _s16693context.PracownikZespols
+            var members = _s16693context.PracownikZespol
                 .Include(z => z.IdZespolNavigation)
                 .Include(p => p.IdPracownikNavigation)
                     .ThenInclude(o => o.IdPracownikNavigation)
@@ -85,15 +85,21 @@ namespace Agencja_Interaktywna.Controllers
 
         }
 
-        public IActionResult Contract()
+        public IActionResult Contract(int? id)
         {
+            var contract = _s16693context.ProjektPakiet
+                .Include(pr => pr.IdProjektNavigation)
+                .Include(pa => pa.IdPakietNavigation)
+                .Where(x => x.IdProjekt == id)
+                .OrderByDescending(e => e.IdPakiet)
+                .ToList();
 
-            return View();
+            return View(contract);
         }
 
         public IActionResult Profile()
         {
-            var kl = _s16693context.Klients
+            var kl = _s16693context.Klient
                 .Include(o => o.IdKlientNavigation)
                 .FirstOrDefault(i => i.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
            
@@ -111,11 +117,6 @@ namespace Agencja_Interaktywna.Controllers
         public IActionResult Contact()
         {
             return View();
-        }
-
-        private async Task<Osoba> GetCurrentUser()
-        {
-            return await _s16693context.GetUserAsync(HttpContext.User);
         }
 
         [HttpPost]

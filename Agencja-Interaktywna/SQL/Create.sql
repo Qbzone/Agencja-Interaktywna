@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-03-11 13:33:25.099
+-- Last modification date: 2021-03-12 12:14:40.534
 
 -- tables
 -- Table: Firma
@@ -42,15 +42,6 @@ CREATE TABLE KlientFirma (
     IdKlient int  NOT NULL,
     IdFirma int  NOT NULL,
     CONSTRAINT KlientFirma_pk PRIMARY KEY  (IdKlient,IdFirma)
-);
-
--- Table: KlientPakiet
-CREATE TABLE KlientPakiet (
-    IdKlient int  NOT NULL,
-    IdPakiet int  NOT NULL,
-    DataRozpoczeciaWspolpracy date  NOT NULL,
-    DataZakonczeniaWspolpracy date  NULL,
-    CONSTRAINT KlientPakiet_pk PRIMARY KEY  (IdKlient,IdPakiet,DataRozpoczeciaWspolpracy)
 );
 
 -- Table: Osoba
@@ -149,8 +140,18 @@ CREATE TABLE ProgramistaJezyk (
 CREATE TABLE Projekt (
     IdProjekt int  NOT NULL IDENTITY,
     Nazwa nvarchar(50)  NOT NULL,
+    Logo image  NOT NULL,
     IdFirma int  NOT NULL,
     CONSTRAINT Projekt_pk PRIMARY KEY  (IdProjekt)
+);
+
+-- Table: ProjektPakiet
+CREATE TABLE ProjektPakiet (
+    IdProjekt int  NOT NULL,
+    IdPakiet int  NOT NULL,
+    DataRozpoczeciaWspolpracy date  NOT NULL,
+    DataZakonczeniaWspolpracy date  NULL,
+    CONSTRAINT ProjektPakiet_pk PRIMARY KEY  (IdPakiet,IdProjekt,DataRozpoczeciaWspolpracy)
 );
 
 -- Table: Szef
@@ -243,16 +244,6 @@ ALTER TABLE KlientFirma ADD CONSTRAINT KlientFirma_Klient
     FOREIGN KEY (IdKlient)
     REFERENCES Klient (IdKlient);
 
--- Reference: KlientPakiet_Klient (table: KlientPakiet)
-ALTER TABLE KlientPakiet ADD CONSTRAINT KlientPakiet_Klient
-    FOREIGN KEY (IdKlient)
-    REFERENCES Klient (IdKlient);
-
--- Reference: KlientPakiet_Pakiet (table: KlientPakiet)
-ALTER TABLE KlientPakiet ADD CONSTRAINT KlientPakiet_Pakiet
-    FOREIGN KEY (IdPakiet)
-    REFERENCES Pakiet (IdPakiet);
-
 -- Reference: Klient_Osoba (table: Klient)
 ALTER TABLE Klient ADD CONSTRAINT Klient_Osoba
     FOREIGN KEY (IdKlient)
@@ -297,6 +288,16 @@ ALTER TABLE Pracownik ADD CONSTRAINT Pracownik_Osoba
 ALTER TABLE Szef ADD CONSTRAINT Pracownik_Szef
     FOREIGN KEY (IdPracownik)
     REFERENCES Pracownik (IdPracownik);
+
+-- Reference: ProjektPakiet_Pakiet (table: ProjektPakiet)
+ALTER TABLE ProjektPakiet ADD CONSTRAINT ProjektPakiet_Pakiet
+    FOREIGN KEY (IdPakiet)
+    REFERENCES Pakiet (IdPakiet);
+
+-- Reference: ProjektPakiet_Projekt (table: ProjektPakiet)
+ALTER TABLE ProjektPakiet ADD CONSTRAINT ProjektPakiet_Projekt
+    FOREIGN KEY (IdProjekt)
+    REFERENCES Projekt (IdProjekt);
 
 -- Reference: Projekt_Firma (table: Projekt)
 ALTER TABLE Projekt ADD CONSTRAINT Projekt_Firma

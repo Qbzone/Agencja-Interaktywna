@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Agencja_Interaktywna.Models
 {
     public partial class PracownikKlient

@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-03-11 13:33:25.099
+-- Last modification date: 2021-03-12 12:14:40.534
 
 -- foreign keys
 ALTER TABLE FirmaTag DROP CONSTRAINT FirmaTag_Firma;
@@ -9,10 +9,6 @@ ALTER TABLE FirmaTag DROP CONSTRAINT FirmaTag_Tag;
 ALTER TABLE KlientFirma DROP CONSTRAINT KlientFirma_Firma;
 
 ALTER TABLE KlientFirma DROP CONSTRAINT KlientFirma_Klient;
-
-ALTER TABLE KlientPakiet DROP CONSTRAINT KlientPakiet_Klient;
-
-ALTER TABLE KlientPakiet DROP CONSTRAINT KlientPakiet_Pakiet;
 
 ALTER TABLE Klient DROP CONSTRAINT Klient_Osoba;
 
@@ -31,6 +27,10 @@ ALTER TABLE PracownikUmowa DROP CONSTRAINT PracownikUmowa_Umowa;
 ALTER TABLE Pracownik DROP CONSTRAINT Pracownik_Osoba;
 
 ALTER TABLE Szef DROP CONSTRAINT Pracownik_Szef;
+
+ALTER TABLE ProjektPakiet DROP CONSTRAINT ProjektPakiet_Pakiet;
+
+ALTER TABLE ProjektPakiet DROP CONSTRAINT ProjektPakiet_Projekt;
 
 ALTER TABLE Projekt DROP CONSTRAINT Projekt_Firma;
 
@@ -71,8 +71,6 @@ DROP TABLE Klient;
 
 DROP TABLE KlientFirma;
 
-DROP TABLE KlientPakiet;
-
 DROP TABLE Osoba;
 
 DROP TABLE Pakiet;
@@ -94,6 +92,8 @@ DROP TABLE Programista;
 DROP TABLE ProgramistaJezyk;
 
 DROP TABLE Projekt;
+
+DROP TABLE ProjektPakiet;
 
 DROP TABLE Szef;
 

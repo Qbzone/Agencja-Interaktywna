@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Agencja_Interaktywna.Models
 {
     public partial class Pakiet
     {
         public Pakiet()
         {
-            KlientPakiets = new HashSet<KlientPakiet>();
-            PakietUslugas = new HashSet<PakietUsluga>();
+            PakietUsluga = new HashSet<PakietUsluga>();
+            ProjektPakiet = new HashSet<ProjektPakiet>();
         }
 
         public int IdPakiet { get; set; }
@@ -18,7 +16,7 @@ namespace Agencja_Interaktywna.Models
         public int Oplata { get; set; }
         public string RodzajOplaty { get; set; }
 
-        public virtual ICollection<KlientPakiet> KlientPakiets { get; set; }
-        public virtual ICollection<PakietUsluga> PakietUslugas { get; set; }
+        public virtual ICollection<PakietUsluga> PakietUsluga { get; set; }
+        public virtual ICollection<ProjektPakiet> ProjektPakiet { get; set; }
     }
 }

@@ -9,34 +9,34 @@ VALUES ('Jerzy','Kozak','595951958','923456789','jerzykozak@wp.pl','QWER773!@','
 
 
 INSERT INTO Pracownik
-VALUES (4,'Warszawa ul.Wschodnia 10',8000,300,'12345678910',3);
+VALUES (2,'Warszawa ul.Wschodnia 10',8000,300,'12345678910',3);
 INSERT INTO Pracownik
-VALUES (5,'Warszawa ul.Polnocna 5',8400,300,'12345678912',4);
+VALUES (3,'Warszawa ul.Polnocna 5',8400,300,'12345678912',4);
 INSERT INTO Pracownik
-VALUES (6,'Warszawa ul.Zachodnia 15',8200,200,'12345678911',5);
+VALUES (4,'Warszawa ul.Zachodnia 15',8200,200,'12345678911',5);
 INSERT INTO Pracownik
-VALUES (8,'Warszawa ul.Poludniowa 20',2000,500,'12345678913',1);
+VALUES (5,'Warszawa ul.Poludniowa 20',2000,500,'12345678913',1);
 
 INSERT INTO Programista
-VALUES (4,'senior');
+VALUES (2,'senior');
 INSERT INTO Grafik
-VALUES (6,'Grafika 2D');
+VALUES (4,'Grafika 2D');
 INSERT INTO Tester
-VALUES (5,2);
+VALUES (3,2);
 INSERT INTO Pozycjoner
-VALUES (8,'marketing szeptany');
+VALUES (5,'marketing szeptany');
 
 INSERT INTO Zespol
 VALUES ('Zespol ogorkow');
 
 INSERT INTO PracownikZespol
-VALUES (4,1,'2020-10-10','');
+VALUES (2,1,'2020-10-10','');
 INSERT INTO PracownikZespol
-VALUES (6,1,'2020-05-05','');
+VALUES (3,1,'2020-05-05','');
 INSERT INTO PracownikZespol
-VALUES (5,1,'2020-06-15','');
+VALUES (4,1,'2020-06-15','');
 INSERT INTO PracownikZespol
-VALUES (8,1,'2020-01-20','');
+VALUES (5,1,'2020-01-20','');
 
 INSERT INTO Firma
 VALUES('Firma krzak');
@@ -45,9 +45,9 @@ INSERT INTO KlientFirma
 VALUES(1,1);
 
 INSERT INTO Projekt
-VALUES('Projekt dla firmy krzak',1);
+VALUES('Projekt dla firmy krzak','C:\Users\kewin\Desktop\pepsi.png',1);
 INSERT INTO Projekt
-VALUES('Projekt dla firmy krzak2',1);
+VALUES('Projekt dla firmy krzak2','C:\Users\kewin\Desktop\pepsi.png',1);
 
 INSERT INTO ZespolProjekt
 VALUES(1,1,'2020-12-12','');
@@ -78,11 +78,16 @@ INSERT INTO ZadanieProjekt
 VALUES(2,2,'2020-10-21','','Rozpoczete','Trzeba posadzic ogorki');
 
 INSERT INTO PracownikKlient
-VALUES (4,1,'2021-03-10','2021-03-11','pokoj nr 8');
+VALUES (2,1,'2021-03-10','2021-03-11','pokoj nr 8');
 INSERT INTO PracownikKlient
-VALUES (5,1,'2021-03-11','2021-03-12','pokoj nr 10');
+VALUES (3,1,'2021-03-11','2021-03-12','pokoj nr 10');
 
 INSERT INTO Pakiet
 VALUES ('Pakiet usług sadzenia warzyw',1000,'abonament');
 INSERT INTO Pakiet
 VALUES ('Pakiet usług sadzenia warzyw i roślin',2000,'abonament');
+
+INSERT INTO ProjektPakiet
+VALUES (1,1,'2021-01-01','');
+INSERT INTO ProjektPakiet
+VALUES (1,2,'2021-01-01 12:40:00','');

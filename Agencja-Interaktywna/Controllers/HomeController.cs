@@ -52,7 +52,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 s16693Context context1 = new s16693Context();
                 {
-                    var check = context1.Osobas.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
+                    var check = context1.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
 
                     if (check != null)
                     {
@@ -67,7 +67,7 @@ namespace Agencja_Interaktywna.Controllers
 
                         s16693Context context2 = new s16693Context();
                         {
-                            context2.Osobas.Add(osoba);
+                            context2.Osoba.Add(osoba);
                             context2.SaveChanges();
 
                             SendVerificationLink(osoba);
@@ -94,7 +94,7 @@ namespace Agencja_Interaktywna.Controllers
             bool Status = false;
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osobas.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
+                var v = dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
 
                 if (v != null)
                 {
@@ -103,7 +103,7 @@ namespace Agencja_Interaktywna.Controllers
                     klient.IdKlient = v.IdOsoba;
                     klient.Priorytet = "nie";
 
-                    dc.Klients.Add(klient);
+                    dc.Klient.Add(klient);
                     dc.SaveChanges();
                     Status = true;
                 }
@@ -128,7 +128,7 @@ namespace Agencja_Interaktywna.Controllers
         {
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osobas.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
+                var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
                 if (v != null)
                 {
                     if (v.CzyEmailZweryfikowany != false)
@@ -266,7 +266,7 @@ namespace Agencja_Interaktywna.Controllers
 
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osobas.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
+                var v = dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
 
                 if (v != null)
                 {
@@ -291,7 +291,7 @@ namespace Agencja_Interaktywna.Controllers
         {
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osobas.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
+                var v = dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
 
                 if (v != null)
                 {
@@ -316,7 +316,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 using (s16693Context dc = new s16693Context())
                 {
-                    var v = dc.Osobas.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefault();
+                    var v = dc.Osoba.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefault();
 
                     if (v != null)
                     {
