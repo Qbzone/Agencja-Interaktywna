@@ -11,7 +11,7 @@
         {
             <tr>
                 <td>
-                    <label>Obrazek</label>
+                    <img src="/@item.Logo" alt="/@item.Logo" height="100" width="100"/>
                 </td>
                 <td>
                     @item.Nazwa
@@ -19,7 +19,6 @@
 
                 <td>
                     <a asp-action="ProjectDetails" asp-route-id="@item.IdProjekt">Podgląd</a>
-
                 </td>
             </tr>
 }

@@ -14,7 +14,7 @@ namespace Agencja_Interaktywna.Models
 
         public int IdProjekt { get; set; }
         public string Nazwa { get; set; }
-        public byte[] Logo { get; set; }
+        public string Logo { get; set; }
         public int IdFirma { get; set; }
 
         public virtual Firma IdFirmaNavigation { get; set; }

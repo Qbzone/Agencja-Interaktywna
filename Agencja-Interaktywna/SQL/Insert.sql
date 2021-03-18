@@ -45,9 +45,9 @@ INSERT INTO KlientFirma
 VALUES(1,1);
 
 INSERT INTO Projekt
-VALUES('Projekt dla firmy krzak','C:\Users\kewin\Desktop\pepsi.png',1);
+VALUES('Projekt dla firmy krzak','images/logo.jpg',1);
 INSERT INTO Projekt
-VALUES('Projekt dla firmy krzak2','C:\Users\kewin\Desktop\pepsi.png',1);
+VALUES('Projekt dla firmy krzak2','images/logo.jpg',1);
 
 INSERT INTO ZespolProjekt
 VALUES(1,1,'2020-12-12','');

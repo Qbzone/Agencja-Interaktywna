@@ -140,7 +140,7 @@ CREATE TABLE ProgramistaJezyk (
 CREATE TABLE Projekt (
     IdProjekt int  NOT NULL IDENTITY,
     Nazwa nvarchar(50)  NOT NULL,
-    Logo image  NOT NULL,
+    Logo nvarchar(MAX)  NOT NULL,
     IdFirma int  NOT NULL,
     CONSTRAINT Projekt_pk PRIMARY KEY  (IdProjekt)
 );
