@@ -7,12 +7,12 @@ namespace Agencja_Interaktywna.Models
     {
         public Zadanie()
         {
-            Zadanieprojekt = new HashSet<Zadanieprojekt>();
+            ZadanieProjekt = new HashSet<ZadanieProjekt>();
         }
 
-        public int Idzadanie { get; set; }
+        public int IdZadanie { get; set; }
         public string Nazwa { get; set; }
 
-        public virtual ICollection<Zadanieprojekt> Zadanieprojekt { get; set; }
+        public virtual ICollection<ZadanieProjekt> ZadanieProjekt { get; set; }
     }
 }

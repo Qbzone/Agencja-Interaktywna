@@ -3,15 +3,14 @@ using System.Collections.Generic;
 
 namespace Agencja_Interaktywna.Models
 {
-    public partial class Pracownikzespol
+    public partial class PracownikZespol
     {
-        public int Idpracownik { get; set; }
-        public int Idzespol { get; set; }
-        public DateTime Dataprzypisaniapracownika { get; set; }
-        public DateTime? Datawypisaniapracownika { get; set; }
-        public bool Menadzer { get; set; }
+        public int IdPracownik { get; set; }
+        public int IdZespol { get; set; }
+        public DateTime DataPrzypisaniaPracownika { get; set; }
+        public DateTime? DataWypisaniaPracownika { get; set; }
 
-        public virtual Pracownik IdpracownikNavigation { get; set; }
-        public virtual Zespol IdzespolNavigation { get; set; }
+        public virtual Pracownik IdPracownikNavigation { get; set; }
+        public virtual Zespol IdZespolNavigation { get; set; }
     }
 }

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Agencja_Interaktywna.Models
 {
-    public partial class Zadanieprojekt
+    public partial class ZadanieProjekt
     {
-        public int Idzadanie { get; set; }
-        public int Idprojekt { get; set; }
-        public DateTime Datarozpoczeciazadania { get; set; }
-        public DateTime? Datazakonczeniazadania { get; set; }
+        public int IdProjekt { get; set; }
+        public int IdZadanie { get; set; }
+        public DateTime DataPrzypisaniaZadania { get; set; }
+        public DateTime? DataZakonczeniaZadania { get; set; }
         public string Status { get; set; }
         public string Opis { get; set; }
 
-        public virtual Projekt IdprojektNavigation { get; set; }
-        public virtual Zadanie IdzadanieNavigation { get; set; }
+        public virtual Projekt IdProjektNavigation { get; set; }
+        public virtual Zadanie IdZadanieNavigation { get; set; }
     }
 }

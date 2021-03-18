@@ -7,13 +7,13 @@ namespace Agencja_Interaktywna.Models
     {
         public Programista()
         {
-            Programistajezyk = new HashSet<Programistajezyk>();
+            ProgramistaJezyk = new HashSet<ProgramistaJezyk>();
         }
 
-        public int Idpracownik { get; set; }
-        public string Poziomzaawansowania { get; set; }
+        public int IdPracownik { get; set; }
+        public string PoziomZaawansowania { get; set; }
 
-        public virtual Pracownik IdpracownikNavigation { get; set; }
-        public virtual ICollection<Programistajezyk> Programistajezyk { get; set; }
+        public virtual Pracownik IdPracownikNavigation { get; set; }
+        public virtual ICollection<ProgramistaJezyk> ProgramistaJezyk { get; set; }
     }
 }

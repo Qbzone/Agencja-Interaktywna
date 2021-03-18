@@ -7,12 +7,12 @@ namespace Agencja_Interaktywna.Models
     {
         public Umowa()
         {
-            Pracownikumowa = new HashSet<Pracownikumowa>();
+            PracownikUmowa = new HashSet<PracownikUmowa>();
         }
 
-        public int Idumowa { get; set; }
-        public string Rodzajumowy { get; set; }
+        public int IdUmowa { get; set; }
+        public string RodzajUmowy { get; set; }
 
-        public virtual ICollection<Pracownikumowa> Pracownikumowa { get; set; }
+        public virtual ICollection<PracownikUmowa> PracownikUmowa { get; set; }
     }
 }

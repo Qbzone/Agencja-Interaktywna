@@ -7,12 +7,12 @@ namespace Agencja_Interaktywna.Models
     {
         public Tag()
         {
-            Firmatag = new HashSet<Firmatag>();
+            FirmaTag = new HashSet<FirmaTag>();
         }
 
-        public int Idtag { get; set; }
+        public int IdTag { get; set; }
         public string Nazwa { get; set; }
 
-        public virtual ICollection<Firmatag> Firmatag { get; set; }
+        public virtual ICollection<FirmaTag> FirmaTag { get; set; }
     }
 }

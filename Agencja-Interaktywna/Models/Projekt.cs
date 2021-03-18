@@ -7,16 +7,19 @@ namespace Agencja_Interaktywna.Models
     {
         public Projekt()
         {
-            Zadanieprojekt = new HashSet<Zadanieprojekt>();
-            Zespolprojekt = new HashSet<Zespolprojekt>();
+            ProjektPakiet = new HashSet<ProjektPakiet>();
+            ZadanieProjekt = new HashSet<ZadanieProjekt>();
+            ZespolProjekt = new HashSet<ZespolProjekt>();
         }
 
-        public int Idprojekt { get; set; }
+        public int IdProjekt { get; set; }
         public string Nazwa { get; set; }
-        public int FirmaIdFirma { get; set; }
+        public string Logo { get; set; }
+        public int IdFirma { get; set; }
 
-        public virtual Firma FirmaIdFirmaNavigation { get; set; }
-        public virtual ICollection<Zadanieprojekt> Zadanieprojekt { get; set; }
-        public virtual ICollection<Zespolprojekt> Zespolprojekt { get; set; }
+        public virtual Firma IdFirmaNavigation { get; set; }
+        public virtual ICollection<ProjektPakiet> ProjektPakiet { get; set; }
+        public virtual ICollection<ZadanieProjekt> ZadanieProjekt { get; set; }
+        public virtual ICollection<ZespolProjekt> ZespolProjekt { get; set; }
     }
 }

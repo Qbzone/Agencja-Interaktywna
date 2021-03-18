@@ -1,0 +1,28 @@
+﻿@model List<Agencja_Interaktywna.Models.PracownikKlient>
+@{
+    ViewData["Title"] = "Meetings";
+}
+
+<h1>Meetings</h1>
+
+<table>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+        <tr>
+            <td>
+                @item.DataRozpoczeciaSpotkania
+            </td>
+            <td>
+                @item.MiejsceSpotkania
+
+            </td>
+            <td>
+                @item.IdPracownikNavigation.IdPracownikNavigation.Imie
+                @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko
+                @item.IdPracownikNavigation.IdPracownikNavigation.Rola
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

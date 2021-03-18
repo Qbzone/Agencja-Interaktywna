@@ -7,26 +7,26 @@ namespace Agencja_Interaktywna.Models
     {
         public Pracownik()
         {
-            Pracownikklient = new HashSet<Pracownikklient>();
-            Pracownikumowa = new HashSet<Pracownikumowa>();
-            Pracownikzespol = new HashSet<Pracownikzespol>();
+            PracownikKlient = new HashSet<PracownikKlient>();
+            PracownikUmowa = new HashSet<PracownikUmowa>();
+            PracownikZespol = new HashSet<PracownikZespol>();
         }
 
-        public int Idpracownik { get; set; }
-        public string Adreszamieszkania { get; set; }
+        public int IdPracownik { get; set; }
+        public string AdresZamieszkania { get; set; }
         public int Pensja { get; set; }
-        public int? Premia { get; set; }
+        public int Premia { get; set; }
         public string Pesel { get; set; }
         public int StazPracy { get; set; }
 
-        public virtual Osoba IdpracownikNavigation { get; set; }
+        public virtual Osoba IdPracownikNavigation { get; set; }
         public virtual Grafik Grafik { get; set; }
         public virtual Pozycjoner Pozycjoner { get; set; }
         public virtual Programista Programista { get; set; }
         public virtual Szef Szef { get; set; }
         public virtual Tester Tester { get; set; }
-        public virtual ICollection<Pracownikklient> Pracownikklient { get; set; }
-        public virtual ICollection<Pracownikumowa> Pracownikumowa { get; set; }
-        public virtual ICollection<Pracownikzespol> Pracownikzespol { get; set; }
+        public virtual ICollection<PracownikKlient> PracownikKlient { get; set; }
+        public virtual ICollection<PracownikUmowa> PracownikUmowa { get; set; }
+        public virtual ICollection<PracownikZespol> PracownikZespol { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace Agencja_Interaktywna.Controllers
             bool Status = false;
             string Message = "";
 
-            ModelState.Remove(nameof(Osoba.CzyEmailZweryfikowane));
+            ModelState.Remove(nameof(Osoba.CzyEmailZweryfikowany));
             ModelState.Remove(nameof(Osoba.KodAktywacyjny));
 
             if (ModelState.IsValid)
@@ -62,7 +62,7 @@ namespace Agencja_Interaktywna.Controllers
                     {
                         osoba.KodAktywacyjny = Guid.NewGuid();
                         osoba.Haslo = Hash(osoba.Haslo);
-                        osoba.CzyEmailZweryfikowane = false;
+                        osoba.CzyEmailZweryfikowany = false;
                         osoba.Rola = "Klient";
 
                         s16693Context context2 = new s16693Context();
@@ -98,9 +98,9 @@ namespace Agencja_Interaktywna.Controllers
 
                 if (v != null)
                 {
-                    v.CzyEmailZweryfikowane = true;
+                    v.CzyEmailZweryfikowany = true;
                     Klient klient = new Klient();
-                    klient.Idklient = v.Idosoba;
+                    klient.IdKlient = v.IdOsoba;
                     klient.Priorytet = "nie";
 
                     dc.Klient.Add(klient);
@@ -131,7 +131,7 @@ namespace Agencja_Interaktywna.Controllers
                 var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
                 if (v != null)
                 {
-                    if (v.CzyEmailZweryfikowane != false)
+                    if (v.CzyEmailZweryfikowany != false)
                     {
                         if (Hash(login.Haslo) == v.Haslo)
                         {

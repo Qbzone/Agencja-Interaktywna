@@ -7,16 +7,16 @@ namespace Agencja_Interaktywna.Models
     {
         public Pakiet()
         {
-            Klientpakiet = new HashSet<Klientpakiet>();
-            Pakietusluga = new HashSet<Pakietusluga>();
+            PakietUsluga = new HashSet<PakietUsluga>();
+            ProjektPakiet = new HashSet<ProjektPakiet>();
         }
 
-        public int Idpakiet { get; set; }
+        public int IdPakiet { get; set; }
         public string Nazwa { get; set; }
         public int Oplata { get; set; }
         public string RodzajOplaty { get; set; }
 
-        public virtual ICollection<Klientpakiet> Klientpakiet { get; set; }
-        public virtual ICollection<Pakietusluga> Pakietusluga { get; set; }
+        public virtual ICollection<PakietUsluga> PakietUsluga { get; set; }
+        public virtual ICollection<ProjektPakiet> ProjektPakiet { get; set; }
     }
 }

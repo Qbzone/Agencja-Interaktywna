@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Agencja_Interaktywna.Models
 {
-    public partial class Jezykprogramowania
+    public partial class JezykProgramowania
     {
-        public Jezykprogramowania()
+        public JezykProgramowania()
         {
-            Programistajezyk = new HashSet<Programistajezyk>();
+            ProgramistaJezyk = new HashSet<ProgramistaJezyk>();
         }
 
-        public int Idjezyk { get; set; }
+        public int IdJezyk { get; set; }
         public string Nazwa { get; set; }
 
-        public virtual ICollection<Programistajezyk> Programistajezyk { get; set; }
+        public virtual ICollection<ProgramistaJezyk> ProgramistaJezyk { get; set; }
     }
 }

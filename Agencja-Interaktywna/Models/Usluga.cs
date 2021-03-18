@@ -7,13 +7,13 @@ namespace Agencja_Interaktywna.Models
     {
         public Usluga()
         {
-            Pakietusluga = new HashSet<Pakietusluga>();
+            PakietUsluga = new HashSet<PakietUsluga>();
         }
 
-        public int Idusluga { get; set; }
+        public int IdUsluga { get; set; }
         public string Nazwa { get; set; }
         public string Opis { get; set; }
 
-        public virtual ICollection<Pakietusluga> Pakietusluga { get; set; }
+        public virtual ICollection<PakietUsluga> PakietUsluga { get; set; }
     }
 }

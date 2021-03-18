@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Agencja_Interaktywna.Models
 {
-    public partial class Klientfirma
+    public partial class KlientFirma
     {
-        public int Idklient { get; set; }
-        public int Idfirma { get; set; }
+        public int IdKlient { get; set; }
+        public int IdFirma { get; set; }
 
-        public virtual Firma IdfirmaNavigation { get; set; }
-        public virtual Klient IdklientNavigation { get; set; }
+        public virtual Firma IdFirmaNavigation { get; set; }
+        public virtual Klient IdKlientNavigation { get; set; }
     }
 }
