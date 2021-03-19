@@ -1,0 +1,40 @@
+﻿@model Tuple<Agencja_Interaktywna.Models.Projekt, List<Agencja_Interaktywna.Models.ZadanieProjekt>>
+@{
+    ViewData["Title"] = "ProjectDetails";
+}
+
+<h3>Nazwa projektu  @Html.DisplayFor(model => model.Item1.Nazwa)</h3>
+
+<img src="/@Model.Item1.Logo" alt="/@Model.Item1.Logo" height="100" width="100" />
+<a asp-action="Team" asp-route-id="@Model.Item1.IdProjekt">Wyświetl zespół</a>
+<a asp-action="Contract" asp-route-id="@Model.Item1.IdProjekt">Wyświetl umowę</a>
+<a asp-action="ProjectEdit" asp-route-id="@Model.Item1.IdProjekt">Edytuj projekt</a>
+<a asp-action="ProjectDelete" asp-route-id="@Model.Item1.IdProjekt">Usuń projekt</a>
+<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
+
+<a asp-action="TaskCreate" asp-route-id="@Model.Item1.IdProjekt">Dodaj Zadanie</a>
+
+<table>
+    <tbody>
+        @foreach (var item in @Model.Item2)
+        {
+            <tr>
+                <td>
+                    @item.IdZadanieNavigation.Nazwa
+                </td>
+                <td>
+                    @item.DataZakonczeniaZadania
+                </td>
+                <td>
+                    <a asp-action="TaskDetails" asp-route-id="@item.IdProjekt">Podgląd</a>
+                </td>
+                <td>
+                    <a asp-action="TaskEdit" asp-route-id="@item.IdProjekt">Podgląd</a>
+                </td>
+                <td>
+                    <a asp-action="TaskDelete" asp-route-id="@item.IdProjekt">Podgląd</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

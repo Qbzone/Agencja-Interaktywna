@@ -1,0 +1,39 @@
+﻿@model Agencja_Interaktywna.Models.Pracownik
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1>Profile</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Profile">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Imię: @Html.DisplayFor(model => model.IdPracownikNavigation.Imie)</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Nazwisko: @Html.DisplayFor(model => model.IdPracownikNavigation.Nazwisko)</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Numer telefonu prywatny:  @Html.DisplayFor(model => model.IdPracownikNavigation.NumerTelefonuPrywatny)</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Numer telefonu służbowy:  @Html.DisplayFor(model => model.IdPracownikNavigation.NumerTelefonuSluzbowego)</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Adres e-mail: @Html.DisplayFor(model => model.IdPracownikNavigation.AdresEmail)</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Adres zamieszkania: @Html.DisplayFor(model => model.AdresZamieszkania)</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Pensja: @Html.DisplayFor(model => model.Pensja)</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Numer PESEL: @Html.DisplayFor(model => model.Pesel)</label>
+            </div>
+        </form>
+    </div>
+</div>

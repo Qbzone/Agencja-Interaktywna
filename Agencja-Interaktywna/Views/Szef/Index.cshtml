@@ -1,12 +1,29 @@
-﻿
+﻿@model List<Agencja_Interaktywna.Models.Projekt>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index Szefa</h1>
+<h3>Witaj @ViewBag.userEmail </h3>
 
-<form method="post" asp-controller="Szef" asp-action="Logout">
-    <button class="btn btn-info">Logout</button>
-</form>
+<table>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>
+                    <img src="/@item.Logo" alt="/@item.Logo" height="100" width="100" />
+                </td>
+                <td>
+                    @item.Nazwa
+                </td>
+                <td>
+                    <a asp-action="ProjectDetails" asp-route-id="@item.IdProjekt">Podgląd</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-
+<td>
+    <a asp-action="ProjectCreate">Dodaj nowy projekt</a>
+</td>

@@ -1,0 +1,21 @@
+﻿@model Agencja_Interaktywna.Models.Projekt
+@{
+    ViewData["Title"] = "ProjectCreate";
+}
+
+<h1>Tworzenie Projektu</h1>
+
+<form method="post" asp-action="ProjectCreate">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        Nazwa: <input type="text" asp-for="Nazwa" />
+        <span asp-validation-for="Nazwa"></span>
+    </div>
+    <div>
+        Wybierz Zespół:
+    </div>
+    <div>
+        <input type="submit" value="Zatwierdź" />
+    </div>
+</form>
+<a asp-action="Equipment">Wróć</a>

@@ -1,0 +1,32 @@
+﻿@model List<Agencja_Interaktywna.Models.ProjektPakiet>
+@{ ViewData["Title"] = "Contact"; }
+
+<h1>Umowy dla projektu</h1>
+
+<table>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>
+                    @item.DataRozpoczeciaWspolpracy
+                </td>
+                <td>
+                    @item.DataZakonczeniaWspolpracy
+                </td>
+                <td>
+                    @item.IdPakietNavigation.Nazwa
+                </td>
+                <td>
+                    @item.IdPakietNavigation.Oplata
+                </td>
+                <td>
+                    @item.IdPakietNavigation.RodzajOplaty
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="ProjectDetails" onClick="history.go(-1); return false;"> Wróć</a>
+

@@ -1,6 +1,6 @@
 ﻿@model Agencja_Interaktywna.Models.Klient
 @{
-ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Profile";
 }
 
 <h1>Profile</h1>
@@ -11,20 +11,13 @@ ViewData["Title"] = "Profile";
         <form asp-action="Profile">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-
-                <label class="control-label">Id: @Html.DisplayFor(model => model.IdKlient)</label>
-            </div>
-            <div class="form-group">
-
                 <label class="control-label">Imię: @Html.DisplayFor(model => model.IdKlientNavigation.Imie)</label>
             </div>
             <div class="form-group">
                 <label class="control-label">Nazwisko: @Html.DisplayFor(model => model.IdKlientNavigation.Nazwisko)</label>
             </div>
             <div class="form-group">
-
                 <label class="control-label">Numer telefonu prywatny:  @Html.DisplayFor(model => model.IdKlientNavigation.NumerTelefonuPrywatny)</label>
-
             </div>
             <div class="form-group">
                 <label class="control-label">Numer telefonu służbowy:  @Html.DisplayFor(model => model.IdKlientNavigation.NumerTelefonuSluzbowego)</label>
@@ -34,5 +27,4 @@ ViewData["Title"] = "Profile";
             </div>
         </form>
     </div>
-
 </div>
