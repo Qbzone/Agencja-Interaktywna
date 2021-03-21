@@ -1,4 +1,6 @@
 ﻿INSERT INTO Osoba
+VALUES ('Qan','Dan','595958950','123456780','qandan155@wp.pl','VutSf+LocAw3LnENngk6ETkPx88C2wUqcjP+DcptQbM=','true','e0fbe9b0-2990-4ad9-98c6-5a94abc81ea7','Klient'); 
+INSERT INTO Osoba
 VALUES ('Jan','Kuna','595958958','123456789','jankuna@wp.pl','VutSf+LocAw3LnENngk6ETkPx88C2wUqcjP+DcptQbM=','true','62ebf753-dfd9-4e45-ad50-ae9174fece3e','Programista'); 
 INSERT INTO Osoba
 VALUES ('Maciej','Lubicz','595958978','123451789','lubiczmaciej@wp.pl','VutSf+LocAw3LnENngk6ETkPx88C2wUqcjP+DcptQbM=','true','62ebf753-dfd9-4e45-ad50-ae9174fece3a','Tester'); 
@@ -8,6 +10,9 @@ INSERT INTO Osoba
 VALUES ('Jerzy','Kozak','595951958','923456789','jerzykozak@wp.pl','VutSf+LocAw3LnENngk6ETkPx88C2wUqcjP+DcptQbM=','true','62ebf753-dfd9-4e45-ad50-ae9174fece3f','Pozycjoner'); 
 INSERT INTO Osoba
 VALUES ('Andrzej','Tama','595911958','923466789','AndziejTamownik@wp.pl','VutSf+LocAw3LnENngk6ETkPx88C2wUqcjP+DcptQbM=','true','62ebf753-dfd9-4e45-ad50-ae9174fece4f','Szef'); 
+
+INSERT INTO Klient
+VALUES (1, 'nie');
 
 INSERT INTO Pracownik
 VALUES (2,'Warszawa ul.Wschodnia 10',8000,300,'12345678910',3);

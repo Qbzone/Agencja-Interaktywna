@@ -50,9 +50,64 @@ namespace Agencja_Interaktywna.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult ProjectCreate()
         {
-            return View();
+            var projekt = new Projekt();
+
+            var zespol = _s16693context.Zespol.ToList();
+
+            var pakiet = _s16693context.Pakiet.ToList();
+
+            var firma = _s16693context.Firma.ToList();
+
+
+                return View(new Tuple<Projekt, List<Zespol>,List<Pakiet>,List<Firma>>(projekt, zespol, pakiet, firma));
+
+        }
+
+        public Zespol GetZespolById(int? id)
+        {
+            return _s16693context.Zespol
+                .FirstOrDefault(o => o.IdZespol == id);
+        }
+        public Pakiet GetPakietById(int? id)
+        {
+            return _s16693context.Pakiet
+                .FirstOrDefault(o => o.IdPakiet == id);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ProjectCreateMethod([Bind("Nazwa, Logo, Klient")] Projekt newProject, int? idZespol, int? idKlient, int? idUmowa)
+        {
+            if (ModelState.IsValid)
+            {
+                _s16693context.Add(newProject);
+
+                ZespolProjekt zp = new ZespolProjekt();
+                var zespol = GetZespolById(idZespol);
+                zp.IdZespol = zespol.IdZespol;
+                zp.IdProjekt = newProject.IdProjekt;
+                zp.DataPrzypisaniaZespolu = DateTime.Now;
+
+                ProjektPakiet pp = new ProjektPakiet();
+                var pakiet = GetPakietById(idUmowa);
+                pp.IdProjekt = newProject.IdProjekt;
+                pp.IdPakiet = pakiet.IdPakiet;
+                pp.DataRozpoczeciaWspolpracy = DateTime.Now;
+
+                _s16693context.Add(zp);
+                _s16693context.Add(pp);
+
+                _s16693context.SaveChanges();
+                return RedirectToAction(nameof(Projekt));
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View("ProjectCreate", newProject);
+            }
+            return View(newProject);
         }
 
         public IActionResult ProjectEdit()

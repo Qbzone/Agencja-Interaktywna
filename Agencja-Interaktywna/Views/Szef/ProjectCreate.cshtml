@@ -1,21 +1,61 @@
-﻿@model Agencja_Interaktywna.Models.Projekt
+﻿@model Tuple<Agencja_Interaktywna.Models.Projekt,List<Agencja_Interaktywna.Models.Zespol>,List<Agencja_Interaktywna.Models.Pakiet>,List<Agencja_Interaktywna.Models.Firma>>
 @{
     ViewData["Title"] = "ProjectCreate";
 }
 
 <h1>Tworzenie Projektu</h1>
 
-<form method="post" asp-action="ProjectCreate">
+<form method="post" asp-action="ProjectCreateMethod">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
-        Nazwa: <input type="text" asp-for="Nazwa" />
-        <span asp-validation-for="Nazwa"></span>
+        Nazwa: <input type="text" asp-for="Item1.Nazwa" />
+        <span asp-validation-for="Item1.Nazwa"></span>
     </div>
     <div>
-        Wybierz Zespół:
+        Logo: <input type="text" asp-for="Item1.Logo" />
+        <span asp-validation-for="Item1.Logo"></span>
+    </div>
+    <div>
+        <select id="IdZespol">
+            <option value="0">Wybierz zespół</option>
+
+            @{
+                foreach (var item in Model.Item2)
+                {
+                    <option value="@item.IdZespol">@item.Nazwa</option>
+                }
+            }
+
+        </select>
+    </div>
+    <div>
+        <select id="IdFirma">
+            <option value="0">Wybierz klienta</option>
+
+            @{
+                foreach (var item in Model.Item4)
+                {
+                    <option value="@item.IdFirma">@item.Nazwa</option>
+                }
+            }
+
+        </select>
+    </div>
+    <div>
+        <select id="IdPakiet">
+            <option value="0">Wybierz umowę</option>
+
+            @{
+                foreach (var item in Model.Item3)
+                {
+                    <option value="@item.IdPakiet">@item.Nazwa</option>
+                }
+            }
+
+        </select>
     </div>
     <div>
         <input type="submit" value="Zatwierdź" />
     </div>
 </form>
-<a asp-action="Equipment">Wróć</a>
+<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
