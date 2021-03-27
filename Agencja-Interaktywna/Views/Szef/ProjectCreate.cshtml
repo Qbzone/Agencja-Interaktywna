@@ -1,58 +1,55 @@
-﻿@model Tuple<Agencja_Interaktywna.Models.Projekt,List<Agencja_Interaktywna.Models.Zespol>,List<Agencja_Interaktywna.Models.Pakiet>,List<Agencja_Interaktywna.Models.Firma>>
+﻿@model Agencja_Interaktywna.Models.Functional.ProjectCreateModel
 @{
     ViewData["Title"] = "ProjectCreate";
 }
 
 <h1>Tworzenie Projektu</h1>
 
-<form method="post" asp-action="ProjectCreateMethod">
+<form method="post" asp-action="ProjectCreate">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
-        Nazwa: <input type="text" asp-for="Item1.Nazwa" />
-        <span asp-validation-for="Item1.Nazwa"></span>
+        Nazwa: <input type="text" asp-for="@Model.projekt.Nazwa" />
+        <span asp-validation-for="projekt.Nazwa"></span>
     </div>
     <div>
-        Logo: <input type="text" asp-for="Item1.Logo" />
-        <span asp-validation-for="Item1.Logo"></span>
+        Logo: <input type="text" asp-for="@Model.projekt.Logo" />
+        <span asp-validation-for="projekt.Logo"></span>
     </div>
     <div>
-        <select id="IdZespol">
+        Zespół: <select asp-for="@Model.zespol.IdZespol">
             <option value="0">Wybierz zespół</option>
-
             @{
-                foreach (var item in Model.Item2)
+                foreach (var item in Model.zespols)
                 {
                     <option value="@item.IdZespol">@item.Nazwa</option>
                 }
             }
-
         </select>
+        <span asp-validation-for="@Model.zespol.IdZespol"></span>
     </div>
     <div>
-        <select id="IdFirma">
+        Firma: <select asp-for="@Model.projekt.IdFirma">
             <option value="0">Wybierz klienta</option>
-
             @{
-                foreach (var item in Model.Item4)
+                foreach (var item in Model.firmas)
                 {
                     <option value="@item.IdFirma">@item.Nazwa</option>
                 }
             }
-
         </select>
+        <span asp-validation-for="@Model.projekt.IdFirma"></span>
     </div>
     <div>
-        <select id="IdPakiet">
+        Pakiet: <select asp-for="@Model.pakiet.IdPakiet">
             <option value="0">Wybierz umowę</option>
-
             @{
-                foreach (var item in Model.Item3)
+                foreach (var item in Model.pakiets)
                 {
                     <option value="@item.IdPakiet">@item.Nazwa</option>
                 }
             }
-
         </select>
+        <span asp-validation-for="@Model.pakiet.IdPakiet"></span>
     </div>
     <div>
         <input type="submit" value="Zatwierdź" />

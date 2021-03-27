@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Agencja_Interaktywna.Models;
+using Agencja_Interaktywna.Models.Functional;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,15 +55,26 @@ namespace Agencja_Interaktywna.Controllers
         public IActionResult ProjectCreate()
         {
             var projekt = new Projekt();
+            var firma = from e in _s16693context.Firma select e;
+            var zespol = from e in _s16693context.Zespol select e;
+            var pakiet = from e in _s16693context.Pakiet select e;
 
-            var zespol = _s16693context.Zespol.ToList();
+            var pCM = new ProjectCreateModel
+            {
+                firmas = firma.ToList(),
+                zespols = zespol.ToList(),
+                pakiets = pakiet.ToList()
+            };
+
+            return View(pCM);
+
+            /*var zespol = _s16693context.Zespol.ToList();
 
             var pakiet = _s16693context.Pakiet.ToList();
 
             var firma = _s16693context.Firma.ToList();
 
-
-                return View(new Tuple<Projekt, List<Zespol>,List<Pakiet>,List<Firma>>(projekt, zespol, pakiet, firma));
+            return View(new Tuple<Projekt, List<Zespol>, List<Pakiet>, List<Firma>>(projekt, zespol, pakiet, firma));*/
 
         }
 
@@ -79,35 +91,55 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectCreateMethod([Bind("Nazwa, Logo, Klient")] Projekt newProject, int? idZespol, int? idKlient, int? idUmowa)
+        public IActionResult ProjectCreate(ProjectCreateModel pCM)
         {
             if (ModelState.IsValid)
             {
-                _s16693context.Add(newProject);
+                Projekt newProjekt = new Projekt();
+                newProjekt.Nazwa = pCM.projekt.Nazwa;
+                newProjekt.Logo = pCM.projekt.Logo;
+                newProjekt.IdFirma = pCM.projekt.IdFirma;
+                _s16693context.Add(newProjekt);
+                _s16693context.SaveChanges();
 
-                ZespolProjekt zp = new ZespolProjekt();
+                //var tmpProjekt = _s16693context.Projekt.FirstOrDefault(e => e.Nazwa == pCM.projekt.Nazwa);
+
+                ZespolProjekt newZP = new ZespolProjekt();
+                newZP.IdProjekt = newProjekt.IdProjekt;
+                newZP.IdZespol = pCM.zespol.IdZespol;
+                newZP.DataPrzypisaniaZespolu = DateTime.Now;
+
+                ProjektPakiet newPP = new ProjektPakiet();
+                newPP.IdProjekt = newProjekt.IdProjekt;
+                newPP.IdPakiet = pCM.pakiet.IdPakiet;
+                newPP.DataRozpoczeciaWspolpracy = DateTime.Now;
+
+                _s16693context.Add(newZP);
+                _s16693context.Add(newPP);
+
+                /*ZespolProjekt zp = new ZespolProjekt();
                 var zespol = GetZespolById(idZespol);
-                zp.IdZespol = zespol.IdZespol;
                 zp.IdProjekt = newProject.IdProjekt;
+                zp.IdZespolNavigation = zespol;
                 zp.DataPrzypisaniaZespolu = DateTime.Now;
 
                 ProjektPakiet pp = new ProjektPakiet();
                 var pakiet = GetPakietById(idUmowa);
                 pp.IdProjekt = newProject.IdProjekt;
-                pp.IdPakiet = pakiet.IdPakiet;
+                pp.IdPakietNavigation = pakiet;
                 pp.DataRozpoczeciaWspolpracy = DateTime.Now;
 
                 _s16693context.Add(zp);
-                _s16693context.Add(pp);
+                _s16693context.Add(pp);*/
 
                 _s16693context.SaveChanges();
-                return RedirectToAction(nameof(Projekt));
+                return RedirectToAction(nameof(Index));
             }
             else if (!ModelState.IsValid)
             {
-                return View("ProjectCreate", newProject);
+                return View("ProjectCreate", pCM);
             }
-            return View(newProject);
+            return View(pCM);
         }
 
         public IActionResult ProjectEdit()
