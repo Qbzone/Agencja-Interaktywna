@@ -143,20 +143,26 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectEdit(ProjectCreateModel pCM)
+        public IActionResult ProjectEdit(ProjectCreateModel pCM, int IdZespol, int IdPakiet)
         {
             if (ModelState.IsValid)
             {
-
                 _s16693context.Update(pCM.projekt);
-                ZespolProjekt newZP = _s16693context.ZespolProjekt.Where(x => x.IdZespol == pCM.zespol.IdZespol && x.IdProjekt == pCM.projekt.IdProjekt && x.DataWypisaniaZespolu != null).FirstOrDefault();
-                newZP.IdZespol = pCM.zespol.IdZespol;
+                pCM.zespol.IdZespol = IdZespol;
+                pCM.pakiet.IdPakiet = IdPakiet;
+
+                _s16693context.Update(pCM.pakiet);
+                _s16693context.Update(pCM.zespol);
+                //var newZP = _s16693context.Zespol
+                    //.Where(x => x.IdZespol == pCM.zespol.IdZespol && x.IdProjekt == pCM.projekt.IdProjekt && x.DataWypisaniaZespolu != null).FirstOrDefault();
+                //pCM.zespol.IdZespol = newZP.IdZespol;
 
                 
-                ProjektPakiet newPP = _s16693context.ProjektPakiet.Where(x => x.IdPakiet == pCM.pakiet.IdPakiet && x.IdProjekt == pCM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy != null).FirstOrDefault();
-                newPP.IdPakiet = pCM.pakiet.IdPakiet;
-                _s16693context.Update(newZP);
-                _s16693context.Update(newPP);
+                //var newPP = _s16693context.Pakiet
+                   // .Where(x => x.IdPakiet == pCM.pakiet.IdPakiet && x.IdProjekt == pCM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy != null).FirstOrDefault();
+                //pCM.pakiet.IdPakiet = newPP.IdPakiet;
+                //_s16693context.Update(newZP);
+                //_s16693context.Update(newPP);
 
                 _s16693context.SaveChanges();
                 

@@ -16,7 +16,7 @@
         <span asp-validation-for="projekt.Logo"></span>
     </div>
     <div>
-        Zespół: <select asp-for="@Model.zespol.IdZespol">
+        Zespół: <select name="IdZespol" asp-for="@Model.zespol.IdZespol">
             @{
                 foreach (var item in Model.zespols)
                 {
@@ -27,7 +27,7 @@
         <span asp-validation-for="@Model.zespol.IdZespol"></span>
     </div>
     <div>
-        Firma: <select asp-for="@Model.projekt.IdFirma">
+        Firma: <select name="IdFirma" asp-for="@Model.projekt.IdFirma">
             @{
                 foreach (var item in Model.firmas)
                 {
@@ -38,7 +38,7 @@
         <span asp-validation-for="@Model.projekt.IdFirma"></span>
     </div>
     <div>
-        Pakiet: <select asp-for="@Model.pakiet.IdPakiet">
+        Pakiet: <select name="IdPakiet" asp-for="@Model.pakiet.IdPakiet">
             @{
                 foreach (var item in Model.pakiets)
                 {
