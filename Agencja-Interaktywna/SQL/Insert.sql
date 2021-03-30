@@ -38,15 +38,25 @@ VALUES (6);
 
 INSERT INTO Zespol
 VALUES ('Zespol ogorkow');
+INSERT INTO Zespol
+VALUES ('Zespol kartofli');
 
 INSERT INTO PracownikZespol
-VALUES (2,1,'2020-10-10','');
+VALUES (2,1,'2020-10-10',NULL);
 INSERT INTO PracownikZespol
-VALUES (3,1,'2020-05-05','');
+VALUES (3,1,'2020-05-05',NULL);
 INSERT INTO PracownikZespol
-VALUES (4,1,'2020-06-15','');
+VALUES (4,1,'2020-06-15',NULL);
 INSERT INTO PracownikZespol
-VALUES (5,1,'2020-01-20','');
+VALUES (5,1,'2020-01-20',NULL);
+INSERT INTO PracownikZespol
+VALUES (2,2,'2020-10-10',NULL);
+INSERT INTO PracownikZespol
+VALUES (3,2,'2020-05-05',NULL);
+INSERT INTO PracownikZespol
+VALUES (4,2,'2020-06-15',NULL);
+INSERT INTO PracownikZespol
+VALUES (5,2,'2020-01-20',NULL);
 
 INSERT INTO Firma
 VALUES('Firma krzak');
@@ -60,9 +70,9 @@ INSERT INTO Projekt
 VALUES('Projekt dla firmy krzak2','images/logo.jpg',1);
 
 INSERT INTO ZespolProjekt
-VALUES(1,1,'2020-12-12','');
+VALUES(1,1,'2020-12-12',NULL);
 INSERT INTO ZespolProjekt
-VALUES(1,2,'2020-12-12','');
+VALUES(1,2,'2020-12-12',NULL);
 
 INSERT INTO Zadanie
 VALUES('Posadz marchew');
@@ -74,18 +84,18 @@ INSERT INTO Zadanie
 VALUES('Posadz szczypiorek');
 
 INSERT INTO ZadanieProjekt
-VALUES(1,1,'2020-10-20','','Rozpoczete','Trzeba posadzic marchew');
+VALUES(1,1,'2020-10-20',NULL,'Rozpoczete','Trzeba posadzic marchew');
 INSERT INTO ZadanieProjekt
-VALUES(1,2,'2020-10-21','','Rozpoczete','Trzeba posadzic ogorki');
+VALUES(1,2,'2020-10-21',NULL,'Rozpoczete','Trzeba posadzic ogorki');
 INSERT INTO ZadanieProjekt
-VALUES(1,3,'2020-10-22','','Rozpoczete','Trzeba posadzic rzodkiew');
+VALUES(1,3,'2020-10-22',NULL,'Rozpoczete','Trzeba posadzic rzodkiew');
 INSERT INTO ZadanieProjekt
-VALUES(1,4,'2020-10-23','','Rozpoczete','Trzeba posadzic szczypiorek');
+VALUES(1,4,'2020-10-23',NULL,'Rozpoczete','Trzeba posadzic szczypiorek');
 
 INSERT INTO ZadanieProjekt
-VALUES(2,1,'2020-10-20','','Rozpoczete','Trzeba posadzic marchew');
+VALUES(2,1,'2020-10-20',NULL,'Rozpoczete','Trzeba posadzic marchew');
 INSERT INTO ZadanieProjekt
-VALUES(2,2,'2020-10-21','','Rozpoczete','Trzeba posadzic ogorki');
+VALUES(2,2,'2020-10-21',NULL,'Rozpoczete','Trzeba posadzic ogorki');
 
 INSERT INTO PracownikKlient
 VALUES (2,1,'2021-03-10','2021-03-11','pokoj nr 8');
@@ -98,6 +108,6 @@ INSERT INTO Pakiet
 VALUES ('Pakiet usług sadzenia warzyw i roślin',2000,'abonament');
 
 INSERT INTO ProjektPakiet
-VALUES (1,1,'2021-01-01','');
+VALUES (1,1,'2021-01-01',NULL);
 INSERT INTO ProjektPakiet
-VALUES (1,2,'2021-01-01 12:40:00','');
+VALUES (1,2,'2021-01-01 12:40:00',NULL);

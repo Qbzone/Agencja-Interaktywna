@@ -115,63 +115,75 @@ namespace Agencja_Interaktywna.Controllers
                 return NotFound();
             }
             var projekt = _s16693context.Projekt.Find(id);
+
             if (projekt == null)
             {
                 return NotFound();
             }
-            
-                var zp = _s16693context.ZespolProjekt.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt);
-                var pp = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt);
-                var zespol = _s16693context.Zespol.FirstOrDefault(x => x.IdZespol == zp.IdZespol);
-                var pakiet = _s16693context.Pakiet.FirstOrDefault(x => x.IdPakiet == pp.IdPakiet);
-                var firmy = from e in _s16693context.Firma select e;
-                var zespoly = from e in _s16693context.Zespol select e;
-                var pakiety = from e in _s16693context.Pakiet select e;
-            
-            var pCM = new ProjectCreateModel
+
+            var zp = _s16693context.ZespolProjekt.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt);
+            var pp = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt);
+            var zespol = _s16693context.Zespol.FirstOrDefault(x => x.IdZespol == zp.IdZespol);
+            var pakiet = _s16693context.Pakiet.FirstOrDefault(x => x.IdPakiet == pp.IdPakiet);
+            var IdZespol = zespol.IdZespol;
+            var IdPakiet = pakiet.IdPakiet;
+            var firmy = from e in _s16693context.Firma select e;
+            var zespoly = from e in _s16693context.Zespol select e;
+            var pakiety = from e in _s16693context.Pakiet select e;
+
+            var pEM = new ProjectEditModel
             {
                 projekt = projekt,
                 zespol = zespol,
                 pakiet = pakiet,
                 firmas = firmy.ToList(),
                 zespols = zespoly.ToList(),
-                pakiets = pakiety.ToList()
+                pakiets = pakiety.ToList(),
+                IdZespol = IdZespol,
+                IdPakiet = IdPakiet
             };
 
-            return View(pCM);
+            return View(pEM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectEdit(ProjectCreateModel pCM, int IdZespol, int IdPakiet)
+        public IActionResult ProjectEdit(ProjectEditModel pEM)
         {
             if (ModelState.IsValid)
             {
-                _s16693context.Update(pCM.projekt);
-                pCM.zespol.IdZespol = IdZespol;
-                pCM.pakiet.IdPakiet = IdPakiet;
+                _s16693context.Update(pEM.projekt);
 
-                _s16693context.Update(pCM.pakiet);
-                _s16693context.Update(pCM.zespol);
-                //var newZP = _s16693context.Zespol
-                    //.Where(x => x.IdZespol == pCM.zespol.IdZespol && x.IdProjekt == pCM.projekt.IdProjekt && x.DataWypisaniaZespolu != null).FirstOrDefault();
-                //pCM.zespol.IdZespol = newZP.IdZespol;
+                ZespolProjekt oldZP = _s16693context.ZespolProjekt.Where(x => x.IdZespol == pEM.IdZespol && x.IdProjekt == pEM.projekt.IdProjekt && x.DataWypisaniaZespolu == null).FirstOrDefault();
+                ProjektPakiet oldPP = _s16693context.ProjektPakiet.Where(x => x.IdPakiet == pEM.IdPakiet && x.IdProjekt == pEM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null).FirstOrDefault();
 
-                
-                //var newPP = _s16693context.Pakiet
-                   // .Where(x => x.IdPakiet == pCM.pakiet.IdPakiet && x.IdProjekt == pCM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy != null).FirstOrDefault();
-                //pCM.pakiet.IdPakiet = newPP.IdPakiet;
-                //_s16693context.Update(newZP);
-                //_s16693context.Update(newPP);
+                _s16693context.Remove(oldZP);
+                _s16693context.Remove(oldPP);
 
                 _s16693context.SaveChanges();
-                
+
+                ZespolProjekt newZP = new ZespolProjekt();
+                newZP.IdProjekt = pEM.projekt.IdProjekt;
+                newZP.IdZespol = pEM.zespol.IdZespol;
+                newZP.DataPrzypisaniaZespolu = DateTime.Now;
+
+                ProjektPakiet newPP = new ProjektPakiet();
+                newPP.IdProjekt = pEM.projekt.IdProjekt;
+                newPP.IdPakiet = pEM.pakiet.IdPakiet;
+                newPP.DataRozpoczeciaWspolpracy = DateTime.Now;
+
+                _s16693context.Add(newZP);
+                _s16693context.Add(newPP);
+
+                _s16693context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+
             }
             else if (!ModelState.IsValid)
             {
-                return View("ProjectEdit", pCM);
+                return View("ProjectEdit", pEM);
             }
-            return View(pCM);
+            return View(pEM);
         }
 
         public IActionResult ProjectDelete()

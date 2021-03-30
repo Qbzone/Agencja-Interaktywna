@@ -1,22 +1,25 @@
-﻿@model Agencja_Interaktywna.Models.Functional.ProjectCreateModel
+﻿@model Agencja_Interaktywna.Models.Functional.ProjectEditModel
 @{
     ViewData["Title"] = "ProjectEdit";
 }
 
 <h1>Edycja projektu</h1>
+
 <form method="post" asp-action="ProjectEdit">
     <div asp-validation-summary="ModelOnly"></div>
-     <input type="hidden" asp-for="@Model.projekt.IdProjekt" />
+    <input type="hidden" asp-for="@Model.projekt.IdProjekt" />
+    <input type="hidden" asp-for="@Model.IdZespol" />
+    <input type="hidden" asp-for="@Model.IdPakiet" />
     <div>
-        Nazwa: <input type="text" asp-for="@Model.projekt.Nazwa"/>
+        Nazwa: <input type="text" asp-for="@Model.projekt.Nazwa" />
         <span asp-validation-for="projekt.Nazwa"></span>
     </div>
     <div>
-        Logo: <input type="text" asp-for="@Model.projekt.Logo"/>
+        Logo: <input type="text" asp-for="@Model.projekt.Logo" />
         <span asp-validation-for="projekt.Logo"></span>
     </div>
     <div>
-        Zespół: <select name="IdZespol" asp-for="@Model.zespol.IdZespol">
+        Zespół: <select asp-for="@Model.zespol.IdZespol">
             @{
                 foreach (var item in Model.zespols)
                 {
@@ -27,7 +30,7 @@
         <span asp-validation-for="@Model.zespol.IdZespol"></span>
     </div>
     <div>
-        Firma: <select name="IdFirma" asp-for="@Model.projekt.IdFirma">
+        Firma: <select asp-for="@Model.projekt.IdFirma">
             @{
                 foreach (var item in Model.firmas)
                 {
@@ -38,7 +41,7 @@
         <span asp-validation-for="@Model.projekt.IdFirma"></span>
     </div>
     <div>
-        Pakiet: <select name="IdPakiet" asp-for="@Model.pakiet.IdPakiet">
+        Pakiet: <select asp-for="@Model.pakiet.IdPakiet">
             @{
                 foreach (var item in Model.pakiets)
                 {
@@ -49,7 +52,7 @@
         <span asp-validation-for="@Model.pakiet.IdPakiet"></span>
     </div>
     <div>
-        <input type="submit" value="Potwierdź zmianę" />
+        <input type="submit" value="Zatwierdź" />
     </div>
 </form>
 <a href="Index" onClick="history.go(-1); return false;"> Wróć</a>

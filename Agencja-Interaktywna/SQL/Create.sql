@@ -219,7 +219,7 @@ CREATE TABLE ZespolProjekt (
     IdZespol int  NOT NULL,
     IdProjekt int  NOT NULL,
     DataPrzypisaniaZespolu date  NOT NULL,
-    DataWypisaniaZespolu date  NOT NULL,
+    DataWypisaniaZespolu date  NULL,
     CONSTRAINT ZespolProjekt_pk PRIMARY KEY  (IdZespol,IdProjekt,DataPrzypisaniaZespolu)
 );
 
