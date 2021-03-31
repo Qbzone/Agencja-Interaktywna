@@ -121,8 +121,8 @@ namespace Agencja_Interaktywna.Controllers
                 return NotFound();
             }
 
-            var zp = _s16693context.ZespolProjekt.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt);
-            var pp = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt);
+            var zp = _s16693context.ZespolProjekt.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt && x.DataWypisaniaZespolu == null);
+            var pp = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null);
             var zespol = _s16693context.Zespol.FirstOrDefault(x => x.IdZespol == zp.IdZespol);
             var pakiet = _s16693context.Pakiet.FirstOrDefault(x => x.IdPakiet == pp.IdPakiet);
             var IdZespol = zespol.IdZespol;
@@ -155,6 +155,7 @@ namespace Agencja_Interaktywna.Controllers
                 _s16693context.Update(pEM.projekt);
 
                 ZespolProjekt oldZP = _s16693context.ZespolProjekt.Where(x => x.IdZespol == pEM.IdZespol && x.IdProjekt == pEM.projekt.IdProjekt && x.DataWypisaniaZespolu == null).FirstOrDefault();
+                ProjektPakiet oldPP = _s16693context.ProjektPakiet.Where(x => x.IdPakiet == pEM.IdPakiet && x.IdProjekt == pEM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null).FirstOrDefault();
 
                 if (oldZP.IdZespol != pEM.zespol.IdZespol)
                 {
@@ -170,8 +171,6 @@ namespace Agencja_Interaktywna.Controllers
                     _s16693context.SaveChanges();
 
                 }
-
-                ProjektPakiet oldPP = _s16693context.ProjektPakiet.Where(x => x.IdPakiet == pEM.IdPakiet && x.IdProjekt == pEM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null).FirstOrDefault();
 
                 if (oldPP.IdPakiet != pEM.pakiet.IdPakiet)
                 {
@@ -261,7 +260,7 @@ namespace Agencja_Interaktywna.Controllers
             var team = _s16693context.ZespolProjekt
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdZespolNavigation)
-                .FirstOrDefault(x => x.IdProjekt == id);
+                .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
             var members = _s16693context.PracownikZespol
                 .Include(z => z.IdZespolNavigation)

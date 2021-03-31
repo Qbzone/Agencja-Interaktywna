@@ -73,7 +73,7 @@ namespace Agencja_Interaktywna.Controllers
             var team = _s16693context.ZespolProjekt
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdZespolNavigation)
-                .FirstOrDefault(x => x.IdProjekt == id);
+                .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
             var members = _s16693context.PracownikZespol
                 .Include(z => z.IdZespolNavigation)
@@ -91,7 +91,7 @@ namespace Agencja_Interaktywna.Controllers
             var contract = _s16693context.ProjektPakiet
                 .Include(pr => pr.IdProjektNavigation)
                 .Include(pa => pa.IdPakietNavigation)
-                .Where(x => x.IdProjekt == id)
+                .Where(x => x.IdProjekt == id && x.DataZakonczeniaWspolpracy == null)
                 .OrderByDescending(e => e.IdPakiet)
                 .ToList();
 
