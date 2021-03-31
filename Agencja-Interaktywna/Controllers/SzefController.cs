@@ -155,27 +155,39 @@ namespace Agencja_Interaktywna.Controllers
                 _s16693context.Update(pEM.projekt);
 
                 ZespolProjekt oldZP = _s16693context.ZespolProjekt.Where(x => x.IdZespol == pEM.IdZespol && x.IdProjekt == pEM.projekt.IdProjekt && x.DataWypisaniaZespolu == null).FirstOrDefault();
+
+                if (oldZP.IdZespol != pEM.zespol.IdZespol)
+                {
+
+                    oldZP.DataWypisaniaZespolu = DateTime.Now;
+
+                    ZespolProjekt newZP = new ZespolProjekt();
+                    newZP.IdProjekt = pEM.projekt.IdProjekt;
+                    newZP.IdZespol = pEM.zespol.IdZespol;
+                    newZP.DataPrzypisaniaZespolu = DateTime.Now;
+
+                    _s16693context.Add(newZP);
+                    _s16693context.SaveChanges();
+
+                }
+
                 ProjektPakiet oldPP = _s16693context.ProjektPakiet.Where(x => x.IdPakiet == pEM.IdPakiet && x.IdProjekt == pEM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null).FirstOrDefault();
 
-                _s16693context.Remove(oldZP);
-                _s16693context.Remove(oldPP);
+                if (oldPP.IdPakiet != pEM.pakiet.IdPakiet)
+                {
 
-                _s16693context.SaveChanges();
+                    oldPP.DataZakonczeniaWspolpracy = DateTime.Now;
 
-                ZespolProjekt newZP = new ZespolProjekt();
-                newZP.IdProjekt = pEM.projekt.IdProjekt;
-                newZP.IdZespol = pEM.zespol.IdZespol;
-                newZP.DataPrzypisaniaZespolu = DateTime.Now;
+                    ProjektPakiet newPP = new ProjektPakiet();
+                    newPP.IdProjekt = pEM.projekt.IdProjekt;
+                    newPP.IdPakiet = pEM.pakiet.IdPakiet;
+                    newPP.DataRozpoczeciaWspolpracy = DateTime.Now;
 
-                ProjektPakiet newPP = new ProjektPakiet();
-                newPP.IdProjekt = pEM.projekt.IdProjekt;
-                newPP.IdPakiet = pEM.pakiet.IdPakiet;
-                newPP.DataRozpoczeciaWspolpracy = DateTime.Now;
+                    _s16693context.Add(newPP);
+                    _s16693context.SaveChanges();
 
-                _s16693context.Add(newZP);
-                _s16693context.Add(newPP);
+                }
 
-                _s16693context.SaveChanges();
                 return RedirectToAction(nameof(Index));
 
             }
