@@ -154,15 +154,19 @@ namespace Agencja_Interaktywna.Controllers
             {
                 _s16693context.Update(pEM.projekt);
 
-                ZespolProjekt oldZP = _s16693context.ZespolProjekt.Where(x => x.IdZespol == pEM.IdZespol && x.IdProjekt == pEM.projekt.IdProjekt && x.DataWypisaniaZespolu == null).FirstOrDefault();
-                ProjektPakiet oldPP = _s16693context.ProjektPakiet.Where(x => x.IdPakiet == pEM.IdPakiet && x.IdProjekt == pEM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null).FirstOrDefault();
+                var oldZP = _s16693context.ZespolProjekt
+                    .Where(x => x.IdZespol == pEM.IdZespol && x.IdProjekt == pEM.projekt.IdProjekt && x.DataWypisaniaZespolu == null)
+                    .FirstOrDefault();
+                var oldPP = _s16693context.ProjektPakiet
+                    .Where(x => x.IdPakiet == pEM.IdPakiet && x.IdProjekt == pEM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null)
+                    .FirstOrDefault();
 
                 if (oldZP.IdZespol != pEM.zespol.IdZespol)
                 {
 
                     oldZP.DataWypisaniaZespolu = DateTime.Now;
 
-                    ZespolProjekt newZP = new ZespolProjekt();
+                    var newZP = new ZespolProjekt();
                     newZP.IdProjekt = pEM.projekt.IdProjekt;
                     newZP.IdZespol = pEM.zespol.IdZespol;
                     newZP.DataPrzypisaniaZespolu = DateTime.Now;
@@ -177,7 +181,7 @@ namespace Agencja_Interaktywna.Controllers
 
                     oldPP.DataZakonczeniaWspolpracy = DateTime.Now;
 
-                    ProjektPakiet newPP = new ProjektPakiet();
+                    var newPP = new ProjektPakiet();
                     newPP.IdProjekt = pEM.projekt.IdProjekt;
                     newPP.IdPakiet = pEM.pakiet.IdPakiet;
                     newPP.DataRozpoczeciaWspolpracy = DateTime.Now;
@@ -197,9 +201,40 @@ namespace Agencja_Interaktywna.Controllers
             return View(pEM);
         }
 
-        public IActionResult ProjectDelete()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ProjectDelete(int id)
         {
-            return View();
+            foreach (ZespolProjekt delZP in _s16693context.ZespolProjekt)
+            {
+                if (delZP.IdProjekt == id)
+                {
+                    _s16693context.ZespolProjekt.Remove(delZP);
+                }
+            }
+
+            foreach (ProjektPakiet delPP in _s16693context.ProjektPakiet)
+            {
+                if (delPP.IdProjekt == id)
+                {
+                    _s16693context.ProjektPakiet.Remove(delPP);
+                }
+            }
+
+            foreach (ZadanieProjekt delZadP in _s16693context.ZadanieProjekt)
+            {
+                if (delZadP.IdProjekt == id)
+                {
+                    _s16693context.ZadanieProjekt.Remove(delZadP);
+                }
+            }
+
+            var projekt = _s16693context.Projekt.Find(id);
+
+            _s16693context.Remove(projekt);
+            _s16693context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Contract(int? id)
