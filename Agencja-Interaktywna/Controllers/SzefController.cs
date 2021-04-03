@@ -41,13 +41,19 @@ namespace Agencja_Interaktywna.Controllers
                 .Where(e => e.IdProjekt == id)
                 .ToList();
 
+            var pDM = new ProjectDetailsModel
+            {
+                projekt = project,
+                zadanies = tasks
+            };
+
             if (project == null)
             {
                 return NotFound();
             }
             else
             {
-                return View(new Tuple<Projekt, List<ZadanieProjekt>>(project, tasks));
+                return View(pDM);
             }
         }
 
@@ -203,11 +209,12 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectDelete(int id)
+        public IActionResult ProjectDelete(ProjectDetailsModel pDM)
         {
+
             foreach (ZespolProjekt delZP in _s16693context.ZespolProjekt)
             {
-                if (delZP.IdProjekt == id)
+                if (delZP.IdProjekt == pDM.projekt.IdProjekt)
                 {
                     _s16693context.ZespolProjekt.Remove(delZP);
                 }
@@ -215,7 +222,7 @@ namespace Agencja_Interaktywna.Controllers
 
             foreach (ProjektPakiet delPP in _s16693context.ProjektPakiet)
             {
-                if (delPP.IdProjekt == id)
+                if (delPP.IdProjekt == pDM.projekt.IdProjekt)
                 {
                     _s16693context.ProjektPakiet.Remove(delPP);
                 }
@@ -223,13 +230,13 @@ namespace Agencja_Interaktywna.Controllers
 
             foreach (ZadanieProjekt delZadP in _s16693context.ZadanieProjekt)
             {
-                if (delZadP.IdProjekt == id)
+                if (delZadP.IdProjekt == pDM.projekt.IdProjekt)
                 {
                     _s16693context.ZadanieProjekt.Remove(delZadP);
                 }
             }
 
-            var projekt = _s16693context.Projekt.Find(id);
+            var projekt = _s16693context.Projekt.Find(pDM.projekt.IdProjekt);
 
             _s16693context.Remove(projekt);
             _s16693context.SaveChanges();
@@ -251,7 +258,14 @@ namespace Agencja_Interaktywna.Controllers
 
         public IActionResult Meetings()
         {
-            return View();
+            var meetings = _s16693context.PracownikKlient
+                .Include(k => k.IdKlientNavigation)
+                    .ThenInclude(o => o.IdKlientNavigation)
+                .Include(p => p.IdPracownikNavigation)
+                    .ThenInclude(po => po.IdPracownikNavigation)
+                .ToList();
+            
+            return View(meetings);
         }
 
         public IActionResult MeetingsCreate()

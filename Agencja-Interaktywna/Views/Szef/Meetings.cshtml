@@ -1,7 +1,36 @@
-﻿
+﻿@model List<Agencja_Interaktywna.Models.PracownikKlient>
 @{
     ViewData["Title"] = "Meetings";
 }
 
-<h1>Meetings</h1>
+<h1>Spotkania</h1>
+<a asp-action="MeetingsCreate" asp-route-id="">Stwórz spotkanie</a>
+<table>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+        <tr>
+            <td>
+                @item.DataRozpoczeciaSpotkania
+            </td>
+            <td>
+                @item.MiejsceSpotkania
 
+            </td>
+            <td>
+                @item.IdPracownikNavigation.IdPracownikNavigation.Imie
+                @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko
+                @item.IdPracownikNavigation.IdPracownikNavigation.Rola
+            </td>
+            <td>
+                @item.IdKlientNavigation.IdKlientNavigation.Imie
+                @item.IdKlientNavigation.IdKlientNavigation.Nazwisko
+            </td>
+            <td>
+                <a asp-action="MeetingsEdit" asp-route-id="">Edytuj</a>
+                <a asp-action="MeetingsDelete" asp-route-id=""> Usuń</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

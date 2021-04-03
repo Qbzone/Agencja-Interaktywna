@@ -1,22 +1,25 @@
-﻿@model Tuple<Agencja_Interaktywna.Models.Projekt, List<Agencja_Interaktywna.Models.ZadanieProjekt>>
+﻿@model Agencja_Interaktywna.Models.Functional.ProjectDetailsModel
 @{
     ViewData["Title"] = "ProjectDetails";
 }
 
-<h3>Nazwa projektu  @Html.DisplayFor(model => model.Item1.Nazwa)</h3>
+<h3>Nazwa projektu  @Html.DisplayFor(model => model.projekt.Nazwa)</h3>
 
-<img src="/@Model.Item1.Logo" alt="/@Model.Item1.Logo" height="100" width="100" />
-<a asp-action="Team" asp-route-id="@Model.Item1.IdProjekt">Wyświetl zespół</a>
-<a asp-action="Contract" asp-route-id="@Model.Item1.IdProjekt">Wyświetl umowę</a>
-<a asp-action="ProjectEdit" asp-route-id="@Model.Item1.IdProjekt">Edytuj projekt</a>
-<a asp-action="ProjectDelete" asp-route-id="@Model.Item1.IdProjekt">Usuń projekt</a>
+<img src="/@Model.projekt.Logo" alt="/@Model.projekt.Logo" height="100" width="100" />
+<a asp-action="Team" asp-route-id="@Model.projekt.IdProjekt">Wyświetl zespół</a>
+<a asp-action="Contract" asp-route-id="@Model.projekt.IdProjekt">Wyświetl umowę</a>
+<a asp-action="ProjectEdit" asp-route-id="@Model.projekt.IdProjekt">Edytuj projekt</a>
+<form asp-action="ProjectDelete" onclick="return confirm('Czy na pewno chcesz usunąć wybrany projekt?')">
+    <input type="hidden" asp-for="@Model.projekt.IdProjekt"/>
+    <input type="submit" value="Usuń" /> |
+</form>
 <a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
 
-<a asp-action="TaskCreate" asp-route-id="@Model.Item1.IdProjekt">Dodaj Zadanie</a>
+<a asp-action="TaskCreate" asp-route-id="@Model.projekt.IdProjekt">Dodaj Zadanie</a>
 
 <table>
     <tbody>
-        @foreach (var item in @Model.Item2)
+        @foreach (var item in @Model.zadanies)
         {
             <tr>
                 <td>
