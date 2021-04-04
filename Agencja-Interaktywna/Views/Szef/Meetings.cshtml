@@ -27,8 +27,8 @@
                 @item.IdKlientNavigation.IdKlientNavigation.Nazwisko
             </td>
             <td>
-                <a asp-action="MeetingsEdit" asp-route-id="">Edytuj</a>
-                <a asp-action="MeetingsDelete" asp-route-id=""> Usuń</a>
+                @Html.ActionLink("Edytuj", "MeetingsEdit", new { klient = item.IdKlient, pracownik = item.IdPracownik, data = item.DataRozpoczeciaSpotkania }) |
+                @Html.ActionLink("Usuń", "MeetingsDelete", new { klient = item.IdKlient, pracownik = item.IdPracownik, data = item.DataRozpoczeciaSpotkania })
             </td>
         </tr>
         }

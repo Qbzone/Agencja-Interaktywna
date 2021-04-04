@@ -268,16 +268,91 @@ namespace Agencja_Interaktywna.Controllers
             return View(meetings);
         }
 
+        [HttpGet]
         public IActionResult MeetingsCreate()
         {
-            return View();
+            PracownikKlient pracownikKlient = new PracownikKlient();
+            var klient = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
+            var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+            
+            var mCM = new MeetingCreateModel
+            {
+                klients = klient,
+                pracowniks = pracownik
+            };
+
+            return View(mCM);
         }
 
-        public IActionResult MeetingsEdit()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MeetingsCreate(MeetingCreateModel mCM)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                PracownikKlient newSpotkanie = new PracownikKlient();
+                newSpotkanie.MiejsceSpotkania = mCM.PracownikKlient.MiejsceSpotkania;
+                newSpotkanie.DataRozpoczeciaSpotkania = mCM.PracownikKlient.DataRozpoczeciaSpotkania;
+                newSpotkanie.DataZakonczeniaSpotkania = mCM.PracownikKlient.DataZakonczeniaSpotkania;
+                newSpotkanie.IdPracownik = mCM.PracownikKlient.IdPracownik;
+                newSpotkanie.IdKlient = mCM.PracownikKlient.IdKlient;
+                
+                _s16693context.Add(newSpotkanie);
+                _s16693context.SaveChanges();
+                
+                return RedirectToAction(nameof(Index));
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View("MeetingsCreate", mCM);
+            }
+            return View(mCM);
         }
+    
+        [HttpGet]
+        public IActionResult MeetingsEdit(int? idklient, int? idpracownik, DateTime? date)
+        {
+            if (idklient == null || idpracownik == null)
+            {
+                return NotFound();
+            }
+            
+            var spotkanie = _s16693context.PracownikKlient
+                .Where(x => x.IdPracownik == idpracownik && x.IdKlient == idklient && x.DataRozpoczeciaSpotkania == date).FirstOrDefault();
 
+            if (spotkanie == null)
+            {
+                return NotFound();
+            }
+
+            var klient = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
+            var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+
+            var mCM = new MeetingCreateModel
+            {
+                PracownikKlient = spotkanie,
+                klients = klient,
+                pracowniks = pracownik
+            };
+            return View(mCM);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MeetingsEdit(MeetingCreateModel mCM)
+        {
+            if (ModelState.IsValid)
+            {
+                _s16693context.Update(mCM.PracownikKlient);
+                return RedirectToAction(nameof(Meetings));
+
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View("MeetingsEdit", mCM);
+            }
+            return View(mCM);
+        }
         public IActionResult MeetingsDelete()
         {
             return View();

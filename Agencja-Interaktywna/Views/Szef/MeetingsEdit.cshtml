@@ -1,7 +1,54 @@
-﻿
+﻿@model Agencja_Interaktywna.Models.Functional.MeetingCreateModel
 @{
-    ViewData["Title"] = "MeetingsEdit";
+    ViewData["Title"] = "MeetingEdit";
 }
 
-<h1>MeetingsEdit</h1>
+<h1>Edycja Spotkania</h1>
+
+<form method="post" asp-action="MeetingsEdit">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="@Model.PracownikKlient.IdKlient" />
+    <input type="hidden" asp-for="@Model.PracownikKlient.IdPracownik" />
+    <div>
+        Miejsce spotkania: <input type="text" asp-for="@Model.PracownikKlient.MiejsceSpotkania" />
+        <span asp-validation-for="PracownikKlient.MiejsceSpotkania"></span>
+    </div>
+    <div>
+        Data rozpoczęcia spotkania: <input type="text" asp-for="@Model.PracownikKlient.DataRozpoczeciaSpotkania" />
+        <span asp-validation-for="PracownikKlient.DataRozpoczeciaSpotkania"></span>
+    </div>
+    <div>
+        Data zakończenia spotkania: <input type="text" asp-for="@Model.PracownikKlient.DataZakonczeniaSpotkania" />
+        <span asp-validation-for="PracownikKlient.DataZakonczeniaSpotkania"></span>
+    </div>
+    <div>
+        Klient: <select asp-for="@Model.PracownikKlient.IdKlient">
+            @{
+                foreach (var item in Model.klients)
+                {
+                    <option value="@item.IdKlient">@item.IdKlientNavigation.AdresEmail</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="@Model.PracownikKlient.IdKlient"></span>
+    </div>
+    <div>
+        Pracownik: <select asp-for="@Model.PracownikKlient.IdPracownik">
+            @{
+                foreach (var item in Model.pracowniks)
+                {
+                    <option value="@item.IdPracownik">@item.IdPracownikNavigation.AdresEmail</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="@Model.PracownikKlient.IdPracownikNavigation.IdPracownik"></span>
+    </div>
+    <div>
+        <input type="submit" value="Zatwierdź" />
+    </div>
+</form>
+<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
+
+
+
 
