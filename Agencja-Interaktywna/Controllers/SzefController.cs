@@ -310,29 +310,45 @@ namespace Agencja_Interaktywna.Controllers
         }
     
         [HttpGet]
-        public IActionResult MeetingsEdit(int? id1, int? id2, DateTime? data)
+        public IActionResult MeetingsEdit(int? id1, int? id2, string data)
         {
             if (id1 == null)
             {
                 return NotFound();
             }
+            
+            DateTime fromDateAsDateTime = DateTime.Parse(data);
+            
             var klient = _s16693context.Klient.Find(id1);
             var pracownik = _s16693context.Pracownik.Find(id2);
-            var spotkanie =  _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == klient.IdKlient & x.IdPracownik == pracownik.IdPracownik & x.DataRozpoczeciaSpotkania == data);
+            var spotkanie =  _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == klient.IdKlient & x.IdPracownik == pracownik.IdPracownik & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
             if (spotkanie == null)
             {
                 return NotFound();
             }
-            return View(spotkanie);
+
+            var klients = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
+            var pracowniks = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+
+            var mCM = new MeetingCreateModel
+            {
+                PracownikKlient = spotkanie,
+                klients = klients,
+                pracowniks = pracowniks
+            };
+
+            return View(mCM);
         }
         
-        /*[HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult MeetingsEdit(MeetingCreateModel mCM)
         {
             if (ModelState.IsValid)
             {
+
                 _s16693context.Update(mCM.PracownikKlient);
+                _s16693context.SaveChanges();
                 return RedirectToAction(nameof(Meetings));
 
             }
@@ -342,10 +358,11 @@ namespace Agencja_Interaktywna.Controllers
             }
             return View(mCM);
         }
+        
         public IActionResult MeetingsDelete()
         {
             return View();
-        }*/
+        }
 
         public IActionResult Profile()
         {
