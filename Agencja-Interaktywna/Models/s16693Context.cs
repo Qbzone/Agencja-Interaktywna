@@ -48,8 +48,8 @@ namespace Agencja_Interaktywna.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s17379;Integrated Security=True;");
-                //optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s16693;Integrated Security=True;");
+                //optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s17379;Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s16693;Integrated Security=True;");
             }
         }
 
@@ -261,9 +261,9 @@ namespace Agencja_Interaktywna.Models
                 entity.HasKey(e => new { e.IdKlient, e.IdPracownik, e.DataRozpoczeciaSpotkania })
                     .HasName("PracownikKlient_pk");
 
-                entity.Property(e => e.DataRozpoczeciaSpotkania).HasColumnType("date");
+                entity.Property(e => e.DataRozpoczeciaSpotkania).HasColumnType("datetime");
 
-                entity.Property(e => e.DataZakonczeniaSpotkania).HasColumnType("date");
+                entity.Property(e => e.DataZakonczeniaSpotkania).HasColumnType("datetime");
 
                 entity.Property(e => e.MiejsceSpotkania)
                     .IsRequired()
@@ -309,9 +309,9 @@ namespace Agencja_Interaktywna.Models
                 entity.HasKey(e => new { e.IdPracownik, e.IdZespol, e.DataPrzypisaniaPracownika })
                     .HasName("PracownikZespol_pk");
 
-                entity.Property(e => e.DataPrzypisaniaPracownika).HasColumnType("date");
+                entity.Property(e => e.DataPrzypisaniaPracownika).HasColumnType("datetime");
 
-                entity.Property(e => e.DataWypisaniaPracownika).HasColumnType("date");
+                entity.Property(e => e.DataWypisaniaPracownika).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdPracownikNavigation)
                     .WithMany(p => p.PracownikZespol)
@@ -481,9 +481,9 @@ namespace Agencja_Interaktywna.Models
                 entity.HasKey(e => new { e.IdProjekt, e.IdZadanie, e.DataPrzypisaniaZadania })
                     .HasName("ZadanieProjekt_pk");
 
-                entity.Property(e => e.DataPrzypisaniaZadania).HasColumnType("date");
+                entity.Property(e => e.DataPrzypisaniaZadania).HasColumnType("datetime");
 
-                entity.Property(e => e.DataZakonczeniaZadania).HasColumnType("date");
+                entity.Property(e => e.DataZakonczeniaZadania).HasColumnType("datetime");
 
                 entity.Property(e => e.Opis).IsRequired();
 
@@ -519,9 +519,9 @@ namespace Agencja_Interaktywna.Models
                 entity.HasKey(e => new { e.IdZespol, e.IdProjekt, e.DataPrzypisaniaZespolu })
                     .HasName("ZespolProjekt_pk");
 
-                entity.Property(e => e.DataPrzypisaniaZespolu).HasColumnType("date");
+                entity.Property(e => e.DataPrzypisaniaZespolu).HasColumnType("datetime");
 
-                entity.Property(e => e.DataWypisaniaZespolu).HasColumnType("date");
+                entity.Property(e => e.DataWypisaniaZespolu).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdProjektNavigation)
                     .WithMany(p => p.ZespolProjekt)

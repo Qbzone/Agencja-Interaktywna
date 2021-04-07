@@ -310,34 +310,23 @@ namespace Agencja_Interaktywna.Controllers
         }
     
         [HttpGet]
-        public IActionResult MeetingsEdit(int? idklient, int? idpracownik, DateTime? date)
+        public IActionResult MeetingsEdit(int? id1, int? id2, DateTime? data)
         {
-            if (idklient == null || idpracownik == null)
+            if (id1 == null)
             {
                 return NotFound();
             }
-            
-            var spotkanie = _s16693context.PracownikKlient
-                .Where(x => x.IdPracownik == idpracownik && x.IdKlient == idklient && x.DataRozpoczeciaSpotkania == date).FirstOrDefault();
-
+            var klient = _s16693context.Klient.Find(id1);
+            var pracownik = _s16693context.Pracownik.Find(id2);
+            var spotkanie =  _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == klient.IdKlient & x.IdPracownik == pracownik.IdPracownik & x.DataRozpoczeciaSpotkania == data);
             if (spotkanie == null)
             {
                 return NotFound();
             }
-
-            var klient = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
-            var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
-
-            var mCM = new MeetingCreateModel
-            {
-                PracownikKlient = spotkanie,
-                klients = klient,
-                pracowniks = pracownik
-            };
-            return View(mCM);
+            return View(spotkanie);
         }
         
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult MeetingsEdit(MeetingCreateModel mCM)
         {
@@ -356,7 +345,7 @@ namespace Agencja_Interaktywna.Controllers
         public IActionResult MeetingsDelete()
         {
             return View();
-        }
+        }*/
 
         public IActionResult Profile()
         {

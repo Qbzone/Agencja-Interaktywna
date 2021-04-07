@@ -1,11 +1,11 @@
-﻿@model Agencja_Interaktywna.Models.Functional.MeetingCreateModel
+﻿@model Agencja_Interaktywna.Models.PracownikKlient
 @{
-    ViewData["Title"] = "MeetingEdit";
+    ViewData["Title"] = "MeetingsEdit";
 }
 
 <h1>Edycja Spotkania</h1>
 
-<form method="post" asp-action="MeetingsEdit">
+@*<form method="post" asp-action="MeetingsEdit">
     <div asp-validation-summary="ModelOnly"></div>
     <input type="hidden" asp-for="@Model.PracownikKlient.IdKlient" />
     <input type="hidden" asp-for="@Model.PracownikKlient.IdPracownik" />
@@ -47,7 +47,7 @@
         <input type="submit" value="Zatwierdź" />
     </div>
 </form>
-<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
+<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>*@
 
 
 

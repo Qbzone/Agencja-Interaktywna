@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-03-12 12:14:40.534
+-- Last modification date: 2021-04-07 14:49:19.793
 
 -- tables
 -- Table: Firma
@@ -97,8 +97,8 @@ CREATE TABLE Pracownik (
 CREATE TABLE PracownikKlient (
     IdPracownik int  NOT NULL,
     IdKlient int  NOT NULL,
-    DataRozpoczeciaSpotkania date  NOT NULL,
-    DataZakonczeniaSpotkania date  NOT NULL,
+    DataRozpoczeciaSpotkania datetime  NOT NULL,
+    DataZakonczeniaSpotkania datetime  NOT NULL,
     MiejsceSpotkania nvarchar(50)  NOT NULL,
     CONSTRAINT PracownikKlient_pk PRIMARY KEY  (IdKlient,IdPracownik,DataRozpoczeciaSpotkania)
 );
@@ -116,8 +116,8 @@ CREATE TABLE PracownikUmowa (
 CREATE TABLE PracownikZespol (
     IdPracownik int  NOT NULL,
     IdZespol int  NOT NULL,
-    DataPrzypisaniaPracownika date  NOT NULL,
-    DataWypisaniaPracownika date  NULL,
+    DataPrzypisaniaPracownika datetime  NOT NULL,
+    DataWypisaniaPracownika datetime  NULL,
     CONSTRAINT PracownikZespol_pk PRIMARY KEY  (IdPracownik,IdZespol,DataPrzypisaniaPracownika)
 );
 
@@ -200,8 +200,8 @@ CREATE TABLE Zadanie (
 CREATE TABLE ZadanieProjekt (
     IdProjekt int  NOT NULL,
     IdZadanie int  NOT NULL,
-    DataPrzypisaniaZadania date  NOT NULL,
-    DataZakonczeniaZadania date  NULL,
+    DataPrzypisaniaZadania datetime  NOT NULL,
+    DataZakonczeniaZadania datetime  NULL,
     Status nvarchar(30)  NOT NULL,
     Opis nvarchar(max)  NOT NULL,
     CONSTRAINT ZadanieProjekt_pk PRIMARY KEY  (IdProjekt,IdZadanie,DataPrzypisaniaZadania)
@@ -218,8 +218,8 @@ CREATE TABLE Zespol (
 CREATE TABLE ZespolProjekt (
     IdZespol int  NOT NULL,
     IdProjekt int  NOT NULL,
-    DataPrzypisaniaZespolu date  NOT NULL,
-    DataWypisaniaZespolu date  NULL,
+    DataPrzypisaniaZespolu datetime  NOT NULL,
+    DataWypisaniaZespolu datetime  NULL,
     CONSTRAINT ZespolProjekt_pk PRIMARY KEY  (IdZespol,IdProjekt,DataPrzypisaniaZespolu)
 );
 
