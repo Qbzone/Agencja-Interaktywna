@@ -27,9 +27,10 @@
                 @item.IdKlientNavigation.IdKlientNavigation.Nazwisko
             </td>
             <td>
-                <a asp-action="MeetingsEdit" asp-route-id1="@item.IdKlient" asp-route-id2="@item.IdPracownik" asp-route-data="@item.DataRozpoczeciaSpotkania">Edytuj kurwa</a>
-                @*Html.ActionLink("Edytuj", "MeetingsEdit", new { klient = item.IdKlient, pracownik = item.IdPracownik, data = item.DataRozpoczeciaSpotkania }) |
-        @Html.ActionLink("Usuń", "MeetingsDelete", new { klient = item.IdKlient, pracownik = item.IdPracownik, data = item.DataRozpoczeciaSpotkania })*@
+                <a asp-action="MeetingsEdit" asp-route-id1="@item.IdKlient" asp-route-id2="@item.IdPracownik" asp-route-data="@item.DataRozpoczeciaSpotkania">Edytuj</a>
+                <form asp-action="MeetingsDelete" asp-route-id1="@item.IdKlient" asp-route-id2="@item.IdPracownik" asp-route-data="@item.DataRozpoczeciaSpotkania" onclick="return confirm('Czy na pewno chcesz usunąć wybrane spotkanie?')">
+                    <input type="submit" value="Usuń" /> |
+                </form>
             </td>
         </tr>
         }

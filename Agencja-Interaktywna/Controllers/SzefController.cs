@@ -171,6 +171,7 @@ namespace Agencja_Interaktywna.Controllers
                 {
 
                     oldZP.DataWypisaniaZespolu = DateTime.Now;
+                    _s16693context.Update(oldZP);
 
                     var newZP = new ZespolProjekt();
                     newZP.IdProjekt = pEM.projekt.IdProjekt;
@@ -186,6 +187,7 @@ namespace Agencja_Interaktywna.Controllers
                 {
 
                     oldPP.DataZakonczeniaWspolpracy = DateTime.Now;
+                    _s16693context.Update(oldPP);
 
                     var newPP = new ProjektPakiet();
                     newPP.IdProjekt = pEM.projekt.IdProjekt;
@@ -197,6 +199,7 @@ namespace Agencja_Interaktywna.Controllers
 
                 }
 
+                _s16693context.SaveChanges();
                 return RedirectToAction(nameof(Index));
 
             }
@@ -300,7 +303,7 @@ namespace Agencja_Interaktywna.Controllers
                 _s16693context.Add(newSpotkanie);
                 _s16693context.SaveChanges();
                 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Meetings));
             }
             else if (!ModelState.IsValid)
             {
@@ -317,8 +320,7 @@ namespace Agencja_Interaktywna.Controllers
                 return NotFound();
             }
             
-            DateTime fromDateAsDateTime = DateTime.Parse(data);
-            
+            var fromDateAsDateTime = DateTime.Parse(data);
             var klient = _s16693context.Klient.Find(id1);
             var pracownik = _s16693context.Pracownik.Find(id2);
             var spotkanie =  _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == klient.IdKlient & x.IdPracownik == pracownik.IdPracownik & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
@@ -330,38 +332,73 @@ namespace Agencja_Interaktywna.Controllers
             var klients = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
             var pracowniks = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
 
-            var mCM = new MeetingCreateModel
+            var mEM = new MeetingEditModel
             {
                 PracownikKlient = spotkanie,
+                IdPracownik = spotkanie.IdPracownik,
+                IdKlient = spotkanie.IdKlient,
+                DataRozpoczeciaSpotkania = spotkanie.DataRozpoczeciaSpotkania,
                 klients = klients,
                 pracowniks = pracowniks
             };
 
-            return View(mCM);
+            return View(mEM);
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult MeetingsEdit(MeetingCreateModel mCM)
+        public IActionResult MeetingsEdit(MeetingEditModel mEM)
         {
             if (ModelState.IsValid)
             {
+                var oldPK = _s16693context.PracownikKlient
+                    .Where(x => x.IdPracownik == mEM.IdPracownik && x.IdKlient == mEM.IdKlient && x.DataRozpoczeciaSpotkania == mEM.DataRozpoczeciaSpotkania)
+                    .FirstOrDefault();
 
-                _s16693context.Update(mCM.PracownikKlient);
-                _s16693context.SaveChanges();
-                return RedirectToAction(nameof(Meetings));
+                if(mEM.PracownikKlient.IdPracownik != oldPK.IdPracownik || mEM.PracownikKlient.IdKlient != oldPK.IdKlient || mEM.PracownikKlient.DataRozpoczeciaSpotkania != oldPK.DataRozpoczeciaSpotkania)
+                {
+                    _s16693context.Remove(oldPK);
+
+                    PracownikKlient newPK = new PracownikKlient();
+                    newPK.MiejsceSpotkania = mEM.PracownikKlient.MiejsceSpotkania;
+                    newPK.DataRozpoczeciaSpotkania = mEM.PracownikKlient.DataRozpoczeciaSpotkania;
+                    newPK.DataZakonczeniaSpotkania = mEM.PracownikKlient.DataZakonczeniaSpotkania;
+                    newPK.IdPracownik = mEM.PracownikKlient.IdPracownik;
+                    newPK.IdKlient = mEM.PracownikKlient.IdKlient;
+
+                    _s16693context.Add(newPK);
+                    _s16693context.SaveChanges();
+
+                    return RedirectToAction(nameof(Meetings));
+                }
+                else
+                {
+                    _s16693context.Entry(oldPK).State = EntityState.Detached;
+                    _s16693context.Update(mEM.PracownikKlient);
+                    _s16693context.SaveChanges();
+
+                    return RedirectToAction(nameof(Meetings));
+                }
 
             }
             else if (!ModelState.IsValid)
             {
-                return View("MeetingsEdit", mCM);
+                return View("MeetingsEdit", mEM);
             }
-            return View(mCM);
+            return View(mEM);
         }
-        
-        public IActionResult MeetingsDelete()
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MeetingsDelete(int? id1, int? id2, string data)
         {
-            return View();
+            var fromDateAsDateTime = DateTime.Parse(data);
+            var spotkanie = _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == id1 & x.IdPracownik == id2 & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
+
+            _s16693context.Remove(spotkanie);
+            _s16693context.SaveChanges();
+
+            return RedirectToAction(nameof(Meetings));
         }
 
         public IActionResult Profile()

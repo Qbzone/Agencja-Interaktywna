@@ -1,4 +1,4 @@
-﻿@model Agencja_Interaktywna.Models.Functional.MeetingCreateModel
+﻿@model Agencja_Interaktywna.Models.Functional.MeetingEditModel
 @{
     ViewData["Title"] = "MeetingEdit";
 }
@@ -7,8 +7,9 @@
 
 <form method="post" asp-action="MeetingsEdit">
     <div asp-validation-summary="ModelOnly"></div>
-    @*<input type="hidden" asp-for="@Model.PracownikKlient.IdKlient" />
-    <input type="hidden" asp-for="@Model.PracownikKlient.IdPracownik" />*@
+    <input type="hidden" asp-for="@Model.IdKlient" />
+    <input type="hidden" asp-for="@Model.IdPracownik" />
+    <input type="hidden" asp-for="@Model.DataRozpoczeciaSpotkania" />
     <div>
         Miejsce spotkania: <input type="text" asp-for="@Model.PracownikKlient.MiejsceSpotkania" />
         <span asp-validation-for="PracownikKlient.MiejsceSpotkania"></span>
