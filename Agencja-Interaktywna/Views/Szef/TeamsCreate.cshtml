@@ -1,0 +1,30 @@
+﻿@model Agencja_Interaktywna.Models.Functional.TeamCreateModel
+@{
+    ViewData["Title"] = "TeamCreate";
+}
+
+<h1>Tworzenie Zespołu</h1>
+
+<form method="post" asp-action="MeetingsCreate">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        Nazwa zespołu: <input type="text" asp-for="@Model.zespol.Nazwa" />
+        <span asp-validation-for="zespol.Nazwa"></span>
+    </div>
+    <div>
+        Pracownik: <select asp-for="@Model.pracownik.IdPracownik" multiple>
+            <option value="0">Wybierz pracownika</option>
+            @{
+                foreach (var item in Model.pracowniks)
+                {
+                    <option value="@item.IdPracownik">@item.IdPracownikNavigation.AdresEmail</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="@Model.pracownik.IdPracownik"></span>
+    </div>
+    <div>
+        <input type="submit" value="Zatwierdź" />
+    </div>
+</form>
+<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>

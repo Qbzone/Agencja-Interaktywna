@@ -1,7 +1,27 @@
-﻿
+﻿@model List<Agencja_Interaktywna.Models.Zespol>
 @{
     ViewData["Title"] = "Teams";
 }
 
-<h1>Teams</h1>
+<h1>Zespoły</h1>
 
+<a asp-action="TeamsCreate" asp-route-id="">Stwórz zespół</a>
+<table>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>
+                    @item.Nazwa
+                </td>
+                <td>
+                    <a asp-action="Team" asp-route-id="@item.IdZespol">Wyświetl zespół</a>
+                    <a asp-action="TeamsEdit" asp-route-id="@item.IdZespol">Edytuj</a>
+                    <form asp-action="TeamsDelete" asp-route-id="@item.IdZespol" onclick="return confirm('Czy na pewno chcesz usunąć wybrany zespół?')">
+                        <input type="submit" value="Usuń" /> |
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

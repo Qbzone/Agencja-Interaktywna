@@ -60,7 +60,6 @@ namespace Agencja_Interaktywna.Controllers
         [HttpGet]
         public IActionResult ProjectCreate()
         {
-            var projekt = new Projekt();
             var firma = from e in _s16693context.Firma select e;
             var zespol = from e in _s16693context.Zespol select e;
             var pakiet = from e in _s16693context.Pakiet select e;
@@ -274,7 +273,6 @@ namespace Agencja_Interaktywna.Controllers
         [HttpGet]
         public IActionResult MeetingsCreate()
         {
-            PracownikKlient pracownikKlient = new PracownikKlient();
             var klient = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
             var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
             
@@ -419,7 +417,9 @@ namespace Agencja_Interaktywna.Controllers
 
         public IActionResult Teams()
         {
-            return View();
+            var teams = _s16693context.Zespol.ToList();
+
+            return View(teams);
         }
 
         public IActionResult Team(int? id)
@@ -439,17 +439,25 @@ namespace Agencja_Interaktywna.Controllers
             return View(members);
         }
 
-        public IActionResult TeamCreate()
+        [HttpGet]
+        public IActionResult TeamsCreate()
+        {
+            var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+
+            var tCM = new TeamCreateModel
+            {
+                pracowniks = pracownik
+            };
+
+            return View(tCM);
+        }
+
+        public IActionResult TeamsEdit()
         {
             return View();
         }
 
-        public IActionResult TeamEdit()
-        {
-            return View();
-        }
-
-        public IActionResult TeamDelete()
+        public IActionResult TeamsDelete()
         {
             return View();
         }
