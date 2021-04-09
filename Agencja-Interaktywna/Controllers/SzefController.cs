@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.WebPages.Html;
 using Agencja_Interaktywna.Models;
 using Agencja_Interaktywna.Models.Functional;
 using Microsoft.AspNetCore.Authentication;
@@ -82,22 +83,29 @@ namespace Agencja_Interaktywna.Controllers
         {
             if (ModelState.IsValid)
             {
-                Projekt newProjekt = new Projekt();
-                newProjekt.Nazwa = pCM.projekt.Nazwa;
-                newProjekt.Logo = pCM.projekt.Logo;
-                newProjekt.IdFirma = pCM.projekt.IdFirma;
+                var newProjekt = new Projekt()
+                {
+                    Nazwa = pCM.projekt.Nazwa,
+                    Logo = pCM.projekt.Logo,
+                    IdFirma = pCM.projekt.IdFirma
+                };
+
                 _s16693context.Add(newProjekt);
                 _s16693context.SaveChanges();
 
-                ZespolProjekt newZP = new ZespolProjekt();
-                newZP.IdProjekt = newProjekt.IdProjekt;
-                newZP.IdZespol = pCM.zespol.IdZespol;
-                newZP.DataPrzypisaniaZespolu = DateTime.Now;
+                var newZP = new ZespolProjekt()
+                {
+                    IdProjekt = newProjekt.IdProjekt,
+                    IdZespol = pCM.zespol.IdZespol,
+                    DataPrzypisaniaZespolu = DateTime.Now
+                };
 
-                ProjektPakiet newPP = new ProjektPakiet();
-                newPP.IdProjekt = newProjekt.IdProjekt;
-                newPP.IdPakiet = pCM.pakiet.IdPakiet;
-                newPP.DataRozpoczeciaWspolpracy = DateTime.Now;
+                var newPP = new ProjektPakiet()
+                {
+                    IdProjekt = newProjekt.IdProjekt,
+                    IdPakiet = pCM.pakiet.IdPakiet,
+                    DataRozpoczeciaWspolpracy = DateTime.Now
+                };
 
                 _s16693context.Add(newZP);
                 _s16693context.Add(newPP);
@@ -172,10 +180,12 @@ namespace Agencja_Interaktywna.Controllers
                     oldZP.DataWypisaniaZespolu = DateTime.Now;
                     _s16693context.Update(oldZP);
 
-                    var newZP = new ZespolProjekt();
-                    newZP.IdProjekt = pEM.projekt.IdProjekt;
-                    newZP.IdZespol = pEM.zespol.IdZespol;
-                    newZP.DataPrzypisaniaZespolu = DateTime.Now;
+                    var newZP = new ZespolProjekt()
+                    {
+                        IdProjekt = pEM.projekt.IdProjekt,
+                        IdZespol = pEM.zespol.IdZespol,
+                        DataPrzypisaniaZespolu = DateTime.Now
+                    };
 
                     _s16693context.Add(newZP);
                     _s16693context.SaveChanges();
@@ -188,10 +198,12 @@ namespace Agencja_Interaktywna.Controllers
                     oldPP.DataZakonczeniaWspolpracy = DateTime.Now;
                     _s16693context.Update(oldPP);
 
-                    var newPP = new ProjektPakiet();
-                    newPP.IdProjekt = pEM.projekt.IdProjekt;
-                    newPP.IdPakiet = pEM.pakiet.IdPakiet;
-                    newPP.DataRozpoczeciaWspolpracy = DateTime.Now;
+                    var newPP = new ProjektPakiet() 
+                    {
+                        IdProjekt = pEM.projekt.IdProjekt,
+                        IdPakiet = pEM.pakiet.IdPakiet,
+                        DataRozpoczeciaWspolpracy = DateTime.Now
+                    };
 
                     _s16693context.Add(newPP);
                     _s16693context.SaveChanges();
@@ -291,12 +303,14 @@ namespace Agencja_Interaktywna.Controllers
         {
             if (ModelState.IsValid)
             {
-                PracownikKlient newSpotkanie = new PracownikKlient();
-                newSpotkanie.MiejsceSpotkania = mCM.PracownikKlient.MiejsceSpotkania;
-                newSpotkanie.DataRozpoczeciaSpotkania = mCM.PracownikKlient.DataRozpoczeciaSpotkania;
-                newSpotkanie.DataZakonczeniaSpotkania = mCM.PracownikKlient.DataZakonczeniaSpotkania;
-                newSpotkanie.IdPracownik = mCM.PracownikKlient.IdPracownik;
-                newSpotkanie.IdKlient = mCM.PracownikKlient.IdKlient;
+                var newSpotkanie = new PracownikKlient() 
+                {
+                    MiejsceSpotkania = mCM.PracownikKlient.MiejsceSpotkania,
+                    DataRozpoczeciaSpotkania = mCM.PracownikKlient.DataRozpoczeciaSpotkania,
+                    DataZakonczeniaSpotkania = mCM.PracownikKlient.DataZakonczeniaSpotkania,
+                    IdPracownik = mCM.PracownikKlient.IdPracownik,
+                    IdKlient = mCM.PracownikKlient.IdKlient
+                };
                 
                 _s16693context.Add(newSpotkanie);
                 _s16693context.SaveChanges();
@@ -353,16 +367,18 @@ namespace Agencja_Interaktywna.Controllers
                     .Where(x => x.IdPracownik == mEM.IdPracownik && x.IdKlient == mEM.IdKlient && x.DataRozpoczeciaSpotkania == mEM.DataRozpoczeciaSpotkania)
                     .FirstOrDefault();
 
-                if(mEM.PracownikKlient.IdPracownik != oldPK.IdPracownik || mEM.PracownikKlient.IdKlient != oldPK.IdKlient || mEM.PracownikKlient.DataRozpoczeciaSpotkania != oldPK.DataRozpoczeciaSpotkania)
+                if (mEM.PracownikKlient.IdPracownik != oldPK.IdPracownik || mEM.PracownikKlient.IdKlient != oldPK.IdKlient || mEM.PracownikKlient.DataRozpoczeciaSpotkania != oldPK.DataRozpoczeciaSpotkania)
                 {
                     _s16693context.Remove(oldPK);
 
-                    PracownikKlient newPK = new PracownikKlient();
-                    newPK.MiejsceSpotkania = mEM.PracownikKlient.MiejsceSpotkania;
-                    newPK.DataRozpoczeciaSpotkania = mEM.PracownikKlient.DataRozpoczeciaSpotkania;
-                    newPK.DataZakonczeniaSpotkania = mEM.PracownikKlient.DataZakonczeniaSpotkania;
-                    newPK.IdPracownik = mEM.PracownikKlient.IdPracownik;
-                    newPK.IdKlient = mEM.PracownikKlient.IdKlient;
+                    var newPK = new PracownikKlient()
+                    {
+                        MiejsceSpotkania = mEM.PracownikKlient.MiejsceSpotkania,
+                        DataRozpoczeciaSpotkania = mEM.PracownikKlient.DataRozpoczeciaSpotkania,
+                        DataZakonczeniaSpotkania = mEM.PracownikKlient.DataZakonczeniaSpotkania,
+                        IdPracownik = mEM.PracownikKlient.IdPracownik,
+                        IdKlient = mEM.PracownikKlient.IdKlient
+                    };
 
                     _s16693context.Add(newPK);
                     _s16693context.SaveChanges();
@@ -429,26 +445,83 @@ namespace Agencja_Interaktywna.Controllers
                 .Include(z => z.IdZespolNavigation)
                 .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
-            var members = _s16693context.PracownikZespol
-                .Include(z => z.IdZespolNavigation)
-                .Include(p => p.IdPracownikNavigation)
-                    .ThenInclude(o => o.IdPracownikNavigation)
-                    .Where(x => x.IdZespol == team.IdZespol)
-                    .ToList();
+            if(team != null)
+            {
+                var members = _s16693context.PracownikZespol
+                    .Include(z => z.IdZespolNavigation)
+                    .Include(p => p.IdPracownikNavigation)
+                        .ThenInclude(o => o.IdPracownikNavigation)
+                        .Where(x => x.IdZespol == team.IdZespol)
+                        .ToList();
+                return View(members);
+            }
+            else
+            {
+                var members = _s16693context.PracownikZespol
+                    .Include(z => z.IdZespolNavigation)
+                    .Include(p => p.IdPracownikNavigation)
+                        .ThenInclude(o => o.IdPracownikNavigation)
+                        .Where(x => x.IdZespol == id)
+                        .ToList();
+                return View(members);
+            }
 
-            return View(members);
         }
 
         [HttpGet]
         public IActionResult TeamsCreate()
         {
-            var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+            var pracownik = _s16693context.Pracownik
+                .Include(o => o.IdPracownikNavigation)
+                .Select(x => new SelectListItem()
+                {
+                    Text = x.IdPracownikNavigation.AdresEmail,
+                    Value = x.IdPracownik.ToString()
+                }).ToList();
 
             var tCM = new TeamCreateModel
             {
                 pracowniks = pracownik
             };
 
+            return View(tCM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult TeamsCreate(TeamCreateModel tCM)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var newTeam = new Zespol()
+                {
+                    Nazwa = tCM.zespol.Nazwa
+                };
+
+                _s16693context.Add(newTeam);
+                _s16693context.SaveChanges();
+
+                var pracownikIds = tCM.pracowniks.Where(x => x.Selected).Select(y => y.Value);
+
+                foreach(var id in pracownikIds)
+                {
+                    var PZ = new PracownikZespol()
+                    {
+                        IdPracownik = int.Parse(id),
+                        IdZespol = newTeam.IdZespol,
+                        DataPrzypisaniaPracownika = DateTime.Now
+                    };
+                        _s16693context.Add(PZ);
+                }
+
+                _s16693context.SaveChanges();
+                return RedirectToAction(nameof(Teams));
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View("TeamsCreate", tCM);
+            }
             return View(tCM);
         }
 

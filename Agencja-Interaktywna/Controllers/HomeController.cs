@@ -99,9 +99,11 @@ namespace Agencja_Interaktywna.Controllers
                 if (v != null)
                 {
                     v.CzyEmailZweryfikowany = true;
-                    Klient klient = new Klient();
-                    klient.IdKlient = v.IdOsoba;
-                    klient.Priorytet = "nie";
+                    Klient klient = new Klient() 
+                    {
+                        IdKlient = v.IdOsoba,
+                        Priorytet = "nie"
+                     };
 
                     dc.Klient.Add(klient);
                     dc.SaveChanges();

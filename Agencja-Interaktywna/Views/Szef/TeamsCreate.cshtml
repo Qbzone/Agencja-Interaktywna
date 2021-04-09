@@ -5,23 +5,19 @@
 
 <h1>Tworzenie Zespołu</h1>
 
-<form method="post" asp-action="MeetingsCreate">
+<form method="post" asp-action="TeamsCreate">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
         Nazwa zespołu: <input type="text" asp-for="@Model.zespol.Nazwa" />
         <span asp-validation-for="zespol.Nazwa"></span>
     </div>
     <div>
-        Pracownik: <select asp-for="@Model.pracownik.IdPracownik" multiple>
-            <option value="0">Wybierz pracownika</option>
-            @{
-                foreach (var item in Model.pracowniks)
-                {
-                    <option value="@item.IdPracownik">@item.IdPracownikNavigation.AdresEmail</option>
-                }
-            }
-        </select>
-        <span asp-validation-for="@Model.pracownik.IdPracownik"></span>
+        @for(int i=0; i < Model.pracowniks.Count; i++)
+        {
+            <input type="hidden" asp-for="@Model.pracowniks[i].Value" />
+            <input asp-for="pracowniks[i].Selected" />@Model.pracowniks[i].Text
+        }
+
     </div>
     <div>
         <input type="submit" value="Zatwierdź" />
