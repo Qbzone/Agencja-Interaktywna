@@ -525,14 +525,114 @@ namespace Agencja_Interaktywna.Controllers
             return View(tCM);
         }
 
-        public IActionResult TeamsEdit()
+        [HttpGet]
+        public IActionResult TeamsEdit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            var zespol = _s16693context.Zespol
+                .Include(z => z.PracownikZespol)
+                .ThenInclude(p => p.IdPracownikNavigation).AsNoTracking()
+                .SingleOrDefault(z => z.IdZespol == id);
+            
+            if (zespol == null)
+            {
+                return NotFound();
+            }
+
+            var allpracownik = _s16693context.Pracownik
+                .Include(o => o.IdPracownikNavigation)
+                .Select(x => new CheckBoxItem()
+                {
+                    Id = x.IdPracownik,
+                    Nazwa = x.IdPracownikNavigation.AdresEmail,
+                    IsChecked = x.PracownikZespol.Any(x => x.IdZespol == zespol.IdZespol) ? true : false
+                }).ToList();
+            
+            var tEM = new TeamEditModel() 
+            {
+                zespol = zespol,
+                pracowniks = allpracownik
+            };
+            
+            return View(tEM);
         }
 
-        public IActionResult TeamsDelete()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult TeamsEdit(TeamEditModel tEM)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+
+
+                    _s16693context.Update(tEM.zespol);
+                    _s16693context.SaveChanges();
+                    List<PracownikZespol> pracowniklist = new List<PracownikZespol>();
+
+                    foreach (var item in tEM.pracowniks)
+                    {
+                        if (item.IsChecked == true)
+                        {
+                            var PZ = new PracownikZespol()
+                            {
+                                IdPracownik = item.Id,
+                                IdZespol = tEM.zespol.IdZespol,
+                                DataPrzypisaniaPracownika = DateTime.Now
+                            };
+                            _s16693context.Add(PZ);
+
+                        }
+                    }
+
+                    var dt = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
+                    //var resultlist = dt.Except(pracowniklist).ToList();
+                    foreach (var item in dt)
+                    {
+                        _s16693context.PracownikZespol.Remove(item);
+                        _s16693context.SaveChanges();
+                    }
+
+                    var idS = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
+                    foreach (var item in pracowniklist)
+                    {
+                        if (idS.Contains(item))
+                        {
+                            _s16693context.PracownikZespol.Add(item);
+                            _s16693context.SaveChanges();
+                        }
+                    }
+                    return RedirectToAction(nameof(Teams));
+                }
+
+            else if (!ModelState.IsValid)
+            {
+                return View("TeamsEdit", tEM);
+            }
+            return View(tEM);
+        }
+
+        [HttpPost]
+        public IActionResult TeamsDelete(int? id)
+        {
+            foreach (var delPZ in _s16693context.PracownikZespol)
+            {
+                if (delPZ.IdZespol == id)
+                {
+                    _s16693context.PracownikZespol.Remove(delPZ);
+                }
+            }
+
+            var zespol = _s16693context.Zespol.Find(id);
+
+            _s16693context.Remove(zespol);
+            _s16693context.SaveChanges();
+
+            return RedirectToAction(nameof(Teams));
         }
 
         public IActionResult Contact()

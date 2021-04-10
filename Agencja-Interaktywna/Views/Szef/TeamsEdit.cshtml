@@ -1,7 +1,35 @@
-﻿
+﻿@model Agencja_Interaktywna.Models.Functional.TeamEditModel
 @{
     ViewData["Title"] = "TeamEdit";
 }
 
-<h1>TeamEdit</h1>
+<h1>Edycja zespołu</h1>
+<form method="post" asp-action="TeamsEdit">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="@Model.zespol.IdZespol" />
+    <div>
+        Nazwa zespołu: <input type="text" asp-for="@Model.zespol.Nazwa" />
+        <span asp-validation-for="zespol.Nazwa"></span>
+    </div>
+    <div>
+        <table>
+        @for (int i = 0; i < Model.pracowniks.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.HiddenFor(x => Model.pracowniks[i].Id)
+                    @Html.DisplayFor(it => Model.pracowniks[i].Nazwa)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(it => Model.pracowniks[i].IsChecked, new { Style = "vertical-align: 3px" })
+                    </td>
+                </tr>
+        }
+        </table>
+    </div>
+    <div>
+        <input type="submit" value="Potwierdź zmiany" />
+    </div>
+</form>
+<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
 
