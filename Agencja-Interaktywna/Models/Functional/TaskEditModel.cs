@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace Agencja_Interaktywna.Models.Functional
 {
-    public class ProjectDetailsModel
+    public class TaskEditModel
     {
-        public Projekt projekt { get; set;}
-        public List<UslugaProjekt> zadanies { get; set; }
-
+        public UslugaProjekt UslugaProjekt { get; set; }
+        public List<Usluga> uslugas { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Agencja_Interaktywna.Models
         public Projekt()
         {
             ProjektPakiet = new HashSet<ProjektPakiet>();
-            ZadanieProjekt = new HashSet<ZadanieProjekt>();
+            UslugaProjekt = new HashSet<UslugaProjekt>();
             ZespolProjekt = new HashSet<ZespolProjekt>();
         }
 
@@ -19,7 +19,7 @@ namespace Agencja_Interaktywna.Models
 
         public virtual Firma IdFirmaNavigation { get; set; }
         public virtual ICollection<ProjektPakiet> ProjektPakiet { get; set; }
-        public virtual ICollection<ZadanieProjekt> ZadanieProjekt { get; set; }
+        public virtual ICollection<UslugaProjekt> UslugaProjekt { get; set; }
         public virtual ICollection<ZespolProjekt> ZespolProjekt { get; set; }
     }
 }

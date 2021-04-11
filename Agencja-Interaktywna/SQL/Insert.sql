@@ -74,27 +74,27 @@ VALUES(1,1,'2020-12-12 12:00:00',NULL);
 INSERT INTO ZespolProjekt
 VALUES(1,2,'2020-12-12 12:00:00',NULL);
 
-INSERT INTO Zadanie
+INSERT INTO Usluga
 VALUES('Posadz marchew');
-INSERT INTO Zadanie
+INSERT INTO Usluga
 VALUES('Posadz ogorki');
-INSERT INTO Zadanie
+INSERT INTO Usluga
 VALUES('Posadz rzodkiew');
-INSERT INTO Zadanie
+INSERT INTO Usluga
 VALUES('Posadz szczypiorek');
 
-INSERT INTO ZadanieProjekt
+INSERT INTO UslugaProjekt
 VALUES(1,1,'2020-10-20 12:00:00',NULL,'Rozpoczete','Trzeba posadzic marchew');
-INSERT INTO ZadanieProjekt
+INSERT INTO UslugaProjekt
 VALUES(1,2,'2020-10-21 12:00:00',NULL,'Rozpoczete','Trzeba posadzic ogorki');
-INSERT INTO ZadanieProjekt
+INSERT INTO UslugaProjekt
 VALUES(1,3,'2020-10-22 12:00:00',NULL,'Rozpoczete','Trzeba posadzic rzodkiew');
-INSERT INTO ZadanieProjekt
+INSERT INTO UslugaProjekt
 VALUES(1,4,'2020-10-23 12:00:00',NULL,'Rozpoczete','Trzeba posadzic szczypiorek');
 
-INSERT INTO ZadanieProjekt
+INSERT INTO UslugaProjekt
 VALUES(2,1,'2020-10-20 12:00:00',NULL,'Rozpoczete','Trzeba posadzic marchew');
-INSERT INTO ZadanieProjekt
+INSERT INTO UslugaProjekt
 VALUES(2,2,'2020-10-21 12:00:00',NULL,'Rozpoczete','Trzeba posadzic ogorki');
 
 INSERT INTO PracownikKlient
@@ -108,6 +108,17 @@ INSERT INTO Pakiet
 VALUES ('Pakiet usług sadzenia warzyw i roślin',2000,'abonament');
 
 INSERT INTO ProjektPakiet
-VALUES (1,1,'2021-01-01',NULL);
+VALUES (1,1,'2021-01-01 12:40:00',NULL);
 INSERT INTO ProjektPakiet
-VALUES (1,2,'2021-01-01 12:40:00',NULL);
+VALUES (2,2,'2021-01-01 12:40:00',NULL);
+
+INSERT INTO PakietUsluga
+VALUES (1,1);
+INSERT INTO PakietUsluga
+VALUES (1,2);
+INSERT INTO PakietUsluga
+VALUES (1,3);
+INSERT INTO PakietUsluga
+VALUES (2,1);
+INSERT INTO PakietUsluga
+VALUES (2,4);

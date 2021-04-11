@@ -1,11 +1,7 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-04-07 14:49:19.793
+-- Last modification date: 2021-04-11 13:48:14.969
 
 -- foreign keys
-ALTER TABLE FirmaTag DROP CONSTRAINT FirmaTag_Firma;
-
-ALTER TABLE FirmaTag DROP CONSTRAINT FirmaTag_Tag;
-
 ALTER TABLE KlientFirma DROP CONSTRAINT KlientFirma_Firma;
 
 ALTER TABLE KlientFirma DROP CONSTRAINT KlientFirma_Klient;
@@ -54,14 +50,12 @@ ALTER TABLE ZespolProjekt DROP CONSTRAINT Table_24_Projekt;
 
 ALTER TABLE ZespolProjekt DROP CONSTRAINT Table_24_Zespol;
 
-ALTER TABLE ZadanieProjekt DROP CONSTRAINT Table_26_Projekt;
+ALTER TABLE UslugaProjekt DROP CONSTRAINT Table_26_Projekt;
 
-ALTER TABLE ZadanieProjekt DROP CONSTRAINT Table_26_Zadanie;
+ALTER TABLE UslugaProjekt DROP CONSTRAINT ZadanieProjekt_Usluga;
 
 -- tables
 DROP TABLE Firma;
-
-DROP TABLE FirmaTag;
 
 DROP TABLE Grafik;
 
@@ -97,17 +91,13 @@ DROP TABLE ProjektPakiet;
 
 DROP TABLE Szef;
 
-DROP TABLE Tag;
-
 DROP TABLE Tester;
 
 DROP TABLE Umowa;
 
 DROP TABLE Usluga;
 
-DROP TABLE Zadanie;
-
-DROP TABLE ZadanieProjekt;
+DROP TABLE UslugaProjekt;
 
 DROP TABLE Zespol;
 

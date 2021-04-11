@@ -7,7 +7,6 @@ namespace Agencja_Interaktywna.Models
     {
         public Firma()
         {
-            FirmaTag = new HashSet<FirmaTag>();
             KlientFirma = new HashSet<KlientFirma>();
             Projekt = new HashSet<Projekt>();
         }
@@ -15,7 +14,6 @@ namespace Agencja_Interaktywna.Models
         public int IdFirma { get; set; }
         public string Nazwa { get; set; }
 
-        public virtual ICollection<FirmaTag> FirmaTag { get; set; }
         public virtual ICollection<KlientFirma> KlientFirma { get; set; }
         public virtual ICollection<Projekt> Projekt { get; set; }
     }

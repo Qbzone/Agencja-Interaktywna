@@ -26,6 +26,7 @@ namespace Agencja_Interaktywna.Controllers
             return View(pr);
         }
 
+        [HttpGet]
         public IActionResult ProjectDetails(int? id)
         {
             if (id == null)
@@ -36,9 +37,9 @@ namespace Agencja_Interaktywna.Controllers
             var project = _s16693context.Projekt
             .FirstOrDefault(e => e.IdProjekt == id);
 
-            var tasks = _s16693context.ZadanieProjekt
+            var tasks = _s16693context.UslugaProjekt
                 .Include(p => p.IdProjektNavigation)
-                .Include(z => z.IdZadanieNavigation)
+                .Include(z => z.IdUslugaNavigation)
                 .Where(e => e.IdProjekt == id)
                 .ToList();
 
@@ -198,7 +199,7 @@ namespace Agencja_Interaktywna.Controllers
                     oldPP.DataZakonczeniaWspolpracy = DateTime.Now;
                     _s16693context.Update(oldPP);
 
-                    var newPP = new ProjektPakiet() 
+                    var newPP = new ProjektPakiet()
                     {
                         IdProjekt = pEM.projekt.IdProjekt,
                         IdPakiet = pEM.pakiet.IdPakiet,
@@ -242,11 +243,11 @@ namespace Agencja_Interaktywna.Controllers
                 }
             }
 
-            foreach (ZadanieProjekt delZadP in _s16693context.ZadanieProjekt)
+            foreach (UslugaProjekt delZadP in _s16693context.UslugaProjekt)
             {
                 if (delZadP.IdProjekt == pDM.projekt.IdProjekt)
                 {
-                    _s16693context.ZadanieProjekt.Remove(delZadP);
+                    _s16693context.UslugaProjekt.Remove(delZadP);
                 }
             }
 
@@ -278,7 +279,7 @@ namespace Agencja_Interaktywna.Controllers
                 .Include(p => p.IdPracownikNavigation)
                     .ThenInclude(po => po.IdPracownikNavigation)
                 .ToList();
-            
+
             return View(meetings);
         }
 
@@ -287,7 +288,7 @@ namespace Agencja_Interaktywna.Controllers
         {
             var klient = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
             var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
-            
+
             var mCM = new MeetingCreateModel
             {
                 klients = klient,
@@ -303,7 +304,7 @@ namespace Agencja_Interaktywna.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newSpotkanie = new PracownikKlient() 
+                var newSpotkanie = new PracownikKlient()
                 {
                     MiejsceSpotkania = mCM.PracownikKlient.MiejsceSpotkania,
                     DataRozpoczeciaSpotkania = mCM.PracownikKlient.DataRozpoczeciaSpotkania,
@@ -311,10 +312,10 @@ namespace Agencja_Interaktywna.Controllers
                     IdPracownik = mCM.PracownikKlient.IdPracownik,
                     IdKlient = mCM.PracownikKlient.IdKlient
                 };
-                
+
                 _s16693context.Add(newSpotkanie);
                 _s16693context.SaveChanges();
-                
+
                 return RedirectToAction(nameof(Meetings));
             }
             else if (!ModelState.IsValid)
@@ -323,7 +324,7 @@ namespace Agencja_Interaktywna.Controllers
             }
             return View(mCM);
         }
-    
+
         [HttpGet]
         public IActionResult MeetingsEdit(int? id1, int? id2, string data)
         {
@@ -331,11 +332,9 @@ namespace Agencja_Interaktywna.Controllers
             {
                 return NotFound();
             }
-            
+
             var fromDateAsDateTime = DateTime.Parse(data);
-            var klient = _s16693context.Klient.Find(id1);
-            var pracownik = _s16693context.Pracownik.Find(id2);
-            var spotkanie =  _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == klient.IdKlient & x.IdPracownik == pracownik.IdPracownik & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
+            var spotkanie = _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == id1 & x.IdPracownik == id2 & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
             if (spotkanie == null)
             {
                 return NotFound();
@@ -356,7 +355,7 @@ namespace Agencja_Interaktywna.Controllers
 
             return View(mEM);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult MeetingsEdit(MeetingEditModel mEM)
@@ -415,6 +414,7 @@ namespace Agencja_Interaktywna.Controllers
             return RedirectToAction(nameof(Meetings));
         }
 
+        [HttpGet]
         public IActionResult Profile()
         {
             var sz = _s16693context.Pracownik
@@ -431,6 +431,7 @@ namespace Agencja_Interaktywna.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Teams()
         {
             var teams = _s16693context.Zespol.ToList();
@@ -438,6 +439,7 @@ namespace Agencja_Interaktywna.Controllers
             return View(teams);
         }
 
+        [HttpGet]
         public IActionResult Team(int? id)
         {
             var team = _s16693context.ZespolProjekt
@@ -445,7 +447,7 @@ namespace Agencja_Interaktywna.Controllers
                 .Include(z => z.IdZespolNavigation)
                 .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
-            if(team != null)
+            if (team != null)
             {
                 var members = _s16693context.PracownikZespol
                     .Include(z => z.IdZespolNavigation)
@@ -504,7 +506,7 @@ namespace Agencja_Interaktywna.Controllers
 
                 var pracownikIds = tCM.pracowniks.Where(x => x.Selected).Select(y => y.Value);
 
-                foreach(var id in pracownikIds)
+                foreach (var id in pracownikIds)
                 {
                     var PZ = new PracownikZespol()
                     {
@@ -512,7 +514,7 @@ namespace Agencja_Interaktywna.Controllers
                         IdZespol = newTeam.IdZespol,
                         DataPrzypisaniaPracownika = DateTime.Now
                     };
-                        _s16693context.Add(PZ);
+                    _s16693context.Add(PZ);
                 }
 
                 _s16693context.SaveChanges();
@@ -538,7 +540,7 @@ namespace Agencja_Interaktywna.Controllers
                 .Include(z => z.PracownikZespol)
                 .ThenInclude(p => p.IdPracownikNavigation).AsNoTracking()
                 .SingleOrDefault(z => z.IdZespol == id);
-            
+
             if (zespol == null)
             {
                 return NotFound();
@@ -552,13 +554,13 @@ namespace Agencja_Interaktywna.Controllers
                     Nazwa = x.IdPracownikNavigation.AdresEmail,
                     IsChecked = x.PracownikZespol.Any(x => x.IdZespol == zespol.IdZespol) ? true : false
                 }).ToList();
-            
-            var tEM = new TeamEditModel() 
+
+            var tEM = new TeamEditModel()
             {
                 zespol = zespol,
                 pracowniks = allpracownik
             };
-            
+
             return View(tEM);
         }
 
@@ -568,46 +570,43 @@ namespace Agencja_Interaktywna.Controllers
         {
             if (ModelState.IsValid)
             {
+                _s16693context.Update(tEM.zespol);
+                _s16693context.SaveChanges();
+                List<PracownikZespol> pracowniklist = new List<PracownikZespol>();
 
-
-                    _s16693context.Update(tEM.zespol);
-                    _s16693context.SaveChanges();
-                    List<PracownikZespol> pracowniklist = new List<PracownikZespol>();
-
-                    foreach (var item in tEM.pracowniks)
+                foreach (var item in tEM.pracowniks)
+                {
+                    if (item.IsChecked == true)
                     {
-                        if (item.IsChecked == true)
+                        var PZ = new PracownikZespol()
                         {
-                            var PZ = new PracownikZespol()
-                            {
-                                IdPracownik = item.Id,
-                                IdZespol = tEM.zespol.IdZespol,
-                                DataPrzypisaniaPracownika = DateTime.Now
-                            };
-                            _s16693context.Add(PZ);
+                            IdPracownik = item.Id,
+                            IdZespol = tEM.zespol.IdZespol,
+                            DataPrzypisaniaPracownika = DateTime.Now
+                        };
+                        _s16693context.Add(PZ);
 
-                        }
                     }
+                }
 
-                    var dt = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
-                    //var resultlist = dt.Except(pracowniklist).ToList();
-                    foreach (var item in dt)
+                var dt = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
+                foreach (var item in dt)
+                {
+                    _s16693context.PracownikZespol.Remove(item);
+                    _s16693context.SaveChanges();
+                }
+
+                var idS = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
+                foreach (var item in pracowniklist)
+                {
+                    if (idS.Contains(item))
                     {
-                        _s16693context.PracownikZespol.Remove(item);
+                        _s16693context.PracownikZespol.Add(item);
                         _s16693context.SaveChanges();
                     }
-
-                    var idS = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
-                    foreach (var item in pracowniklist)
-                    {
-                        if (idS.Contains(item))
-                        {
-                            _s16693context.PracownikZespol.Add(item);
-                            _s16693context.SaveChanges();
-                        }
-                    }
-                    return RedirectToAction(nameof(Teams));
                 }
+                return RedirectToAction(nameof(Teams));
+            }
 
             else if (!ModelState.IsValid)
             {
@@ -635,6 +634,7 @@ namespace Agencja_Interaktywna.Controllers
             return RedirectToAction(nameof(Teams));
         }
 
+        [HttpGet]
         public IActionResult Contact()
         {
             return View();
@@ -645,14 +645,105 @@ namespace Agencja_Interaktywna.Controllers
             return View();
         }
 
-        public IActionResult TaskCreate()
+        [HttpGet]
+        public IActionResult TaskCreate(int? id)
         {
-            return View();
+            var pakiet = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == id && x.DataZakonczeniaWspolpracy == null);
+            var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == id).Include(u => u.IdUslugaNavigation).ToList();
+            List<Usluga> uslugas = new List<Usluga>();
+            foreach (var item in pU)
+            {
+                uslugas.Add(_s16693context.Usluga.FirstOrDefault(x => x.IdUsluga == item.IdUsluga));
+            }
+
+            var projekt = _s16693context.Projekt.Find(id);
+
+            var tCM = new TaskCreateModel
+            {
+                uslugas = uslugas,
+                projekt = projekt
+            };
+
+            return View(tCM);
         }
 
-        public IActionResult TaskEdit()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult TaskCreate(TaskCreateModel tCM)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var newZadanie = new UslugaProjekt()
+                {
+                    IdProjekt = tCM.projekt.IdProjekt,
+                    IdUsluga = tCM.UslugaProjekt.IdUsluga,
+                    Opis = tCM.UslugaProjekt.Opis,
+                    DataPrzypisaniaZadania = tCM.UslugaProjekt.DataPrzypisaniaZadania,
+                    DataZakonczeniaZadania = tCM.UslugaProjekt.DataZakonczeniaZadania,
+                    Status = tCM.UslugaProjekt.Status
+                };
+
+                _s16693context.Add(newZadanie);
+                _s16693context.SaveChanges();
+
+                return RedirectToAction("ProjectDetails", new { id = tCM.projekt.IdProjekt });
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View("MeetingsCreate", tCM);
+            }
+            return View(tCM);
+        }
+
+        [HttpGet]
+        public IActionResult TaskEdit(int? id1, int? id2, string data)
+        {
+            if (id1 == null)
+            {
+                return NotFound();
+            }
+
+            var fromDateAsDateTime = DateTime.Parse(data);
+            var uslugaprojekt = _s16693context.UslugaProjekt.FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+            if (uslugaprojekt == null)
+            {
+                return NotFound();
+            }
+
+            var pakiet = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == id1 && x.DataZakonczeniaWspolpracy == null);
+            var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToList();
+            List<Usluga> uslugas = new List<Usluga>();
+            foreach (var item in pU)
+            {
+                uslugas.Add(_s16693context.Usluga.FirstOrDefault(x => x.IdUsluga == item.IdUsluga));
+            }
+
+            var tEM = new TaskEditModel
+            {
+                UslugaProjekt = uslugaprojekt,
+                uslugas = uslugas
+            };
+
+            return View(tEM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult TaskEdit(TaskEditModel tEM)
+        {
+            if (ModelState.IsValid)
+            {
+                _s16693context.Update(tEM.UslugaProjekt);
+                _s16693context.SaveChanges();
+
+                return RedirectToAction("ProjectDetails", new { id = tEM.UslugaProjekt.IdProjekt });
+
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View("TaskEdit", tEM);
+            }
+            return View(tEM);
         }
 
         public IActionResult TaskDelete()

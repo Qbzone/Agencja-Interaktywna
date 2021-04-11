@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-04-07 14:49:19.793
+-- Last modification date: 2021-04-11 13:48:14.969
 
 -- tables
 -- Table: Firma
@@ -7,13 +7,6 @@ CREATE TABLE Firma (
     IdFirma int  NOT NULL IDENTITY,
     Nazwa nvarchar(50)  NOT NULL,
     CONSTRAINT Firma_pk PRIMARY KEY  (IdFirma)
-);
-
--- Table: FirmaTag
-CREATE TABLE FirmaTag (
-    IdFirma int  NOT NULL,
-    IdTag int  NOT NULL,
-    CONSTRAINT FirmaTag_pk PRIMARY KEY  (IdFirma,IdTag)
 );
 
 -- Table: Grafik
@@ -160,13 +153,6 @@ CREATE TABLE Szef (
     CONSTRAINT Szef_pk PRIMARY KEY  (IdPracownik)
 );
 
--- Table: Tag
-CREATE TABLE Tag (
-    IdTag int  NOT NULL IDENTITY,
-    Nazwa nvarchar(50)  NOT NULL,
-    CONSTRAINT Tag_pk PRIMARY KEY  (IdTag)
-);
-
 -- Table: Tester
 CREATE TABLE Tester (
     IdPracownik int  NOT NULL,
@@ -185,26 +171,18 @@ CREATE TABLE Umowa (
 CREATE TABLE Usluga (
     IdUsluga int  NOT NULL IDENTITY,
     Nazwa nvarchar(50)  NOT NULL,
-    Opis nvarchar(100)  NOT NULL,
     CONSTRAINT Usluga_pk PRIMARY KEY  (IdUsluga)
 );
 
--- Table: Zadanie
-CREATE TABLE Zadanie (
-    IdZadanie int  NOT NULL IDENTITY,
-    Nazwa nvarchar(50)  NOT NULL,
-    CONSTRAINT Zadanie_pk PRIMARY KEY  (IdZadanie)
-);
-
--- Table: ZadanieProjekt
-CREATE TABLE ZadanieProjekt (
+-- Table: UslugaProjekt
+CREATE TABLE UslugaProjekt (
     IdProjekt int  NOT NULL,
-    IdZadanie int  NOT NULL,
+    IdUsluga int  NOT NULL,
     DataPrzypisaniaZadania datetime  NOT NULL,
     DataZakonczeniaZadania datetime  NULL,
     Status nvarchar(30)  NOT NULL,
     Opis nvarchar(max)  NOT NULL,
-    CONSTRAINT ZadanieProjekt_pk PRIMARY KEY  (IdProjekt,IdZadanie,DataPrzypisaniaZadania)
+    CONSTRAINT UslugaProjekt_pk PRIMARY KEY  (IdProjekt,DataPrzypisaniaZadania,IdUsluga)
 );
 
 -- Table: Zespol
@@ -224,16 +202,6 @@ CREATE TABLE ZespolProjekt (
 );
 
 -- foreign keys
--- Reference: FirmaTag_Firma (table: FirmaTag)
-ALTER TABLE FirmaTag ADD CONSTRAINT FirmaTag_Firma
-    FOREIGN KEY (IdFirma)
-    REFERENCES Firma (IdFirma);
-
--- Reference: FirmaTag_Tag (table: FirmaTag)
-ALTER TABLE FirmaTag ADD CONSTRAINT FirmaTag_Tag
-    FOREIGN KEY (IdTag)
-    REFERENCES Tag (IdTag);
-
 -- Reference: KlientFirma_Firma (table: KlientFirma)
 ALTER TABLE KlientFirma ADD CONSTRAINT KlientFirma_Firma
     FOREIGN KEY (IdFirma)
@@ -354,15 +322,15 @@ ALTER TABLE ZespolProjekt ADD CONSTRAINT Table_24_Zespol
     FOREIGN KEY (IdZespol)
     REFERENCES Zespol (IdZespol);
 
--- Reference: Table_26_Projekt (table: ZadanieProjekt)
-ALTER TABLE ZadanieProjekt ADD CONSTRAINT Table_26_Projekt
+-- Reference: Table_26_Projekt (table: UslugaProjekt)
+ALTER TABLE UslugaProjekt ADD CONSTRAINT Table_26_Projekt
     FOREIGN KEY (IdProjekt)
     REFERENCES Projekt (IdProjekt);
 
--- Reference: Table_26_Zadanie (table: ZadanieProjekt)
-ALTER TABLE ZadanieProjekt ADD CONSTRAINT Table_26_Zadanie
-    FOREIGN KEY (IdZadanie)
-    REFERENCES Zadanie (IdZadanie);
+-- Reference: ZadanieProjekt_Usluga (table: UslugaProjekt)
+ALTER TABLE UslugaProjekt ADD CONSTRAINT ZadanieProjekt_Usluga
+    FOREIGN KEY (IdUsluga)
+    REFERENCES Usluga (IdUsluga);
 
 -- End of file.
 

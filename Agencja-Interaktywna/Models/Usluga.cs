@@ -8,12 +8,13 @@ namespace Agencja_Interaktywna.Models
         public Usluga()
         {
             PakietUsluga = new HashSet<PakietUsluga>();
+            UslugaProjekt = new HashSet<UslugaProjekt>();
         }
 
         public int IdUsluga { get; set; }
         public string Nazwa { get; set; }
-        public string Opis { get; set; }
 
         public virtual ICollection<PakietUsluga> PakietUsluga { get; set; }
+        public virtual ICollection<UslugaProjekt> UslugaProjekt { get; set; }
     }
 }

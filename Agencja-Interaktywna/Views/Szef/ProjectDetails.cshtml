@@ -13,8 +13,8 @@
     <input type="hidden" asp-for="@Model.projekt.IdProjekt"/>
     <input type="submit" value="Usuń" /> |
 </form>
-<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
 
+<a asp-action="Index">Wróć</a>
 <a asp-action="TaskCreate" asp-route-id="@Model.projekt.IdProjekt">Dodaj Zadanie</a>
 
 <table>
@@ -23,19 +23,19 @@
         {
             <tr>
                 <td>
-                    @item.IdZadanieNavigation.Nazwa
+                    @item.IdUslugaNavigation.Nazwa
                 </td>
                 <td>
                     @item.DataZakonczeniaZadania
                 </td>
                 <td>
-                    <a asp-action="TaskDetails" asp-route-id="@item.IdProjekt">Podgląd</a>
+                    <a asp-action="TaskDetails"  asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Szczegóły</a>
                 </td>
                 <td>
-                    <a asp-action="TaskEdit" asp-route-id="@item.IdProjekt">Podgląd</a>
+                    <a asp-action="TaskEdit" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Edytuj</a>
                 </td>
                 <td>
-                    <a asp-action="TaskDelete" asp-route-id="@item.IdProjekt">Podgląd</a>
+                    <a asp-action="TaskDelete" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Usuń</a>
                 </td>
             </tr>
         }

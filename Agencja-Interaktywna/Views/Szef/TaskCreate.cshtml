@@ -1,7 +1,40 @@
-﻿
+﻿@model Agencja_Interaktywna.Models.Functional.TaskCreateModel 
 @{
     ViewData["Title"] = "TaskCreate";
 }
 
-<h1>TaskCreate</h1>
+<h1>Tworzenie Zadania</h1>
 
+<form method="post" asp-action="TaskCreate">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="@Model.projekt.IdProjekt" />
+    <div>
+        Nazwa zadania: <select asp-for="@Model.UslugaProjekt.IdUsluga">
+            <option value="0">Wybierz zadanie</option>
+            @{
+                foreach (var item in Model.uslugas)
+                {
+                    <option value="@item.IdUsluga">@item.Nazwa</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="@Model.UslugaProjekt.IdUsluga"></span>
+    </div>
+    <div>
+        Opis zadania: <input type="text" asp-for="@Model.UslugaProjekt.Opis" />
+        <span asp-validation-for="UslugaProjekt.Opis"></span>
+    </div>
+    <div>
+        Data rozpoczęcia zadania: <input type="datetime-local" asp-for="@Model.UslugaProjekt.DataPrzypisaniaZadania" />
+        <span asp-validation-for="UslugaProjekt.DataPrzypisaniaZadania"></span>
+    </div>
+    <div>
+        Data zakończenia zadania: <input type="datetime-local" asp-for="@Model.UslugaProjekt.DataZakonczeniaZadania" />
+        <span asp-validation-for="UslugaProjekt.DataZakonczeniaZadania"></span>
+    </div>
+    <input type="hidden" asp-for="@Model.UslugaProjekt.Status" value="Oczekuje na realizację"/>
+    <div>
+        <input type="submit" value="Zatwierdź" />
+    </div>
+</form>
+<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>

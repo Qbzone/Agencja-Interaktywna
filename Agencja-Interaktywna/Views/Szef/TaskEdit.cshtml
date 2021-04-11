@@ -1,7 +1,39 @@
-﻿
+﻿@model Agencja_Interaktywna.Models.Functional.TaskEditModel
 @{
     ViewData["Title"] = "TaskEdit";
 }
 
-<h1>TaskEdit</h1>
+<h1>Edycja zadania</h1>
 
+<form method="post" asp-action="TaskEdit">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="@Model.UslugaProjekt.IdProjekt" />
+    <div>
+        <input type="hidden" asp-for="@Model.UslugaProjekt.IdUsluga" />
+        <span asp-validation-for="UslugaProjekt.IdUsluga"></span>
+    </div>
+    <div>
+        Opis zadania: <input type="text" asp-for="@Model.UslugaProjekt.Opis" />
+        <span asp-validation-for="UslugaProjekt.Opis"></span>
+    </div>
+    <div>
+        <input type="hidden" asp-for="@Model.UslugaProjekt.DataPrzypisaniaZadania" />
+        <span asp-validation-for="UslugaProjekt.DataPrzypisaniaZadania"></span>
+    </div>
+    <div>
+        Data zakończenia zadania: <input type="datetime-local" asp-for="@Model.UslugaProjekt.DataZakonczeniaZadania" />
+        <span asp-validation-for="UslugaProjekt.DataZakonczeniaZadania"></span>
+    </div>
+    <div>
+        Edytuj Status: <select asp-for="@Model.UslugaProjekt.Status">
+            <option value="Oczekuje na realizację">Oczekuje na realizację</option>
+            <option value="W trakcie realizacji">W trakcie realizacji</option>
+            <option value="Zakończone">Zakończone</option>
+        </select>
+        <span asp-validation-for="@Model.UslugaProjekt.Status"></span>
+    </div>
+    <div>
+        <input type="submit" value="Potwierdź zmiany" />
+    </div>
+</form>
+<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>

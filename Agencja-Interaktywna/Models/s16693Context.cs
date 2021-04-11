@@ -16,7 +16,6 @@ namespace Agencja_Interaktywna.Models
         }
 
         public virtual DbSet<Firma> Firma { get; set; }
-        public virtual DbSet<FirmaTag> FirmaTag { get; set; }
         public virtual DbSet<Grafik> Grafik { get; set; }
         public virtual DbSet<JezykProgramowania> JezykProgramowania { get; set; }
         public virtual DbSet<Klient> Klient { get; set; }
@@ -34,12 +33,10 @@ namespace Agencja_Interaktywna.Models
         public virtual DbSet<Projekt> Projekt { get; set; }
         public virtual DbSet<ProjektPakiet> ProjektPakiet { get; set; }
         public virtual DbSet<Szef> Szef { get; set; }
-        public virtual DbSet<Tag> Tag { get; set; }
         public virtual DbSet<Tester> Tester { get; set; }
         public virtual DbSet<Umowa> Umowa { get; set; }
         public virtual DbSet<Usluga> Usluga { get; set; }
-        public virtual DbSet<Zadanie> Zadanie { get; set; }
-        public virtual DbSet<ZadanieProjekt> ZadanieProjekt { get; set; }
+        public virtual DbSet<UslugaProjekt> UslugaProjekt { get; set; }
         public virtual DbSet<Zespol> Zespol { get; set; }
         public virtual DbSet<ZespolProjekt> ZespolProjekt { get; set; }
 
@@ -48,8 +45,8 @@ namespace Agencja_Interaktywna.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s17379;Integrated Security=True;");
-                //optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s16693;Integrated Security=True;");
+                //optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s17379;Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s16693;Integrated Security=True;");
             }
         }
 
@@ -63,24 +60,6 @@ namespace Agencja_Interaktywna.Models
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
                     .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<FirmaTag>(entity =>
-            {
-                entity.HasKey(e => new { e.IdFirma, e.IdTag })
-                    .HasName("FirmaTag_pk");
-
-                entity.HasOne(d => d.IdFirmaNavigation)
-                    .WithMany(p => p.FirmaTag)
-                    .HasForeignKey(d => d.IdFirma)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FirmaTag_Firma");
-
-                entity.HasOne(d => d.IdTagNavigation)
-                    .WithMany(p => p.FirmaTag)
-                    .HasForeignKey(d => d.IdTag)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FirmaTag_Tag");
             });
 
             modelBuilder.Entity<Grafik>(entity =>
@@ -418,16 +397,6 @@ namespace Agencja_Interaktywna.Models
                     .HasConstraintName("Pracownik_Szef");
             });
 
-            modelBuilder.Entity<Tag>(entity =>
-            {
-                entity.HasKey(e => e.IdTag)
-                    .HasName("Tag_pk");
-
-                entity.Property(e => e.Nazwa)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
-
             modelBuilder.Entity<Tester>(entity =>
             {
                 entity.HasKey(e => e.IdPracownik)
@@ -460,25 +429,11 @@ namespace Agencja_Interaktywna.Models
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.Opis)
-                    .IsRequired()
-                    .HasMaxLength(100);
             });
 
-            modelBuilder.Entity<Zadanie>(entity =>
+            modelBuilder.Entity<UslugaProjekt>(entity =>
             {
-                entity.HasKey(e => e.IdZadanie)
-                    .HasName("Zadanie_pk");
-
-                entity.Property(e => e.Nazwa)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<ZadanieProjekt>(entity =>
-            {
-                entity.HasKey(e => new { e.IdProjekt, e.IdZadanie, e.DataPrzypisaniaZadania })
+                entity.HasKey(e => new { e.IdProjekt, e.IdUsluga, e.DataPrzypisaniaZadania })
                     .HasName("ZadanieProjekt_pk");
 
                 entity.Property(e => e.DataPrzypisaniaZadania).HasColumnType("datetime");
@@ -492,14 +447,14 @@ namespace Agencja_Interaktywna.Models
                     .HasMaxLength(30);
 
                 entity.HasOne(d => d.IdProjektNavigation)
-                    .WithMany(p => p.ZadanieProjekt)
+                    .WithMany(p => p.UslugaProjekt)
                     .HasForeignKey(d => d.IdProjekt)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Table_26_Projekt");
 
-                entity.HasOne(d => d.IdZadanieNavigation)
-                    .WithMany(p => p.ZadanieProjekt)
-                    .HasForeignKey(d => d.IdZadanie)
+                entity.HasOne(d => d.IdUslugaNavigation)
+                    .WithMany(p => p.UslugaProjekt)
+                    .HasForeignKey(d => d.IdUsluga)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Table_26_Zadanie");
             });
