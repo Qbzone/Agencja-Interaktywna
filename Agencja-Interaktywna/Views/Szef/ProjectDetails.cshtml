@@ -10,7 +10,7 @@
 <a asp-action="Contract" asp-route-id="@Model.projekt.IdProjekt">Wyświetl umowę</a>
 <a asp-action="ProjectEdit" asp-route-id="@Model.projekt.IdProjekt">Edytuj projekt</a>
 <form asp-action="ProjectDelete" onclick="return confirm('Czy na pewno chcesz usunąć wybrany projekt?')">
-    <input type="hidden" asp-for="@Model.projekt.IdProjekt"/>
+    <input type="hidden" asp-for="@Model.projekt.IdProjekt" />
     <input type="submit" value="Usuń" /> |
 </form>
 
@@ -29,13 +29,15 @@
                     @item.DataZakonczeniaZadania
                 </td>
                 <td>
-                    <a asp-action="TaskDetails"  asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Szczegóły</a>
+                    <a asp-action="TaskDetails" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Szczegóły</a>
                 </td>
                 <td>
                     <a asp-action="TaskEdit" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Edytuj</a>
                 </td>
                 <td>
-                    <a asp-action="TaskDelete" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Usuń</a>
+                    <form asp-action="TaskDelete" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" onclick="return confirm('Czy na pewno chcesz usunąć wybrane zadanie?')">
+                        <input type="submit" value="Usuń" /> |
+                    </form>
                 </td>
             </tr>
         }

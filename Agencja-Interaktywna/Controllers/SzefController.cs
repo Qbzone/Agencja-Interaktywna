@@ -616,6 +616,7 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult TeamsDelete(int? id)
         {
             foreach (var delPZ in _s16693context.PracownikZespol)
@@ -640,9 +641,24 @@ namespace Agencja_Interaktywna.Controllers
             return View();
         }
 
-        public IActionResult TaskDetails()
+        public IActionResult TaskDetails(int? id1, int? id2, string data)
         {
-            return View();
+            if (id1 == null)
+            {
+                return NotFound();
+            }
+
+            var fromDateAsDateTime = DateTime.Parse(data);
+            var uslugaprojekt = _s16693context.UslugaProjekt
+                .Include(x => x.IdUslugaNavigation)
+                .FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+
+            if (uslugaprojekt == null)
+            {
+                return NotFound();
+            }
+
+            return View(uslugaprojekt);
         }
 
         [HttpGet]
@@ -746,9 +762,17 @@ namespace Agencja_Interaktywna.Controllers
             return View(tEM);
         }
 
-        public IActionResult TaskDelete()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult TaskDelete(int? id1, int? id2, string data)
         {
-            return View();
+            var fromDateAsDateTime = DateTime.Parse(data);
+            var zadanie = _s16693context.UslugaProjekt.FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+
+            _s16693context.Remove(zadanie);
+            _s16693context.SaveChanges();
+
+            return RedirectToAction("ProjectDetails", new { id = id1});
         }
 
         [HttpPost]
