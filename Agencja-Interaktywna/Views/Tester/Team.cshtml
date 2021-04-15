@@ -1,0 +1,29 @@
+﻿@model List<Agencja_Interaktywna.Models.PracownikZespol>
+@{
+    ViewData["Title"] = "Teams";
+}
+
+<h1>Lista pracowników</h1>
+
+<table>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>
+                    @item.IdPracownikNavigation.IdPracownikNavigation.Imie
+                </td>
+                <td>
+                    @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko
+                </td>
+                <td>
+                    @item.IdPracownikNavigation.IdPracownikNavigation.Rola
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="ProjectDetails" onClick="history.go(-1); return false;"> Wróć</a>
+
+

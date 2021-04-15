@@ -441,15 +441,15 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult Team(int? id)
+        public IActionResult Team(int? id, string view)
         {
+            if (view.Equals("Project")) { 
             var team = _s16693context.ZespolProjekt
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdZespolNavigation)
                 .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
-            if (team != null)
-            {
+
                 var members = _s16693context.PracownikZespol
                     .Include(z => z.IdZespolNavigation)
                     .Include(p => p.IdPracownikNavigation)
@@ -458,7 +458,7 @@ namespace Agencja_Interaktywna.Controllers
                         .ToList();
                 return View(members);
             }
-            else
+            else if(view.Equals("Teams"))
             {
                 var members = _s16693context.PracownikZespol
                     .Include(z => z.IdZespolNavigation)
@@ -468,6 +468,8 @@ namespace Agencja_Interaktywna.Controllers
                         .ToList();
                 return View(members);
             }
+            
+            return NotFound();
 
         }
 
@@ -574,9 +576,12 @@ namespace Agencja_Interaktywna.Controllers
                 _s16693context.Update(tEM.zespol);
                 _s16693context.SaveChanges();
                 List<PracownikZespol> pracowniklist = new List<PracownikZespol>();
-
+                var count = 0;
+                var length = 0;
+                
                 foreach (var item in tEM.pracowniks)
                 {
+                    length++;
                     if (item.IsChecked == true)
                     {
                         var PZ = new PracownikZespol()
@@ -588,6 +593,15 @@ namespace Agencja_Interaktywna.Controllers
                         _s16693context.Add(PZ);
 
                     }
+                    else
+                    {
+                        count++;
+                    }
+
+                }
+                if(count == length)
+                {
+                    return View("TeamsEdit", tEM);
                 }
 
                 var dt = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
@@ -666,7 +680,7 @@ namespace Agencja_Interaktywna.Controllers
         public IActionResult TaskCreate(int? id)
         {
             var pakiet = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == id && x.DataZakonczeniaWspolpracy == null);
-            var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == id).Include(u => u.IdUslugaNavigation).ToList();
+            var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToList();
             List<Usluga> uslugas = new List<Usluga>();
             foreach (var item in pU)
             {

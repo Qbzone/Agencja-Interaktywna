@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Agencja_Interaktywna.Models
 {
@@ -13,6 +14,8 @@ namespace Agencja_Interaktywna.Models
 
         public int IdZespol { get; set; }
         public string Nazwa { get; set; }
+        [NotMapped]
+        public string Widok { get; set; }
 
         public virtual ICollection<PracownikZespol> PracownikZespol { get; set; }
         public virtual ICollection<ZespolProjekt> ZespolProjekt { get; set; }

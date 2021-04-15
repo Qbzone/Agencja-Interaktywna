@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+
+<h1>Kontakt</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Contact">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Numer telefonu: +48 544 455 454</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Adres e-mail: agencja@wp.pl</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Adres: 00-444 Warszawa, ul.Samochodowa 10</label>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

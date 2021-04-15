@@ -4,9 +4,10 @@
 }
 
 <h3>Nazwa projektu  @Html.DisplayFor(model => model.projekt.Nazwa)</h3>
+@{string Widok = "Project";}
 
 <img src="/@Model.projekt.Logo" alt="/@Model.projekt.Logo" height="100" width="100" />
-<a asp-action="Team" asp-route-id="@Model.projekt.IdProjekt">Wyświetl zespół</a>
+<a asp-action="Team" asp-route-id="@Model.projekt.IdProjekt" asp-route-view="@Widok">Wyświetl zespół</a>
 <a asp-action="Contract" asp-route-id="@Model.projekt.IdProjekt">Wyświetl umowę</a>
 <a asp-action="ProjectEdit" asp-route-id="@Model.projekt.IdProjekt">Edytuj projekt</a>
 <form asp-action="ProjectDelete" onclick="return confirm('Czy na pewno chcesz usunąć wybrany projekt?')">
@@ -21,25 +22,28 @@
     <tbody>
         @foreach (var item in @Model.zadanies)
         {
-            <tr>
-                <td>
-                    @item.IdUslugaNavigation.Nazwa
-                </td>
-                <td>
-                    @item.DataZakonczeniaZadania
-                </td>
-                <td>
-                    <a asp-action="TaskDetails" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Szczegóły</a>
-                </td>
-                <td>
-                    <a asp-action="TaskEdit" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Edytuj</a>
-                </td>
-                <td>
-                    <form asp-action="TaskDelete" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" onclick="return confirm('Czy na pewno chcesz usunąć wybrane zadanie?')">
-                        <input type="submit" value="Usuń" /> |
-                    </form>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @item.IdUslugaNavigation.Nazwa
+            </td>
+            <td>
+                @item.DataZakonczeniaZadania
+            </td>
+            <td>
+                @item.Status
+            </td>
+            <td>
+                <a asp-action="TaskDetails" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Szczegóły</a>
+            </td>
+            <td>
+                <a asp-action="TaskEdit" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania">Edytuj</a>
+            </td>
+            <td>
+                <form asp-action="TaskDelete" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" onclick="return confirm('Czy na pewno chcesz usunąć wybrane zadanie?')">
+                    <input type="submit" value="Usuń" /> |
+                </form>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

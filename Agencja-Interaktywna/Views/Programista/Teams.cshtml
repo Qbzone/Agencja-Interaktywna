@@ -4,8 +4,6 @@
 }
 
 <h1>Zespoły</h1>
-
-<a asp-action="TeamsCreate">Stwórz zespół</a>
 <table>
     <tbody>
         @foreach (var item in @Model)
@@ -17,10 +15,6 @@
                 </td>
                 <td>
                     <a asp-action="Team" asp-route-id="@item.IdZespol" asp-route-view ="@item.Widok">Wyświetl zespół</a>
-                    <a asp-action="TeamsEdit" asp-route-id="@item.IdZespol">Edytuj</a>
-                    <form asp-action="TeamsDelete" asp-route-id="@item.IdZespol" onclick="return confirm('Czy na pewno chcesz usunąć wybrany zespół?')">
-                        <input type="submit" value="Usuń" /> |
-                    </form>
                 </td>
             </tr>
         }
