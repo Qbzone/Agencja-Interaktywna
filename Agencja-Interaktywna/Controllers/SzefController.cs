@@ -443,11 +443,12 @@ namespace Agencja_Interaktywna.Controllers
         [HttpGet]
         public IActionResult Team(int? id, string view)
         {
-            if (view.Equals("Project")) { 
-            var team = _s16693context.ZespolProjekt
-                .Include(p => p.IdProjektNavigation)
-                .Include(z => z.IdZespolNavigation)
-                .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
+            if (view.Equals("Project"))
+            {
+                var team = _s16693context.ZespolProjekt
+                    .Include(p => p.IdProjektNavigation)
+                    .Include(z => z.IdZespolNavigation)
+                    .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
 
                 var members = _s16693context.PracownikZespol
@@ -458,7 +459,7 @@ namespace Agencja_Interaktywna.Controllers
                         .ToList();
                 return View(members);
             }
-            else if(view.Equals("Teams"))
+            else if (view.Equals("Teams"))
             {
                 var members = _s16693context.PracownikZespol
                     .Include(z => z.IdZespolNavigation)
@@ -468,7 +469,7 @@ namespace Agencja_Interaktywna.Controllers
                         .ToList();
                 return View(members);
             }
-            
+
             return NotFound();
 
         }
@@ -561,7 +562,7 @@ namespace Agencja_Interaktywna.Controllers
             var tEM = new TeamEditModel()
             {
                 zespol = zespol,
-                pracowniks = allpracownik
+                pracowniks = allpracownik,
             };
 
             return View(tEM);
@@ -576,9 +577,9 @@ namespace Agencja_Interaktywna.Controllers
                 _s16693context.Update(tEM.zespol);
                 _s16693context.SaveChanges();
                 List<PracownikZespol> pracowniklist = new List<PracownikZespol>();
-                var count = 0;
                 var length = 0;
-                
+                var errors = 0;
+
                 foreach (var item in tEM.pracowniks)
                 {
                     length++;
@@ -591,16 +592,26 @@ namespace Agencja_Interaktywna.Controllers
                             DataPrzypisaniaPracownika = DateTime.Now
                         };
                         _s16693context.Add(PZ);
-
                     }
-                    else
+                    else if (item.IsChecked == false)
                     {
-                        count++;
+                        errors++;
                     }
-
                 }
-                if(count == length)
+                if (errors == length)
                 {
+                    var allpracownik = _s16693context.Pracownik
+                        .Include(o => o.IdPracownikNavigation)
+                        .Select(x => new CheckBoxItem()
+                        {
+                            Id = x.IdPracownik,
+                            Nazwa = x.IdPracownikNavigation.AdresEmail,
+                            IsChecked = x.PracownikZespol.Any(x => x.IdZespol == tEM.zespol.IdZespol) ? true : false
+                        }).ToList();
+
+                    tEM.pracowniks = allpracownik;
+
+                    ViewBag.Error = "Musi byc wybrany przynajmniej jeden pracownik";
                     return View("TeamsEdit", tEM);
                 }
 
@@ -787,7 +798,7 @@ namespace Agencja_Interaktywna.Controllers
             _s16693context.Remove(zadanie);
             _s16693context.SaveChanges();
 
-            return RedirectToAction("ProjectDetails", new { id = id1});
+            return RedirectToAction("ProjectDetails", new { id = id1 });
         }
 
         [HttpPost]

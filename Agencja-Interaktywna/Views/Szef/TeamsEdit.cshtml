@@ -13,18 +13,27 @@
     </div>
     <div>
         <table>
-        @for (int i = 0; i < Model.pracowniks.Count; i++)
-        {
-            <tr>
-                <td>
-                    @Html.HiddenFor(x => Model.pracowniks[i].Id)
-                    @Html.DisplayFor(it => Model.pracowniks[i].Nazwa)
-                </td>
-                <td>
-                    @Html.CheckBoxFor(it => Model.pracowniks[i].IsChecked, new { Style = "vertical-align: 3px" })
+            @for (int i = 0; i < Model.pracowniks.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(x => Model.pracowniks[i].Id)
+                        @Html.DisplayFor(it => Model.pracowniks[i].Nazwa)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(it => Model.pracowniks[i].IsChecked, new { Style = "vertical-align: 3px" })
+                        @if (ViewBag.Error != null)
+                        {
+                            <script type="text/javascript">
+                                window.onload = function () {
+                                    alert("@ViewBag.Error")
+                                    return false;
+                                };
+                            </script>
+                        }
                     </td>
                 </tr>
-        }
+            }
         </table>
     </div>
     <div>
