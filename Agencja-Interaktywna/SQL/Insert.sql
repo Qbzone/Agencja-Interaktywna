@@ -75,13 +75,13 @@ INSERT INTO ZespolProjekt
 VALUES(1,2,'2020-12-12 12:00:00',NULL);
 
 INSERT INTO Usluga
-VALUES('Posadz marchew');
+VALUES('Posadz marchew', 'Grafik');
 INSERT INTO Usluga
-VALUES('Posadz ogorki');
+VALUES('Posadz ogorki', 'Programista');
 INSERT INTO Usluga
-VALUES('Posadz rzodkiew');
+VALUES('Posadz rzodkiew', 'Pozycjoner');
 INSERT INTO Usluga
-VALUES('Posadz szczypiorek');
+VALUES('Posadz szczypiorek', 'Tester');
 
 INSERT INTO UslugaProjekt
 VALUES(1,1,'2020-10-20 12:00:00',NULL,'Rozpoczete','Trzeba posadzic marchew');

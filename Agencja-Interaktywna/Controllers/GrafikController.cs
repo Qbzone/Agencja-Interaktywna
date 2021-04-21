@@ -55,7 +55,7 @@ namespace Agencja_Interaktywna.Controllers
             var tasks = _s16693context.UslugaProjekt
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdUslugaNavigation)
-                .Where(e => e.IdProjekt == id)
+                .Where(e => e.IdProjekt == id && e.IdUslugaNavigation.Klasyfikacja == HttpContext.User.FindFirst(ClaimTypes.Role).Value)
                 .ToList();
 
             var pDM = new ProjectDetailsModel

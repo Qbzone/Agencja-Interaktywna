@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-04-11 13:48:14.969
+-- Last modification date: 2021-04-21 16:35:26.077
 
 -- tables
 -- Table: Firma
@@ -171,6 +171,7 @@ CREATE TABLE Umowa (
 CREATE TABLE Usluga (
     IdUsluga int  NOT NULL IDENTITY,
     Nazwa nvarchar(50)  NOT NULL,
+    Klasyfikacja nvarchar(50)  NOT NULL,
     CONSTRAINT Usluga_pk PRIMARY KEY  (IdUsluga)
 );
 
@@ -333,4 +334,3 @@ ALTER TABLE UslugaProjekt ADD CONSTRAINT ZadanieProjekt_Usluga
     REFERENCES Usluga (IdUsluga);
 
 -- End of file.
-

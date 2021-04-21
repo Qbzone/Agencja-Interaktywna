@@ -12,12 +12,20 @@
         <span asp-validation-for="zespol.Nazwa"></span>
     </div>
     <div>
-        @for(int i=0; i < Model.pracowniks.Count; i++)
+        @for (int i = 0; i < Model.pracowniks.Count; i++)
         {
             <input type="hidden" asp-for="@Model.pracowniks[i].Value" />
             <input asp-for="pracowniks[i].Selected" />@Model.pracowniks[i].Text
         }
-
+        @if (ViewBag.Error != null)
+        {
+            <script type="text/javascript">
+                                window.onload = function () {
+                                    alert("@ViewBag.Error")
+                                    return false;
+                                };
+            </script>
+        }
     </div>
     <div>
         <input type="submit" value="Zatwierdź" />

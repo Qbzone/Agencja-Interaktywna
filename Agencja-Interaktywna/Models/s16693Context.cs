@@ -429,6 +429,10 @@ namespace Agencja_Interaktywna.Models
                 entity.Property(e => e.Nazwa)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.Klasyfikacja)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<UslugaProjekt>(entity =>

@@ -505,10 +505,26 @@ namespace Agencja_Interaktywna.Controllers
                     Nazwa = tCM.zespol.Nazwa
                 };
 
+                var pracownikIds = tCM.pracowniks.Where(x => x.Selected).Select(y => y.Value);
+
+                if (pracownikIds.Count() == 0)
+                {
+                    var pracownik = _s16693context.Pracownik
+                        .Include(o => o.IdPracownikNavigation)
+                        .Select(x => new SelectListItem()
+                        {
+                            Text = x.IdPracownikNavigation.AdresEmail,
+                            Value = x.IdPracownik.ToString()
+                        }).ToList();
+
+                    tCM.pracowniks = pracownik;
+
+                    ViewBag.Error = "Musi byc wybrany przynajmniej jeden pracownik!";
+                    return View("TeamsCreate", tCM);
+                }
+
                 _s16693context.Add(newTeam);
                 _s16693context.SaveChanges();
-
-                var pracownikIds = tCM.pracowniks.Where(x => x.Selected).Select(y => y.Value);
 
                 foreach (var id in pracownikIds)
                 {
@@ -575,7 +591,6 @@ namespace Agencja_Interaktywna.Controllers
             if (ModelState.IsValid)
             {
                 _s16693context.Update(tEM.zespol);
-                _s16693context.SaveChanges();
                 List<PracownikZespol> pracowniklist = new List<PracownikZespol>();
                 var length = 0;
                 var errors = 0;
@@ -611,7 +626,7 @@ namespace Agencja_Interaktywna.Controllers
 
                     tEM.pracowniks = allpracownik;
 
-                    ViewBag.Error = "Musi byc wybrany przynajmniej jeden pracownik";
+                    ViewBag.Error = "Musi byc wybrany przynajmniej jeden pracownik!";
                     return View("TeamsEdit", tEM);
                 }
 
@@ -631,6 +646,7 @@ namespace Agencja_Interaktywna.Controllers
                         _s16693context.SaveChanges();
                     }
                 }
+                _s16693context.SaveChanges();
                 return RedirectToAction(nameof(Teams));
             }
 
