@@ -1,0 +1,17 @@
+﻿@model Agencja_Interaktywna.Models.Functional.AssignCompanyModel
+@{
+    ViewData["Title"] = "AssignCompany";
+}
+
+<h3>Proszę powiązać firmę</h3>
+<form method="post" asp-action="AssignCompany">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="@Model.klient.IdKlient" />
+    <div>
+        Nazwa firmy: <input type="text" asp-for="@Model.firma.Nazwa" />
+        <span asp-validation-for="firma.Nazwa"></span>
+    </div>
+    <div>
+        <input type="submit" value="Zatwierdź" />
+    </div>
+</form>

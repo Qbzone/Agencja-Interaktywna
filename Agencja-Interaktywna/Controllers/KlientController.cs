@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Agencja_Interaktywna.Models;
+using Agencja_Interaktywna.Models.Functional;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +32,67 @@ namespace Agencja_Interaktywna.Controllers
                 .Where(x => x.IdFirmaNavigation.KlientFirma.Any(e => e.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value))
                 .ToList();
             
-            return View(pr);
+            var kf = _s16693context.KlientFirma
+                .Include(k => k.IdKlientNavigation)
+                    .ThenInclude(o => o.IdKlientNavigation)
+                .FirstOrDefault(e => e.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+
+            if (kf != null)
+            {
+                return View(pr);
+            }
+            else
+            {
+                return RedirectToAction(nameof(AssignCompany));
+            }
+        }
+        
+        [HttpGet]
+        public IActionResult AssignCompany()
+        {
+            var kl = _s16693context.Klient
+                .Include(o => o.IdKlientNavigation)
+                    .FirstOrDefault(e => e.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+            
+            var aCM = new AssignCompanyModel
+            {
+                klient = kl
+            };
+
+            return View(aCM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AssignCompany(AssignCompanyModel aCM)
+        {
+            if (ModelState.IsValid)
+            {
+                var newFirma = new Firma()
+                {
+                    IdFirma = aCM.firma.IdFirma,
+                    Nazwa = aCM.firma.Nazwa
+                };
+
+                _s16693context.Add(newFirma);
+                _s16693context.SaveChanges();
+
+                var newKF = new KlientFirma()
+                {
+                    IdKlient = aCM.klient.IdKlient,
+                    IdFirma = newFirma.IdFirma
+                };
+
+                _s16693context.Add(newKF);
+
+                _s16693context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View("AssignCompany", aCM);
+            }
+            return View(aCM);
         }
 
         public IActionResult Meetings()
