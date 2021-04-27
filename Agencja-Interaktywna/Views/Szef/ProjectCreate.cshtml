@@ -5,14 +5,14 @@
 
 <h1>Tworzenie Projektu</h1>
 
-<form method="post" asp-action="ProjectCreate">
+<form method="post" asp-action="ProjectCreate" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
         Nazwa: <input type="text" asp-for="@Model.projekt.Nazwa" />
         <span asp-validation-for="projekt.Nazwa"></span>
     </div>
     <div>
-        Logo: <input type="text" asp-for="@Model.projekt.Logo" />
+        Logo: <input type="file" name="fromFile" />
         <span asp-validation-for="projekt.Logo"></span>
     </div>
     <div>

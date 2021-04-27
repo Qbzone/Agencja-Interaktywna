@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ using Agencja_Interaktywna.Models.Functional;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +21,12 @@ namespace Agencja_Interaktywna.Controllers
     public class SzefController : Controller
     {
         private readonly s16693Context _s16693context = new s16693Context();
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        public SzefController(IHostingEnvironment environment)
+        {
+            hostingEnvironment = environment;
+        }
         public IActionResult Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
@@ -81,14 +90,17 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectCreate(ProjectCreateModel pCM)
+        public IActionResult ProjectCreate(ProjectCreateModel pCM, IFormFile fromFile)
         {
             if (ModelState.IsValid)
             {
+                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(fromFile.FileName));
+                fromFile.CopyTo(new FileStream(fileName, FileMode.Create));
+
                 var newProjekt = new Projekt()
                 {
                     Nazwa = pCM.projekt.Nazwa,
-                    Logo = pCM.projekt.Logo,
+                    Logo = "images/" + Path.GetFileName(fromFile.FileName),
                     IdFirma = pCM.projekt.IdFirma
                 };
 
@@ -129,6 +141,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 return NotFound();
             }
+
             var projekt = _s16693context.Projekt.Find(id);
 
             if (projekt == null)
@@ -163,10 +176,18 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectEdit(ProjectEditModel pEM)
+        public IActionResult ProjectEdit(ProjectEditModel pEM, IFormFile fromFile)
         {
             if (ModelState.IsValid)
             {
+                if (fromFile != null)
+                {
+                    var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(fromFile.FileName));
+                    fromFile.CopyTo(new FileStream(fileName, FileMode.Create));
+
+                    pEM.projekt.Logo = "images/" + Path.GetFileName(fromFile.FileName);
+                }
+
                 _s16693context.Update(pEM.projekt);
 
                 var oldZP = _s16693context.ZespolProjekt

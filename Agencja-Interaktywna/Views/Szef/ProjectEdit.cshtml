@@ -5,17 +5,18 @@
 
 <h1>Edycja projektu</h1>
 
-<form method="post" asp-action="ProjectEdit">
+<form method="post" asp-action="ProjectEdit" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly"></div>
     <input type="hidden" asp-for="@Model.projekt.IdProjekt" />
     <input type="hidden" asp-for="@Model.IdZespol" />
     <input type="hidden" asp-for="@Model.IdPakiet" />
+    <input type="hidden" asp-for="@Model.projekt.Logo" />
     <div>
         Nazwa: <input type="text" asp-for="@Model.projekt.Nazwa" />
         <span asp-validation-for="projekt.Nazwa"></span>
     </div>
     <div>
-        Logo: <input type="text" asp-for="@Model.projekt.Logo" />
+        Logo: <input type="file" name="fromFile" />
         <span asp-validation-for="projekt.Logo"></span>
     </div>
     <div>
