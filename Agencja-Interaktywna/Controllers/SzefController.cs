@@ -110,14 +110,14 @@ namespace Agencja_Interaktywna.Controllers
                 var newZP = new ZespolProjekt()
                 {
                     IdProjekt = newProjekt.IdProjekt,
-                    IdZespol = pCM.zespol.IdZespol,
+                    IdZespol = (int)pCM.zespol.IdZespol,
                     DataPrzypisaniaZespolu = DateTime.Now
                 };
 
                 var newPP = new ProjektPakiet()
                 {
                     IdProjekt = newProjekt.IdProjekt,
-                    IdPakiet = pCM.pakiet.IdPakiet,
+                    IdPakiet = (int)pCM.pakiet.IdPakiet,
                     DataRozpoczeciaWspolpracy = DateTime.Now
                 };
 
@@ -175,8 +175,8 @@ namespace Agencja_Interaktywna.Controllers
                 firmas = firmy.ToList(),
                 zespols = zespoly.ToList(),
                 pakiets = pakiety.ToList(),
-                IdZespol = IdZespol,
-                IdPakiet = IdPakiet
+                IdZespol = (int)IdZespol,
+                IdPakiet = (int)IdPakiet
             };
 
             return View(pEM);
@@ -214,7 +214,7 @@ namespace Agencja_Interaktywna.Controllers
                     var newZP = new ZespolProjekt()
                     {
                         IdProjekt = pEM.projekt.IdProjekt,
-                        IdZespol = pEM.zespol.IdZespol,
+                        IdZespol = (int)pEM.zespol.IdZespol,
                         DataPrzypisaniaZespolu = DateTime.Now
                     };
 
@@ -232,7 +232,7 @@ namespace Agencja_Interaktywna.Controllers
                     var newPP = new ProjektPakiet()
                     {
                         IdProjekt = pEM.projekt.IdProjekt,
-                        IdPakiet = pEM.pakiet.IdPakiet,
+                        IdPakiet = (int)pEM.pakiet.IdPakiet,
                         DataRozpoczeciaWspolpracy = DateTime.Now
                     };
 
@@ -560,7 +560,7 @@ namespace Agencja_Interaktywna.Controllers
                     var PZ = new PracownikZespol()
                     {
                         IdPracownik = int.Parse(id),
-                        IdZespol = newTeam.IdZespol,
+                        IdZespol = (int)newTeam.IdZespol,
                         DataPrzypisaniaPracownika = DateTime.Now
                     };
                     _s16693context.Add(PZ);
@@ -632,7 +632,7 @@ namespace Agencja_Interaktywna.Controllers
                         var PZ = new PracownikZespol()
                         {
                             IdPracownik = item.Id,
-                            IdZespol = tEM.zespol.IdZespol,
+                            IdZespol = (int)tEM.zespol.IdZespol,
                             DataPrzypisaniaPracownika = DateTime.Now
                         };
                         _s16693context.Add(PZ);

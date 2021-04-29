@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Agencja_Interaktywna.Models
@@ -12,7 +13,8 @@ namespace Agencja_Interaktywna.Models
             ZespolProjekt = new HashSet<ZespolProjekt>();
         }
 
-        public int IdZespol { get; set; }
+        [Required(ErrorMessage = "Proszę wybrać zespół")]
+        public int? IdZespol { get; set; }
         public string Nazwa { get; set; }
         [NotMapped]
         public string Widok { get; set; }

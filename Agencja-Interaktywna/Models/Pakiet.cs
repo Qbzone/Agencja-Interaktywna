@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Agencja_Interaktywna.Models
 {
@@ -11,7 +12,8 @@ namespace Agencja_Interaktywna.Models
             ProjektPakiet = new HashSet<ProjektPakiet>();
         }
 
-        public int IdPakiet { get; set; }
+        [Required(ErrorMessage ="Proszę wybrać pakiet")]
+        public int? IdPakiet { get; set; }
         public string Nazwa { get; set; }
         public int Oplata { get; set; }
         public string RodzajOplaty { get; set; }

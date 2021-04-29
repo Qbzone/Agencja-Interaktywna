@@ -22,13 +22,16 @@ namespace Agencja_Interaktywna.Models
         public string Nazwa { get; set; }
         public string Logo { get; set; }
 
-        [Required(ErrorMessage = "Proszę wybrać firmę.")]
-        public int IdFirma { get; set; }
+        [Required(ErrorMessage = "Proszę wybrać klienta.")]
+        public int? IdFirma { get; set; }
+        
         [NotMapped]
         public string Widok { get; set; }
+        
         [NotMapped]
         [Required(ErrorMessage ="Proszę wybrać logo.")]
         public IFormFile formFile { get; set; }
+        
         public virtual Firma IdFirmaNavigation { get; set; }
         public virtual ICollection<ProjektPakiet> ProjektPakiet { get; set; }
         public virtual ICollection<UslugaProjekt> UslugaProjekt { get; set; }
