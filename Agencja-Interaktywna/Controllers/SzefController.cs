@@ -90,17 +90,17 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectCreate(ProjectCreateModel pCM, IFormFile fromFile)
+        public IActionResult ProjectCreate(ProjectCreateModel pCM)
         {
             if (ModelState.IsValid)
             {
-                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(fromFile.FileName));
-                fromFile.CopyTo(new FileStream(fileName, FileMode.Create));
+                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(pCM.projekt.formFile.FileName));
+                pCM.projekt.formFile.CopyTo(new FileStream(fileName, FileMode.Create));
 
                 var newProjekt = new Projekt()
                 {
                     Nazwa = pCM.projekt.Nazwa,
-                    Logo = "images/" + Path.GetFileName(fromFile.FileName),
+                    Logo = "images/" + Path.GetFileName(pCM.projekt.formFile.FileName),
                     IdFirma = pCM.projekt.IdFirma
                 };
 
@@ -129,6 +129,14 @@ namespace Agencja_Interaktywna.Controllers
             }
             else if (!ModelState.IsValid)
             {
+                var firma = from e in _s16693context.Firma select e;
+                var zespol = from e in _s16693context.Zespol select e;
+                var pakiet = from e in _s16693context.Pakiet select e;
+
+                pCM.zespols = zespol.ToList();
+                pCM.pakiets = pakiet.ToList();
+                pCM.firmas = firma.ToList();
+
                 return View("ProjectCreate", pCM);
             }
             return View(pCM);
@@ -176,16 +184,16 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectEdit(ProjectEditModel pEM, IFormFile fromFile)
+        public IActionResult ProjectEdit(ProjectEditModel pEM)
         {
             if (ModelState.IsValid)
             {
-                if (fromFile != null)
+                if (pEM.projekt.formFile != null)
                 {
-                    var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(fromFile.FileName));
-                    fromFile.CopyTo(new FileStream(fileName, FileMode.Create));
+                    var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(pEM.projekt.formFile.FileName));
+                    pEM.projekt.formFile.CopyTo(new FileStream(fileName, FileMode.Create));
 
-                    pEM.projekt.Logo = "images/" + Path.GetFileName(fromFile.FileName);
+                    pEM.projekt.Logo = "images/" + Path.GetFileName(pEM.projekt.formFile.FileName);
                 }
 
                 _s16693context.Update(pEM.projekt);
