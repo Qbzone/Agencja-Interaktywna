@@ -4,49 +4,57 @@
 }
 
 <h1>Tworzenie Spotkania</h1>
-
-<form method="post" asp-action="MeetingsCreate">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        Miejsce spotkania: <input type="text" asp-for="@Model.PracownikKlient.MiejsceSpotkania" />
-        <span asp-validation-for="PracownikKlient.MiejsceSpotkania"></span>
-    </div>
-    <div>
-        Data rozpoczęcia spotkania: <input type="datetime-local" asp-for="@Model.PracownikKlient.DataRozpoczeciaSpotkania" />
-        <span asp-validation-for="PracownikKlient.DataRozpoczeciaSpotkania"></span>
-    </div>
-    <div>
-        Data zakończenia spotkania: <input type="datetime-local" asp-for="@Model.PracownikKlient.DataZakonczeniaSpotkania" />
-        <span asp-validation-for="PracownikKlient.DataZakonczeniaSpotkania"></span>
-    </div>
-    <div>
-        Klient: <select asp-for="@Model.PracownikKlient.IdKlient">
-            <option value="0">Wybierz klienta</option>
-            @{
-                foreach (var item in Model.klients)
-                {
-                    <option value="@item.IdKlient">@item.IdKlientNavigation.AdresEmail</option>
+<div class="row">
+<div class="col-md-4">
+    <form method="post" asp-action="MeetingsCreate">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="PracownikKlient.MiejsceSpotkania" class="control-label">Miejsce spotkania</label>
+            <input type="text" class="form-control" asp-for="@Model.PracownikKlient.MiejsceSpotkania" />
+            <span asp-validation-for="PracownikKlient.MiejsceSpotkania" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PracownikKlient.DataRozpoczeciaSpotkania" class="control-label">Data rozpoczęcia spotkania</label>
+            <input type="datetime-local" class="form-control" asp-for="@Model.PracownikKlient.DataRozpoczeciaSpotkania" />
+            <span asp-validation-for="PracownikKlient.DataRozpoczeciaSpotkania" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PracownikKlient.DataZakonczeniaSpotkania" class="control-label">Data zakończenia spotkania</label>
+            <input type="datetime-local" class="form-control" asp-for="@Model.PracownikKlient.DataZakonczeniaSpotkania" />
+            <span asp-validation-for="PracownikKlient.DataZakonczeniaSpotkania" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.PracownikKlient.IdKlient" class="control-label">Klient</label>
+            <select class="form-control" asp-for="@Model.PracownikKlient.IdKlient">
+                <option value="">Wybierz klienta</option>
+                @{
+                    foreach (var item in Model.klients)
+                    {
+                        <option class="form-control" value="@item.IdKlient">@item.IdKlientNavigation.AdresEmail</option>
+                    }
                 }
-            }
-        </select>
-        <span asp-validation-for="@Model.PracownikKlient.IdKlient"></span>
-    </div>
-    <div>
-        Pracownik: <select asp-for="@Model.PracownikKlient.IdPracownik">
-            <option value="0">Wybierz pracownika</option>
-            @{
-                foreach (var item in Model.pracowniks)
-                {
-                    <option value="@item.IdPracownik">@item.IdPracownikNavigation.AdresEmail</option>
+            </select>
+            <span asp-validation-for="@Model.PracownikKlient.IdKlient" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.PracownikKlient.IdPracownik" class="control-label">Pracownik</label>
+            <select class="form-control" asp-for="@Model.PracownikKlient.IdPracownik">
+                <option value="">Wybierz pracownika</option>
+                @{
+                    foreach (var item in Model.pracowniks)
+                    {
+                        <option class="form-control" value="@item.IdPracownik">@item.IdPracownikNavigation.AdresEmail</option>
+                    }
                 }
-            }
-        </select>
-        <span asp-validation-for="@Model.PracownikKlient.IdPracownikNavigation.IdPracownik"></span>
+            </select>
+            <span asp-validation-for="@Model.PracownikKlient.IdPracownik" class="text-danger"></span>
+        </div>
+        <div>
+            <input type="submit" value="Zatwierdź" />
+        </div>
+    </form>
     </div>
-    <div>
-        <input type="submit" value="Zatwierdź" />
     </div>
-</form>
 <a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
 
 

@@ -28,10 +28,6 @@ namespace Agencja_Interaktywna.Models
         [NotMapped]
         public string Widok { get; set; }
         
-        [NotMapped]
-        [Required(ErrorMessage ="Proszę wybrać logo.")]
-        public IFormFile formFile { get; set; }
-        
         public virtual Firma IdFirmaNavigation { get; set; }
         public virtual ICollection<ProjektPakiet> ProjektPakiet { get; set; }
         public virtual ICollection<UslugaProjekt> UslugaProjekt { get; set; }

@@ -21,8 +21,10 @@ namespace Agencja_Interaktywna.Controllers
     public class SzefController : Controller
     {
         private readonly s16693Context _s16693context = new s16693Context();
+        [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;
 
+        [Obsolete]
         public SzefController(IHostingEnvironment environment)
         {
             hostingEnvironment = environment;
@@ -90,17 +92,18 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Obsolete]
         public IActionResult ProjectCreate(ProjectCreateModel pCM)
         {
             if (ModelState.IsValid)
             {
-                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(pCM.projekt.formFile.FileName));
-                pCM.projekt.formFile.CopyTo(new FileStream(fileName, FileMode.Create));
+                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(pCM.formFile.FileName));
+                pCM.formFile.CopyTo(new FileStream(fileName, FileMode.Create));
 
                 var newProjekt = new Projekt()
                 {
                     Nazwa = pCM.projekt.Nazwa,
-                    Logo = "images/" + Path.GetFileName(pCM.projekt.formFile.FileName),
+                    Logo = "images/" + Path.GetFileName(pCM.formFile.FileName),
                     IdFirma = pCM.projekt.IdFirma
                 };
 
@@ -184,17 +187,11 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Obsolete]
         public IActionResult ProjectEdit(ProjectEditModel pEM)
         {
             if (ModelState.IsValid)
             {
-                if (pEM.projekt.formFile != null)
-                {
-                    var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(pEM.projekt.formFile.FileName));
-                    pEM.projekt.formFile.CopyTo(new FileStream(fileName, FileMode.Create));
-
-                    pEM.projekt.Logo = "images/" + Path.GetFileName(pEM.projekt.formFile.FileName);
-                }
 
                 _s16693context.Update(pEM.projekt);
 
@@ -247,7 +244,23 @@ namespace Agencja_Interaktywna.Controllers
             }
             else if (!ModelState.IsValid)
             {
-                return View("ProjectEdit", pEM);
+                var firmy = from e in _s16693context.Firma select e;
+                var zespoly = from e in _s16693context.Zespol select e;
+                var pakiety = from e in _s16693context.Pakiet select e;
+
+                var newPEM = new ProjectEditModel
+                {
+                    projekt = pEM.projekt,
+                    zespol = pEM.zespol,
+                    pakiet = pEM.pakiet,
+                    firmas = firmy.ToList(),
+                    zespols = zespoly.ToList(),
+                    pakiets = pakiety.ToList(),
+                    IdZespol = (int)pEM.IdZespol,
+                    IdPakiet = (int)pEM.IdPakiet
+                };
+                
+                return View("ProjectEdit", newPEM);
             }
             return View(pEM);
         }
@@ -350,7 +363,16 @@ namespace Agencja_Interaktywna.Controllers
             }
             else if (!ModelState.IsValid)
             {
-                return View("MeetingsCreate", mCM);
+                var klient = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
+                var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+
+                var newMCM = new MeetingCreateModel
+                {
+                    klients = klient,
+                    pracowniks = pracownik
+                };
+                
+                return View("MeetingsCreate", newMCM);
             }
             return View(mCM);
         }
@@ -376,9 +398,9 @@ namespace Agencja_Interaktywna.Controllers
             var mEM = new MeetingEditModel
             {
                 PracownikKlient = spotkanie,
-                IdPracownik = spotkanie.IdPracownik,
-                IdKlient = spotkanie.IdKlient,
-                DataRozpoczeciaSpotkania = spotkanie.DataRozpoczeciaSpotkania,
+                IdPracownik = (int)spotkanie.IdPracownik,
+                IdKlient = (int)spotkanie.IdKlient,
+                DataRozpoczeciaSpotkania = (DateTime)spotkanie.DataRozpoczeciaSpotkania,
                 klients = klients,
                 pracowniks = pracowniks
             };
@@ -426,7 +448,21 @@ namespace Agencja_Interaktywna.Controllers
             }
             else if (!ModelState.IsValid)
             {
-                return View("MeetingsEdit", mEM);
+
+                var klients = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
+                var pracowniks = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+
+                var newMEM = new MeetingEditModel
+                {
+                    PracownikKlient = mEM.PracownikKlient,
+                    IdPracownik = (int)mEM.IdPracownik,
+                    IdKlient = (int)mEM.IdKlient,
+                    DataRozpoczeciaSpotkania = (DateTime)mEM.DataRozpoczeciaSpotkania,
+                    klients = klients,
+                    pracowniks = pracowniks
+                };
+                
+                return View("MeetingsEdit", newMEM);
             }
             return View(mEM);
         }
