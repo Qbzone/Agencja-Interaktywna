@@ -13,7 +13,6 @@ namespace Agencja_Interaktywna.Models
             ZespolProjekt = new HashSet<ZespolProjekt>();
         }
 
-        [Required(ErrorMessage = "Proszę wybrać zespół")]
         public int? IdZespol { get; set; }
         public string Nazwa { get; set; }
         [NotMapped]

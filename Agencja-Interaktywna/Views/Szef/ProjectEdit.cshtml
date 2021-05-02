@@ -15,7 +15,7 @@
             <div class="form-group">
                 <label asp-for="projekt.Nazwa" class="control-label">Nazwa</label>
                 <input type="text" class="form-control" asp-for="@Model.projekt.Nazwa" />
-                <span asp-validation-for="projekt.Nazwa" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="projekt.Logo" class="control-label">Logo projektu</label>
@@ -31,7 +31,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.zespol.IdZespol" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler4" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.projekt.IdFirma" class="control-label">Klient</label>
@@ -43,7 +43,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.projekt.IdFirma" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler2" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.pakiet.IdPakiet" class="control-label">Pakiet</label>
@@ -55,7 +55,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.pakiet.IdPakiet" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler3" class="text-danger"></span>
             </div>
             <div>
                 <input type="submit" value="Zatwierdź" />

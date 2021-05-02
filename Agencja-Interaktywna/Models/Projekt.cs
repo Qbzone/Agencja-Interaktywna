@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Agencja_Interaktywna.Models
 {
-    public partial class Projekt
+    public partial class Projekt 
     {
         public Projekt()
         {
@@ -16,15 +16,10 @@ namespace Agencja_Interaktywna.Models
         }
 
         public int IdProjekt { get; set; }
-        
-        [Required(ErrorMessage = "Proszę podać nazwę projektu.")]
         [MaxLength(50)]
         public string Nazwa { get; set; }
         public string Logo { get; set; }
-
-        [Required(ErrorMessage = "Proszę wybrać klienta.")]
         public int? IdFirma { get; set; }
-        
         [NotMapped]
         public string Widok { get; set; }
         

@@ -11,12 +11,12 @@
             <div class="form-group">
                 <label asp-for="projekt.Nazwa" class="control-label">Nazwa</label>
                 <input type="text" class="form-control" asp-for="@Model.projekt.Nazwa" />
-                <span asp-validation-for="projekt.Nazwa" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="formFile" class="control-label">Logo</label>
-                <input asp-for="formFile" class="form-control"/>
-                <span asp-validation-for="formFile" class="text-danger"></span>
+                <label asp-for="FormFile" class="control-label">Logo</label>
+                <input asp-for="FormFile" class="form-control"/>
+                <span asp-validation-for="FormFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.zespol.IdZespol" class="control-label">Zespół</label>
@@ -29,7 +29,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.zespol.IdZespol" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler4" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.projekt.IdFirma" class="control-label">Klient</label>
@@ -42,7 +42,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.projekt.IdFirma" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler2" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.pakiet.IdPakiet" class="control-label">Pakiet</label>
@@ -55,12 +55,11 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.pakiet.IdPakiet" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler3" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Zatwierdź" />
             </div>
-
         </form>
     </div>
 </div>

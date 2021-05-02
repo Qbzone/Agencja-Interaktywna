@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Agencja_Interaktywna.Models
 {
@@ -12,5 +13,6 @@ namespace Agencja_Interaktywna.Models
 
         public virtual Pracownik IdPracownikNavigation { get; set; }
         public virtual Zespol IdZespolNavigation { get; set; }
+
     }
 }

@@ -97,13 +97,13 @@ namespace Agencja_Interaktywna.Controllers
         {
             if (ModelState.IsValid)
             {
-                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(pCM.formFile.FileName));
-                pCM.formFile.CopyTo(new FileStream(fileName, FileMode.Create));
+                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(pCM.FormFile.FileName));
+                pCM.FormFile.CopyTo(new FileStream(fileName, FileMode.Create));
 
                 var newProjekt = new Projekt()
                 {
                     Nazwa = pCM.projekt.Nazwa,
-                    Logo = "images/" + Path.GetFileName(pCM.formFile.FileName),
+                    Logo = "images/" + Path.GetFileName(pCM.FormFile.FileName),
                     IdFirma = pCM.projekt.IdFirma
                 };
 
@@ -584,7 +584,6 @@ namespace Agencja_Interaktywna.Controllers
 
                     tCM.pracowniks = pracownik;
 
-                    ViewBag.Error = "Musi byc wybrany przynajmniej jeden pracownik!";
                     return View("TeamsCreate", tCM);
                 }
 
@@ -607,7 +606,20 @@ namespace Agencja_Interaktywna.Controllers
             }
             else if (!ModelState.IsValid)
             {
-                return View("TeamsCreate", tCM);
+                var pracownik = _s16693context.Pracownik
+                .Include(o => o.IdPracownikNavigation)
+                .Select(x => new SelectListItem()
+                {
+                    Text = x.IdPracownikNavigation.AdresEmail,
+                    Value = x.IdPracownik.ToString()
+                }).ToList();
+
+                var newTCM = new TeamCreateModel
+                {
+                    pracowniks = pracownik
+                };
+
+                return View("TeamsCreate", newTCM);
             }
             return View(tCM);
         }
@@ -657,12 +669,9 @@ namespace Agencja_Interaktywna.Controllers
             {
                 _s16693context.Update(tEM.zespol);
                 List<PracownikZespol> pracowniklist = new List<PracownikZespol>();
-                var length = 0;
-                var errors = 0;
 
                 foreach (var item in tEM.pracowniks)
                 {
-                    length++;
                     if (item.IsChecked == true)
                     {
                         var PZ = new PracownikZespol()
@@ -673,26 +682,6 @@ namespace Agencja_Interaktywna.Controllers
                         };
                         _s16693context.Add(PZ);
                     }
-                    else if (item.IsChecked == false)
-                    {
-                        errors++;
-                    }
-                }
-                if (errors == length)
-                {
-                    var allpracownik = _s16693context.Pracownik
-                        .Include(o => o.IdPracownikNavigation)
-                        .Select(x => new CheckBoxItem()
-                        {
-                            Id = x.IdPracownik,
-                            Nazwa = x.IdPracownikNavigation.AdresEmail,
-                            IsChecked = x.PracownikZespol.Any(x => x.IdZespol == tEM.zespol.IdZespol) ? true : false
-                        }).ToList();
-
-                    tEM.pracowniks = allpracownik;
-
-                    ViewBag.Error = "Musi byc wybrany przynajmniej jeden pracownik!";
-                    return View("TeamsEdit", tEM);
                 }
 
                 var dt = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
@@ -717,7 +706,22 @@ namespace Agencja_Interaktywna.Controllers
 
             else if (!ModelState.IsValid)
             {
-                return View("TeamsEdit", tEM);
+                var allpracownik = _s16693context.Pracownik
+                .Include(o => o.IdPracownikNavigation)
+                .Select(x => new CheckBoxItem()
+                {
+                    Id = x.IdPracownik,
+                    Nazwa = x.IdPracownikNavigation.AdresEmail,
+                    IsChecked = x.PracownikZespol.Any(x => x.IdZespol == tEM.zespol.IdZespol) ? true : false
+                }).ToList();
+
+                var newTEM = new TeamEditModel()
+                {
+                    zespol = tEM.zespol,
+                    pracowniks = allpracownik,
+                };
+
+                return View("TeamsEdit", newTEM);
             }
             return View(tEM);
         }
@@ -813,7 +817,22 @@ namespace Agencja_Interaktywna.Controllers
             }
             else if (!ModelState.IsValid)
             {
-                return View("MeetingsCreate", tCM);
+                var pakiet = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == tCM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null);
+                var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToList();
+                List<Usluga> uslugas = new List<Usluga>();
+
+                foreach (var item in pU)
+                {
+                    uslugas.Add(_s16693context.Usluga.FirstOrDefault(x => x.IdUsluga == item.IdUsluga));
+                }
+
+                var newTCM = new TaskCreateModel
+                {
+                    uslugas = uslugas,
+                    projekt = tCM.projekt
+                };
+
+                return View("TaskCreate", newTCM);
             }
             return View(tCM);
         }

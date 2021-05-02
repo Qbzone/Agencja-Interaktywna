@@ -12,7 +12,6 @@ namespace Agencja_Interaktywna.Models
             ProjektPakiet = new HashSet<ProjektPakiet>();
         }
 
-        [Required(ErrorMessage ="Proszę wybrać pakiet")]
         public int? IdPakiet { get; set; }
         public string Nazwa { get; set; }
         public int Oplata { get; set; }

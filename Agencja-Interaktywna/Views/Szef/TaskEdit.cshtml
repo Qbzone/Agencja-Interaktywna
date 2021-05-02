@@ -5,35 +5,42 @@
 
 <h1>Edycja zadania</h1>
 
-<form method="post" asp-action="TaskEdit">
-    <div asp-validation-summary="ModelOnly"></div>
-    <input type="hidden" asp-for="@Model.UslugaProjekt.IdProjekt" />
-    <div>
-        <input type="hidden" asp-for="@Model.UslugaProjekt.IdUsluga" />
-        <span asp-validation-for="UslugaProjekt.IdUsluga"></span>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="TaskEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.UslugaProjekt.IdProjekt" />
+            <div class="form-group">
+                <input type="hidden" asp-for="@Model.UslugaProjekt.IdUsluga" />
+                <span asp-validation-for="UslugaProjekt.IdUsluga" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UslugaProjekt.Opis" class="control-label">Opis zadania</label>
+                <input type="text" class="form-control" asp-for="@Model.UslugaProjekt.Opis" />
+                <span asp-validation-for="UslugaProjekt.Opis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" class="form-control" asp-for="@Model.UslugaProjekt.DataPrzypisaniaZadania" />
+                <span asp-validation-for="UslugaProjekt.DataPrzypisaniaZadania" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UslugaProjekt.DataZakonczeniaZadania" class="control-label">Data zakończenia zadania</label>
+                <input type="datetime-local" class="form-control" asp-for="@Model.UslugaProjekt.DataZakonczeniaZadania" />
+                <span asp-validation-for="UslugaProjekt.DataZakonczeniaZadania" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.UslugaProjekt.Status" class="control-label">Edytuj status</label>
+                <select class="form-control" asp-for="@Model.UslugaProjekt.Status">
+                    <option class="form-control" value="Oczekuje na realizację">Oczekuje na realizację</option>
+                    <option class="form-control" value="W trakcie realizacji">W trakcie realizacji</option>
+                    <option class="form-control" value="Zakończone">Zakończone</option>
+                </select>
+                <span asp-validation-for="@Model.UslugaProjekt.Status" class="text-danger"></span>
+            </div>
+            <div>
+                <input type="submit" value="Potwierdź zmiany" />
+            </div>
+        </form>
     </div>
-    <div>
-        Opis zadania: <input type="text" asp-for="@Model.UslugaProjekt.Opis" />
-        <span asp-validation-for="UslugaProjekt.Opis"></span>
-    </div>
-    <div>
-        <input type="hidden" asp-for="@Model.UslugaProjekt.DataPrzypisaniaZadania" />
-        <span asp-validation-for="UslugaProjekt.DataPrzypisaniaZadania"></span>
-    </div>
-    <div>
-        Data zakończenia zadania: <input type="datetime-local" asp-for="@Model.UslugaProjekt.DataZakonczeniaZadania" />
-        <span asp-validation-for="UslugaProjekt.DataZakonczeniaZadania"></span>
-    </div>
-    <div>
-        Edytuj Status: <select asp-for="@Model.UslugaProjekt.Status">
-            <option value="Oczekuje na realizację">Oczekuje na realizację</option>
-            <option value="W trakcie realizacji">W trakcie realizacji</option>
-            <option value="Zakończone">Zakończone</option>
-        </select>
-        <span asp-validation-for="@Model.UslugaProjekt.Status"></span>
-    </div>
-    <div>
-        <input type="submit" value="Potwierdź zmiany" />
-    </div>
-</form>
+</div>
 <a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
