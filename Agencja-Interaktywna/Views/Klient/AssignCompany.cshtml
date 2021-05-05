@@ -4,14 +4,19 @@
 }
 
 <h3>Proszę powiązać firmę</h3>
-<form method="post" asp-action="AssignCompany">
-    <div asp-validation-summary="ModelOnly"></div>
-    <input type="hidden" asp-for="@Model.klient.IdKlient" />
-    <div>
-        Nazwa firmy: <input type="text" asp-for="@Model.firma.Nazwa" />
-        <span asp-validation-for="firma.Nazwa"></span>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="AssignCompany">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.klient.IdKlient" />
+            <div class="form-group">
+                <label asp-for="@Model.firma.Nazwa" class="control-label">Nazwa firmy</label>
+                <input type="text" class="form-control" asp-for="@Model.firma.Nazwa" />
+                <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
+            </div>
+            <div>
+                <input type="submit" value="Zatwierdź" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
-    <div>
-        <input type="submit" value="Zatwierdź" />
-    </div>
-</form>
+</div>

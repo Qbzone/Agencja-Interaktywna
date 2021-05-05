@@ -51,12 +51,12 @@
                 <span asp-validation-for="@Model.PracownikKlient.IdPracownik" class="text-danger"></span>
             </div>
             <div>
-                <input type="submit" value="Zatwierdź" />
+                <a asp-action="Meetings" class="btn btn-primary">Wstecz</a>
+                <input type="submit" value="Zatwierdź" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
-<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
 
 
 

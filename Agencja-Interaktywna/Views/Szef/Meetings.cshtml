@@ -29,7 +29,7 @@
             <td>
                 <a asp-action="MeetingsEdit" asp-route-id1="@item.IdKlient" asp-route-id2="@item.IdPracownik" asp-route-data="@item.DataRozpoczeciaSpotkania">Edytuj</a>
                 <form asp-action="MeetingsDelete" asp-route-id1="@item.IdKlient" asp-route-id2="@item.IdPracownik" asp-route-data="@item.DataRozpoczeciaSpotkania" onclick="return confirm('Czy na pewno chcesz usunąć wybrane spotkanie?')">
-                    <input type="submit" value="Usuń" /> |
+                    <input type="submit" value="Usuń" class="btn btn-primary"/> |
                 </form>
             </td>
         </tr>

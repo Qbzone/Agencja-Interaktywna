@@ -38,9 +38,9 @@
                 <span asp-validation-for="@Model.UslugaProjekt.Status" class="text-danger"></span>
             </div>
             <div>
-                <input type="submit" value="Potwierdź zmiany" />
+                <a asp-action="ProjectDetails" asp-route-id="@Model.UslugaProjekt.IdProjekt" class="btn btn-primary">Wstecz</a>
+                <input type="submit" value="Potwierdź zmiany" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
-<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>

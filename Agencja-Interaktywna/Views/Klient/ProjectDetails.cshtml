@@ -5,6 +5,6 @@
 <h3>Nazwa projektu  @Html.DisplayFor(model => model.Nazwa)</h3>
 
 <img src="/@Model.Logo" alt="/@Model.Logo" height="100" width="100" />
-<a asp-action="Team" asp-route-id="@Model.IdProjekt">Wyświetl zespół</a>
-<a asp-action="Contract" asp-route-id="@Model.IdProjekt">Wyświetl umowę</a>
-<a href="Index" onClick="history.go(-1); return false;"> Wróć</a>
+<a asp-action="Team" asp-route-id="@Model.IdProjekt" class="btn btn-primary">Wyświetl zespół</a>
+<a asp-action="Contract" asp-route-id="@Model.IdProjekt" class="btn btn-primary">Wyświetl umowę</a>
+<a href="Index" onClick="history.go(-1); return false;" class="btn btn-primary">Wstecz</a>
