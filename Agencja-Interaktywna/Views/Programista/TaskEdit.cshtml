@@ -34,7 +34,7 @@
                 <input class="form-control" type="datetime-local" asp-for="@Model.UslugaProjekt.DataZakonczeniaZadania" />
                 <span asp-validation-for="UslugaProjekt.DataZakonczeniaZadania" class="text-danger"></span>
             </div>
-            <div>
+            <div class="btn-goup">
                 <a asp-action="ProjectDetails" asp-route-id="@Model.UslugaProjekt.IdProjekt" class="btn btn-primary">Wstecz</a>
                 <input type="submit" value="Potwierdź zmiany" class="btn btn-primary" />
             </div>

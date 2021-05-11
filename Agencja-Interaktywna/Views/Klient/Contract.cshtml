@@ -7,25 +7,24 @@
     <tbody>
         @foreach (var item in @Model)
         {
-<tr>
-    <td>
-        @item.DataRozpoczeciaWspolpracy
-    </td>
-    <td>
-        @item.DataZakonczeniaWspolpracy
-    </td>
-    <td>
-        @item.IdPakietNavigation.Nazwa
-    </td>
-    <td>
-        @item.IdPakietNavigation.Oplata
-    </td>
-    <td>
-        @item.IdPakietNavigation.RodzajOplaty
-    </td>
-
-</tr>
-}
+            <tr>
+                <td>
+                    @item.DataRozpoczeciaWspolpracy
+                </td>
+                <td>
+                    @item.DataZakonczeniaWspolpracy
+                </td>
+                <td>
+                    @item.IdPakietNavigation.Nazwa
+                </td>
+                <td>
+                    @item.IdPakietNavigation.Oplata
+                </td>
+                <td>
+                    @item.IdPakietNavigation.RodzajOplaty
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <a href="ProjectDetails" onClick="history.go(-1); return false;" class="btn btn-primary"> Wróć</a>

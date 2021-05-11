@@ -38,7 +38,7 @@
                 <span asp-validation-for="UslugaProjekt.DataZakonczeniaZadania" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="@Model.UslugaProjekt.Status" value="Oczekuje na realizację" />
-            <div>
+            <div class="btn-group">
                 <a asp-action="ProjectDetails" asp-route-id="@Model.projekt.IdProjekt" class="btn btn-primary">Wstecz</a>
                 <input type="submit" value="Zatwierdź" class="btn btn-primary"/>
             </div>

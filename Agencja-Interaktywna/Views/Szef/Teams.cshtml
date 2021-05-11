@@ -16,10 +16,14 @@
                     @item.Nazwa
                 </td>
                 <td>
-                    <a asp-action="Team" asp-route-id="@item.IdZespol" asp-route-view ="@item.Widok" class="btn btn-primary">Wyświetl zespół</a>
+                    <a asp-action="Team" asp-route-id="@item.IdZespol" asp-route-view="@item.Widok" class="btn btn-primary">Wyświetl zespół</a>
+                </td>
+                <td>
                     <a asp-action="TeamsEdit" asp-route-id="@item.IdZespol" class="btn btn-primary">Edytuj</a>
+                </td>
+                <td>
                     <form asp-action="TeamsDelete" asp-route-id="@item.IdZespol" onclick="return confirm('Czy na pewno chcesz usunąć wybrany zespół?')">
-                        <input type="submit" value="Usuń" class="btn btn-primary"/> |
+                        <input type="submit" value="Usuń" class="btn btn-primary" />
                     </form>
                 </td>
             </tr>

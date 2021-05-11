@@ -11,7 +11,7 @@
             <input type="hidden" asp-for="@Model.projekt.IdProjekt" />
             <input type="hidden" asp-for="@Model.IdZespol" />
             <input type="hidden" asp-for="@Model.IdPakiet" />
-            <input type="hidden" asp-for="@Model.projekt.Logo"/>
+            <input type="hidden" asp-for="@Model.projekt.Logo" />
             <div class="form-group">
                 <label asp-for="projekt.Nazwa" class="control-label">Nazwa</label>
                 <input type="text" class="form-control" asp-for="@Model.projekt.Nazwa" />
@@ -57,9 +57,9 @@
                 </select>
                 <span asp-validation-for="ErrorHandler3" class="text-danger"></span>
             </div>
-            <div>
+            <div class="btn-group">
                 <a asp-action="ProjectDetails" asp-route-id="@Model.projekt.IdProjekt" class="btn btn-primary">Wstecz</a>
-                <input type="submit" value="Zatwierdź" class="btn btn-primary"/>
+                <input type="submit" value="Zatwierdź" class="btn btn-primary" />
             </div>
         </form>
     </div>

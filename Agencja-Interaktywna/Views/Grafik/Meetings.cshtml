@@ -8,24 +8,24 @@
     <tbody>
         @foreach (var item in @Model)
         {
-        <tr>
-            <td>
-                @item.DataRozpoczeciaSpotkania
-            </td>
-            <td>
-                @item.MiejsceSpotkania
+            <tr>
+                <td>
+                    @item.DataRozpoczeciaSpotkania
+                </td>
+                <td>
+                    @item.MiejsceSpotkania
 
-            </td>
-            <td>
-                @item.IdPracownikNavigation.IdPracownikNavigation.Imie
-                @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko
-                @item.IdPracownikNavigation.IdPracownikNavigation.Rola
-            </td>
-            <td>
-                @item.IdKlientNavigation.IdKlientNavigation.Imie
-                @item.IdKlientNavigation.IdKlientNavigation.Nazwisko
-            </td>
-        </tr>
+                </td>
+                <td>
+                    @item.IdPracownikNavigation.IdPracownikNavigation.Imie
+                    @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko
+                    @item.IdPracownikNavigation.IdPracownikNavigation.Rola
+                </td>
+                <td>
+                    @item.IdKlientNavigation.IdKlientNavigation.Imie
+                    @item.IdKlientNavigation.IdKlientNavigation.Nazwisko
+                </td>
+            </tr>
         }
     </tbody>
 </table>
