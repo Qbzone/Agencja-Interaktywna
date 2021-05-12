@@ -5,8 +5,14 @@
 
 <h1>Zespoły</h1>
 
-<a asp-action="TeamsCreate" class="btn btn-primary">Stwórz zespół</a>
-<table>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nazwa zespołu</th>
+            <th scope="col">Akcje</th>
+            <th scope="col">Usunięcie</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in @Model)
         {
@@ -17,8 +23,7 @@
                 </td>
                 <td>
                     <a asp-action="Team" asp-route-id="@item.IdZespol" asp-route-view="@item.Widok" class="btn btn-primary">Wyświetl zespół</a>
-                </td>
-                <td>
+
                     <a asp-action="TeamsEdit" asp-route-id="@item.IdZespol" class="btn btn-primary">Edytuj</a>
                 </td>
                 <td>
@@ -30,3 +35,4 @@
         }
     </tbody>
 </table>
+<a asp-action="TeamsCreate" class="btn btn-primary">Stwórz zespół</a>

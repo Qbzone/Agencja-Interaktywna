@@ -16,11 +16,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.pracowniks" class="control-label">Lista pracowników</label>
-                @for (int i = 0; i < Model.pracowniks.Count; i++)
-                {
-                    <input type="hidden" asp-for="@Model.pracowniks[i].Value" />
-                    <input asp-for="pracowniks[i].Selected" />@Model.pracowniks[i].Text
-                }
+                <table class="table">
+                    @for (int i = 0; i < Model.pracowniks.Count; i++)
+                    {
+                    <tr>
+                        <td>
+                            <input type="hidden" asp-for="@Model.pracowniks[i].Value" />
+                            <input asp-for="pracowniks[i].Selected" style="vertical-align: 3px" />
+                            @Model.pracowniks[i].Text
+                        </td>
+                    </tr>
+                    }
+                </table>
                 <span asp-validation-for="pracowniks" class="text-danger"></span>
             </div>
             <div class="btn-group">

@@ -5,7 +5,14 @@
 
 <h1>Lista pracowników</h1>
 
-<table>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Imię</th>
+            <th scope="col">Nazwisko</th>
+            <th scope="col">Pełniona rola</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in @Model)
         {

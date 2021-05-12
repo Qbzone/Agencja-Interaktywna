@@ -3,9 +3,16 @@
     ViewData["Title"] = "Meetings";
 }
 
-<h1>Meetings</h1>
+<h1>Spotkania</h1>
 
-<table>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Data rozpoczęcia spotkania</th>
+            <th scope="col">Miejsce spotkania</th>
+            <th scope="col">Pracownik (Imię, Nazwisko, Rola)</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in @Model)
         {

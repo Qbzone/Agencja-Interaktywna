@@ -5,11 +5,34 @@
 
 <h3>Nazwa projektu  @Html.DisplayFor(model => model.projekt.Nazwa)</h3>
 @{string Widok = "Project";}
-
-<img src="/@Model.projekt.Logo" alt="/@Model.projekt.Logo" height="100" width="100" />
-<a asp-action="Team" asp-route-id="@Model.projekt.IdProjekt" asp-route-view="@Widok" class="btn btn-primary">Wyświetl zespół</a>
-<a asp-action="Index" class="btn btn-primary">Wstecz</a>
-<table>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Logo projektu</th>
+            <th scope="col">Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <img src="/@Model.projekt.Logo" alt="/@Model.projekt.Logo" height="100" width="100" />
+            </td>
+            <td>
+                <a asp-action="Team" asp-route-id="@Model.projekt.IdProjekt" asp-route-view="@Widok" class="btn btn-primary">Wyświetl zespół</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h3>Zadania dla projektu</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nazwa zadania</th>
+            <th scope="col">Data zakończenia zadania</th>
+            <th scope="col">Status zadania</th>
+            <th scope="col">Akcje</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in @Model.zadanies)
         {
@@ -30,3 +53,4 @@
         }
     </tbody>
 </table>
+<a asp-action="Index" class="btn btn-primary">Wstecz</a>

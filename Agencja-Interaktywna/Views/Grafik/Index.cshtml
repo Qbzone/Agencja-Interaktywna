@@ -5,7 +5,14 @@
 
 <h1>Witaj @ViewBag.userEmail </h1>
 
-<table>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Logo projektu</th>
+            <th scope="col">Nazwa projektu</th>
+            <th scope="col">Podgląd</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in @Model)
         {
@@ -16,6 +23,7 @@
                 <td>
                     @item.Nazwa
                 </td>
+
                 <td>
                     <a asp-action="ProjectDetails" asp-route-id="@item.IdProjekt" class="btn btn-primary">Podgląd</a>
                 </td>
@@ -23,4 +31,3 @@
         }
     </tbody>
 </table>
-

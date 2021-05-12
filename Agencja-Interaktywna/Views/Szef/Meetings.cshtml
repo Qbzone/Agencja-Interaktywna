@@ -4,8 +4,17 @@
 }
 
 <h1>Spotkania</h1>
-<a class="btn btn-primary" asp-action="MeetingsCreate">Stwórz spotkanie</a>
-<table>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Data rozpoczęcia spotkania</th>
+            <th scope="col">Miejsce spotkania</th>
+            <th scope="col">Pracownik (Imię, Nazwisko, Rola)</th>
+            <th scope="col">Klient</th>
+            <th scope="col">Edycja</th>
+            <th scope="col">Usunięcie</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in @Model)
         {
@@ -38,3 +47,4 @@
         }
     </tbody>
 </table>
+<a class="btn btn-primary" asp-action="MeetingsCreate">Stwórz spotkanie</a>

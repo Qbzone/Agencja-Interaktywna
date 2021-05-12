@@ -4,7 +4,13 @@
 }
 
 <h1>Zespoły</h1>
-<table>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nazwa zespołu</th>
+            <th scope="col">Akcje</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in @Model)
         {
