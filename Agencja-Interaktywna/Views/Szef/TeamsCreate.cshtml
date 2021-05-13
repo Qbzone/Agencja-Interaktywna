@@ -19,13 +19,15 @@
                 <table class="table">
                     @for (int i = 0; i < Model.pracowniks.Count; i++)
                     {
-                    <tr>
-                        <td>
-                            <input type="hidden" asp-for="@Model.pracowniks[i].Value" />
-                            <input asp-for="pracowniks[i].Selected" style="vertical-align: 3px" />
-                            @Model.pracowniks[i].Text
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @Model.pracowniks[i].Text
+                            </td>
+                            <td>
+                                <input type="hidden" asp-for="@Model.pracowniks[i].Value" />
+                                <input asp-for="pracowniks[i].Selected" style="vertical-align: 3px" />
+                            </td>
+                        </tr>
                     }
                 </table>
                 <span asp-validation-for="pracowniks" class="text-danger"></span>
