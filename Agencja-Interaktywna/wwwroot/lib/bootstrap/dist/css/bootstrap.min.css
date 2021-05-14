@@ -69,7 +69,7 @@ body {
     line-height: 1.5;
     color: #212529;
     text-align: left;
-    background-color: #fff
+    background-color: #6c757d1a
 }
 
 [tabindex="-1"]:focus {
@@ -79,7 +79,8 @@ body {
 hr {
     box-sizing: content-box;
     height: 0;
-    overflow: visible
+    overflow: visible;
+    border-top: 1px solid rgba(52, 58, 64, 1)
 }
 
 h1,
@@ -212,7 +213,8 @@ figure {
 
 img {
     vertical-align: middle;
-    border-style: none
+    border-style: none;
+    mix-blend-mode: multiply
 }
 
 svg {
@@ -586,7 +588,7 @@ pre code {
 
 @media (min-width:576px) {
     .container {
-        max-width: 540px
+        max-width: 540px        
     }
 }
 
@@ -1776,12 +1778,13 @@ pre code {
 .table th {
     padding: .75rem;
     vertical-align: top;
-    border-top: 1px solid #dee2e6
+    border-top: 1px solid #343a40ab;
+    text-align: center
 }
 
 .table thead th {
     vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6
+    border-bottom: 2px solid #343a40ab
 }
 
 .table tbody + tbody {
@@ -2729,6 +2732,11 @@ textarea.form-control.is-invalid {
 a.btn.disabled,
 fieldset:disabled a.btn {
     pointer-events: none
+}
+
+.btn-delete {
+    font-size: 15px;
+    margin: 5px;
 }
 
 .btn-primary {
@@ -3723,9 +3731,7 @@ input[type=submit].btn-block {
 }
 
 .btn-group > .btn-group:not(:first-child) > .btn,
-.btn-group > .btn:not(:first-child) {
-
-}
+.btn-group > .btn:not(:first-child) {}
 
 .dropdown-toggle-split {
     padding-right: .5625rem;
@@ -4554,7 +4560,8 @@ input[type=submit].btn-block {
     align-items: center;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding: .5rem 1rem
+    padding: .5rem 1rem;
+    background-image: url("../../../../images/Banner.jpg")
 }
 
 .navbar > .container,
@@ -4625,7 +4632,7 @@ input[type=submit].btn-block {
     line-height: 1;
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: .25rem
+    border-radius: 25px
 }
 
 .navbar-toggler:focus,
@@ -4662,7 +4669,8 @@ input[type=submit].btn-block {
 
     .navbar-expand-sm .navbar-nav {
         -ms-flex-direction: row;
-        flex-direction: row
+        flex-direction: row;
+        font-size: 20px
     }
 
     .navbar-expand-sm .navbar-nav .dropdown-menu {
@@ -10994,12 +11002,12 @@ a.text-light:hover {
 }
 
 .text-dark {
-    color: #343a40 !important
+    color: #000000 !important
 }
 
 a.text-dark:focus,
-a.text-dark:hover {
-    color: #121416 !important
+a.text-dark:hover{
+    color: #007bff !important
 }
 
 .text-body {

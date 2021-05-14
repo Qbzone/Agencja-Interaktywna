@@ -10,6 +10,7 @@
         <tr>
             <th scope="col">Data rozpoczęcia spotkania</th>
             <th scope="col">Miejsce spotkania</th>
+            <th scope="col">Klient (Imię, Nazwisko)</th>
             <th scope="col">Pracownik (Imię, Nazwisko, Rola)</th>
         </tr>
     </thead>
@@ -25,8 +26,12 @@
 
                 </td>
                 <td>
+                    @item.IdKlientNavigation.IdKlientNavigation.Imie
+                    @item.IdKlientNavigation.IdKlientNavigation.Nazwisko
+                </td>
+                <td>
                     @item.IdPracownikNavigation.IdPracownikNavigation.Imie
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko - 
+                    @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko <br />
                     @item.IdPracownikNavigation.IdPracownikNavigation.Rola
                 </td>
             </tr>
