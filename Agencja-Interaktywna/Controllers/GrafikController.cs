@@ -171,6 +171,26 @@ namespace Agencja_Interaktywna.Controllers
             return View(tEM);
         }
 
+        public IActionResult TaskDetails(int? id1, int? id2, string data)
+        {
+            if (id1 == null)
+            {
+                return NotFound();
+            }
+
+            var fromDateAsDateTime = DateTime.Parse(data);
+            var uslugaprojekt = _s16693context.UslugaProjekt
+                .Include(x => x.IdUslugaNavigation)
+                .FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+
+            if (uslugaprojekt == null)
+            {
+                return NotFound();
+            }
+
+            return View(uslugaprojekt);
+        }
+
         public IActionResult Meetings()
         {
             var meetings = _s16693context.PracownikKlient
