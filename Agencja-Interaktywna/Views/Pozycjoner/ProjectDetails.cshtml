@@ -18,8 +18,6 @@
                 <img src="/@Model.projekt.Logo" alt="/@Model.projekt.Logo" height="100" width="100" />
             </td>
             <td>
-                <a asp-action="TaskDetails" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" class="btn btn-primary">Szczegóły</a>
-
                 <a asp-action="Team" asp-route-id="@Model.projekt.IdProjekt" asp-route-view="@Widok" class="btn btn-primary">Wyświetl zespół</a>
             </td>
         </tr>
@@ -49,6 +47,8 @@
                     @item.Status
                 </td>
                 <td>
+                    <a asp-action="TaskDetails" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" class="btn btn-primary">Szczegóły</a>
+
                     <a asp-action="TaskEdit" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" class="btn btn-primary">Edytuj</a>
                 </td>
             </tr>
