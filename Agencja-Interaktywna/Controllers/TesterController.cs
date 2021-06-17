@@ -17,46 +17,46 @@ namespace Agencja_Interaktywna.Controllers
     public class TesterController : Controller
     {
         private readonly s16693Context _s16693context = new s16693Context();
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
-            var zespol = _s16693context.Zespol
+            var zespol = await _s16693context.Zespol
                     .Include(pz => pz.PracownikZespol)
                         .ThenInclude(p => p.IdPracownikNavigation)
                             .ThenInclude(o => o.IdPracownikNavigation)
-                    .Where(x => x.PracownikZespol.Any(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToList();
+                    .Where(x => x.PracownikZespol.Any(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
 
             List<Projekt> projekts = new List<Projekt>();
 
             foreach (var item in zespol)
             {
 
-                projekts.AddRange(_s16693context.Projekt
+                projekts.AddRange(await _s16693context.Projekt
                 .Include(zp => zp.ZespolProjekt)
                     .ThenInclude(z => z.IdZespolNavigation)
-                .Where(x => x.ZespolProjekt.Any(e => e.IdZespol == item.IdZespol && e.DataWypisaniaZespolu == null)).ToList());
+                .Where(x => x.ZespolProjekt.Any(e => e.IdZespol == item.IdZespol && e.DataWypisaniaZespolu == null)).ToListAsync());
             }
 
             return View(projekts);
         }
 
         [HttpGet]
-        public IActionResult ProjectDetails(int? id)
+        public async Task<IActionResult> ProjectDetails(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var project = _s16693context.Projekt
-            .FirstOrDefault(e => e.IdProjekt == id);
+            var project = await _s16693context.Projekt
+            .FirstOrDefaultAsync(e => e.IdProjekt == id);
 
-            var tasks = _s16693context.UslugaProjekt
+            var tasks = await _s16693context.UslugaProjekt
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdUslugaNavigation)
                 .Where(e => e.IdProjekt == id && e.IdUslugaNavigation.Klasyfikacja == HttpContext.User.FindFirst(ClaimTypes.Role).Value)
-                .ToList();
+                .ToListAsync();
 
             var pDM = new ProjectDetailsModel
             {
@@ -75,44 +75,44 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult Teams()
+        public async Task<IActionResult> Teams()
         {
-            var teams = _s16693context.Zespol
+            var teams = await _s16693context.Zespol
                     .Include(pz => pz.PracownikZespol)
                         .ThenInclude(p => p.IdPracownikNavigation)
                             .ThenInclude(o => o.IdPracownikNavigation)
-                    .Where(x => x.PracownikZespol.Any(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToList();
+                    .Where(x => x.PracownikZespol.Any(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
 
             return View(teams);
         }
 
         [HttpGet]
-        public IActionResult Team(int? id, string view)
+        public async Task<IActionResult> Team(int? id, string view)
         {
             if (view.Equals("Project"))
             {
-                var team = _s16693context.ZespolProjekt
+                var team = await _s16693context.ZespolProjekt
                     .Include(p => p.IdProjektNavigation)
                     .Include(z => z.IdZespolNavigation)
-                    .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
+                    .FirstOrDefaultAsync(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
 
-                var members = _s16693context.PracownikZespol
+                var members = await _s16693context.PracownikZespol
                     .Include(z => z.IdZespolNavigation)
                     .Include(p => p.IdPracownikNavigation)
                         .ThenInclude(o => o.IdPracownikNavigation)
                         .Where(x => x.IdZespol == team.IdZespol)
-                        .ToList();
+                        .ToListAsync();
                 return View(members);
             }
             else if (view.Equals("Teams"))
             {
-                var members = _s16693context.PracownikZespol
+                var members = await _s16693context.PracownikZespol
                     .Include(z => z.IdZespolNavigation)
                     .Include(p => p.IdPracownikNavigation)
                         .ThenInclude(o => o.IdPracownikNavigation)
                         .Where(x => x.IdZespol == id)
-                        .ToList();
+                        .ToListAsync();
                 return View(members);
             }
 
@@ -121,7 +121,7 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult TaskEdit(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskEdit(int? id1, int? id2, string data)
         {
             if (id1 == null)
             {
@@ -129,18 +129,18 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             var fromDateAsDateTime = DateTime.Parse(data);
-            var uslugaprojekt = _s16693context.UslugaProjekt.FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+            var uslugaprojekt = await _s16693context.UslugaProjekt.FirstOrDefaultAsync(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
             if (uslugaprojekt == null)
             {
                 return NotFound();
             }
 
-            var pakiet = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == id1 && x.DataZakonczeniaWspolpracy == null);
-            var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToList();
+            var pakiet = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == id1 && x.DataZakonczeniaWspolpracy == null);
+            var pU = await _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToListAsync();
             List<Usluga> uslugas = new List<Usluga>();
             foreach (var item in pU)
             {
-                uslugas.Add(_s16693context.Usluga.FirstOrDefault(x => x.IdUsluga == item.IdUsluga));
+                uslugas.Add(await _s16693context.Usluga.FirstOrDefaultAsync(x => x.IdUsluga == item.IdUsluga));
             }
 
             var tEM = new TaskEditModel
@@ -154,12 +154,12 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult TaskEdit(TaskEditModel tEM)
+        public async Task<IActionResult> TaskEdit(TaskEditModel tEM)
         {
             if (ModelState.IsValid)
             {
                 _s16693context.Update(tEM.UslugaProjekt);
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
 
                 return RedirectToAction("ProjectDetails", new { id = tEM.UslugaProjekt.IdProjekt });
 
@@ -171,7 +171,7 @@ namespace Agencja_Interaktywna.Controllers
             return View(tEM);
         }
 
-        public IActionResult TaskDetails(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskDetails(int? id1, int? id2, string data)
         {
             if (id1 == null)
             {
@@ -179,9 +179,9 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             var fromDateAsDateTime = DateTime.Parse(data);
-            var uslugaprojekt = _s16693context.UslugaProjekt
+            var uslugaprojekt = await _s16693context.UslugaProjekt
                 .Include(x => x.IdUslugaNavigation)
-                .FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+                .FirstOrDefaultAsync(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
 
             if (uslugaprojekt == null)
             {
@@ -191,25 +191,27 @@ namespace Agencja_Interaktywna.Controllers
             return View(uslugaprojekt);
         }
 
-        public IActionResult Meetings()
+        public async Task<IActionResult> Meetings()
         {
-            var meetings = _s16693context.PracownikKlient
+            var meetings = await _s16693context.PracownikKlient
                 .Include(k => k.IdKlientNavigation)
                     .ThenInclude(o => o.IdKlientNavigation)
                 .Include(p => p.IdPracownikNavigation)
                     .ThenInclude(po => po.IdPracownikNavigation)
-                .Where(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value).ToList();
+                .Where(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value).ToListAsync();
 
             return View(meetings);
         }
 
 
 
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            var kl = _s16693context.Pracownik
+            var kl = await _s16693context.Pracownik
                 .Include(o => o.IdPracownikNavigation)
-                .FirstOrDefault(i => i.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+                .Include(pu => pu.PracownikUmowa)
+                    .ThenInclude(u => u.IdUmowaNavigation)
+                .FirstOrDefaultAsync(i => i.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
 
             if (kl == null)
             {

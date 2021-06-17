@@ -34,6 +34,30 @@ VALUES (7,'Warszawa ul.Poludniowa 20',2000,500,'12345678913',1);
 INSERT INTO Pracownik
 VALUES (8,'Warszawa ul.Poludniowa 20',2000,500,'12345678913',6);
 
+INSERT INTO Umowa
+VALUES ('Umowa o pracę');
+INSERT INTO Umowa
+VALUES ('Umowa o pracę');
+INSERT INTO Umowa
+VALUES ('Umowa zlecenie');
+INSERT INTO Umowa
+VALUES ('Umowa zlecenie');
+INSERT INTO Umowa
+VALUES ('Umowa b2b');
+
+INSERT INTO PracownikUmowa
+VALUES(4,1,'2018-03-03','2028-10-10');
+INSERT INTO PracownikUmowa
+VALUES(5,2,'2015-01-01','2025-10-10');
+INSERT INTO PracownikUmowa
+VALUES(6,3,'2016-09-09','2026-10-10');
+INSERT INTO PracownikUmowa
+VALUES(7,4,'2021-01-01','2022-01-01');
+INSERT INTO PracownikUmowa
+VALUES(8,5,'2020-08-10','2030-08-10');
+
+
+
 INSERT INTO Programista
 VALUES (4,'senior');
 INSERT INTO Grafik

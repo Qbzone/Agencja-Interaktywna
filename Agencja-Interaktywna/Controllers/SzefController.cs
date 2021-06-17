@@ -29,31 +29,31 @@ namespace Agencja_Interaktywna.Controllers
         {
             hostingEnvironment = environment;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
-            var pr = _s16693context.Projekt.ToList();
+            var pr = await _s16693context.Projekt.ToListAsync();
 
             return View(pr);
         }
 
         [HttpGet]
-        public IActionResult ProjectDetails(int? id)
+        public async Task<IActionResult> ProjectDetails(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var project = _s16693context.Projekt
-            .FirstOrDefault(e => e.IdProjekt == id);
+            var project = await _s16693context.Projekt
+            .FirstOrDefaultAsync(e => e.IdProjekt == id);
 
-            var tasks = _s16693context.UslugaProjekt
+            var tasks = await _s16693context.UslugaProjekt
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdUslugaNavigation)
                 .Where(e => e.IdProjekt == id)
-                .ToList();
+                .ToListAsync();
 
             var pDM = new ProjectDetailsModel
             {
@@ -72,7 +72,7 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProjectCreate()
+        public async Task<IActionResult> ProjectCreate()
         {
             var firma = from e in _s16693context.Firma select e;
             var zespol = from e in _s16693context.Zespol select e;
@@ -80,9 +80,9 @@ namespace Agencja_Interaktywna.Controllers
 
             var pCM = new ProjectCreateModel
             {
-                firmas = firma.ToList(),
-                zespols = zespol.ToList(),
-                pakiets = pakiet.ToList()
+                firmas = await firma.ToListAsync(),
+                zespols = await zespol.ToListAsync(),
+                pakiets = await pakiet.ToListAsync()
             };
 
             return View(pCM);
@@ -93,7 +93,7 @@ namespace Agencja_Interaktywna.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public IActionResult ProjectCreate(ProjectCreateModel pCM)
+        public async Task<IActionResult> ProjectCreate(ProjectCreateModel pCM)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +108,7 @@ namespace Agencja_Interaktywna.Controllers
                 };
 
                 _s16693context.Add(newProjekt);
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
 
                 var newZP = new ZespolProjekt()
                 {
@@ -127,7 +127,7 @@ namespace Agencja_Interaktywna.Controllers
                 _s16693context.Add(newZP);
                 _s16693context.Add(newPP);
 
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             else if (!ModelState.IsValid)
@@ -136,9 +136,9 @@ namespace Agencja_Interaktywna.Controllers
                 var zespol = from e in _s16693context.Zespol select e;
                 var pakiet = from e in _s16693context.Pakiet select e;
 
-                pCM.zespols = zespol.ToList();
-                pCM.pakiets = pakiet.ToList();
-                pCM.firmas = firma.ToList();
+                pCM.zespols = await zespol.ToListAsync();
+                pCM.pakiets = await pakiet.ToListAsync();
+                pCM.firmas = await firma.ToListAsync();
 
                 return View("ProjectCreate", pCM);
             }
@@ -146,24 +146,24 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProjectEdit(int? id)
+        public async Task<IActionResult> ProjectEdit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var projekt = _s16693context.Projekt.Find(id);
+            var projekt = await _s16693context.Projekt.FindAsync(id);
 
             if (projekt == null)
             {
                 return NotFound();
             }
 
-            var zp = _s16693context.ZespolProjekt.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt && x.DataWypisaniaZespolu == null);
-            var pp = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null);
-            var zespol = _s16693context.Zespol.FirstOrDefault(x => x.IdZespol == zp.IdZespol);
-            var pakiet = _s16693context.Pakiet.FirstOrDefault(x => x.IdPakiet == pp.IdPakiet);
+            var zp = await _s16693context.ZespolProjekt.FirstOrDefaultAsync(x => x.IdProjekt == projekt.IdProjekt && x.DataWypisaniaZespolu == null);
+            var pp = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null);
+            var zespol = await _s16693context.Zespol.FirstOrDefaultAsync(x => x.IdZespol == zp.IdZespol);
+            var pakiet = await _s16693context.Pakiet.FirstOrDefaultAsync(x => x.IdPakiet == pp.IdPakiet);
             var IdZespol = zespol.IdZespol;
             var IdPakiet = pakiet.IdPakiet;
             var firmy = from e in _s16693context.Firma select e;
@@ -175,9 +175,9 @@ namespace Agencja_Interaktywna.Controllers
                 projekt = projekt,
                 zespol = zespol,
                 pakiet = pakiet,
-                firmas = firmy.ToList(),
-                zespols = zespoly.ToList(),
-                pakiets = pakiety.ToList(),
+                firmas = await firmy.ToListAsync(),
+                zespols = await zespoly.ToListAsync(),
+                pakiets = await pakiety.ToListAsync(),
                 IdZespol = (int)IdZespol,
                 IdPakiet = (int)IdPakiet
             };
@@ -188,19 +188,19 @@ namespace Agencja_Interaktywna.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public IActionResult ProjectEdit(ProjectEditModel pEM)
+        public async Task<IActionResult> ProjectEdit(ProjectEditModel pEM)
         {
             if (ModelState.IsValid)
             {
 
                 _s16693context.Update(pEM.projekt);
 
-                var oldZP = _s16693context.ZespolProjekt
+                var oldZP = await _s16693context.ZespolProjekt
                     .Where(x => x.IdZespol == pEM.IdZespol && x.IdProjekt == pEM.projekt.IdProjekt && x.DataWypisaniaZespolu == null)
-                    .FirstOrDefault();
-                var oldPP = _s16693context.ProjektPakiet
+                    .FirstOrDefaultAsync();
+                var oldPP = await _s16693context.ProjektPakiet
                     .Where(x => x.IdPakiet == pEM.IdPakiet && x.IdProjekt == pEM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null)
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
                 if (oldZP.IdZespol != pEM.zespol.IdZespol)
                 {
@@ -216,7 +216,7 @@ namespace Agencja_Interaktywna.Controllers
                     };
 
                     _s16693context.Add(newZP);
-                    _s16693context.SaveChanges();
+                    await _s16693context.SaveChangesAsync();
 
                 }
 
@@ -234,11 +234,11 @@ namespace Agencja_Interaktywna.Controllers
                     };
 
                     _s16693context.Add(newPP);
-                    _s16693context.SaveChanges();
+                    await _s16693context.SaveChangesAsync();
 
                 }
 
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
 
             }
@@ -253,9 +253,9 @@ namespace Agencja_Interaktywna.Controllers
                     projekt = pEM.projekt,
                     zespol = pEM.zespol,
                     pakiet = pEM.pakiet,
-                    firmas = firmy.ToList(),
-                    zespols = zespoly.ToList(),
-                    pakiets = pakiety.ToList(),
+                    firmas = await firmy.ToListAsync(),
+                    zespols = await zespoly.ToListAsync(),
+                    pakiets = await pakiety.ToListAsync(),
                     IdZespol = (int)pEM.IdZespol,
                     IdPakiet = (int)pEM.IdPakiet
                 };
@@ -267,7 +267,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProjectDelete(ProjectDetailsModel pDM)
+        public async Task<IActionResult> ProjectDelete(ProjectDetailsModel pDM)
         {
 
             foreach (ZespolProjekt delZP in _s16693context.ZespolProjekt)
@@ -294,43 +294,43 @@ namespace Agencja_Interaktywna.Controllers
                 }
             }
 
-            var projekt = _s16693context.Projekt.Find(pDM.projekt.IdProjekt);
+            var projekt = await _s16693context.Projekt.FindAsync(pDM.projekt.IdProjekt);
 
             _s16693context.Remove(projekt);
-            _s16693context.SaveChanges();
+            await _s16693context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Contract(int? id)
+        public async Task<IActionResult> Contract(int? id)
         {
-            var contract = _s16693context.ProjektPakiet
+            var contract = await _s16693context.ProjektPakiet
                 .Include(pr => pr.IdProjektNavigation)
                 .Include(pa => pa.IdPakietNavigation)
                 .Where(x => x.IdProjekt == id)
                 .OrderByDescending(e => e.IdPakiet)
-                .ToList();
+                .ToListAsync();
 
             return View(contract);
         }
 
-        public IActionResult Meetings()
+        public async Task<IActionResult> Meetings()
         {
-            var meetings = _s16693context.PracownikKlient
+            var meetings = await _s16693context.PracownikKlient
                 .Include(k => k.IdKlientNavigation)
                     .ThenInclude(o => o.IdKlientNavigation)
                 .Include(p => p.IdPracownikNavigation)
                     .ThenInclude(po => po.IdPracownikNavigation)
-                .ToList();
+                .ToListAsync();
 
             return View(meetings);
         }
 
         [HttpGet]
-        public IActionResult MeetingsCreate()
+        public async Task<IActionResult> MeetingsCreate()
         {
-            var klient = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
-            var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+            var klient = await _s16693context.Klient.Include(o => o.IdKlientNavigation).ToListAsync();
+            var pracownik = await _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToListAsync();
 
             var mCM = new MeetingCreateModel
             {
@@ -343,7 +343,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult MeetingsCreate(MeetingCreateModel mCM)
+        public async Task<IActionResult> MeetingsCreate(MeetingCreateModel mCM)
         {
             if (ModelState.IsValid)
             {
@@ -357,14 +357,14 @@ namespace Agencja_Interaktywna.Controllers
                 };
 
                 _s16693context.Add(newSpotkanie);
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Meetings));
             }
             else if (!ModelState.IsValid)
             {
-                var klient = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
-                var pracownik = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+                var klient = await _s16693context.Klient.Include(o => o.IdKlientNavigation).ToListAsync();
+                var pracownik = await _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToListAsync();
 
                 var newMCM = new MeetingCreateModel
                 {
@@ -378,7 +378,7 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult MeetingsEdit(int? id1, int? id2, string data)
+        public async Task<IActionResult> MeetingsEdit(int? id1, int? id2, string data)
         {
             if (id1 == null)
             {
@@ -386,14 +386,14 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             var fromDateAsDateTime = DateTime.Parse(data);
-            var spotkanie = _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == id1 & x.IdPracownik == id2 & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
+            var spotkanie = await _s16693context.PracownikKlient.FirstOrDefaultAsync(x => x.IdKlient == id1 & x.IdPracownik == id2 & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
             if (spotkanie == null)
             {
                 return NotFound();
             }
 
-            var klients = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
-            var pracowniks = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+            var klients = await _s16693context.Klient.Include(o => o.IdKlientNavigation).ToListAsync();
+            var pracowniks = await _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToListAsync();
 
             var mEM = new MeetingEditModel
             {
@@ -410,13 +410,13 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult MeetingsEdit(MeetingEditModel mEM)
+        public async Task<IActionResult> MeetingsEdit(MeetingEditModel mEM)
         {
             if (ModelState.IsValid)
             {
-                var oldPK = _s16693context.PracownikKlient
+                var oldPK = await _s16693context.PracownikKlient
                     .Where(x => x.IdPracownik == mEM.IdPracownik && x.IdKlient == mEM.IdKlient && x.DataRozpoczeciaSpotkania == mEM.DataRozpoczeciaSpotkania)
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
                 if (mEM.PracownikKlient.IdPracownik != oldPK.IdPracownik || mEM.PracownikKlient.IdKlient != oldPK.IdKlient || mEM.PracownikKlient.DataRozpoczeciaSpotkania != oldPK.DataRozpoczeciaSpotkania)
                 {
@@ -432,7 +432,7 @@ namespace Agencja_Interaktywna.Controllers
                     };
 
                     _s16693context.Add(newPK);
-                    _s16693context.SaveChanges();
+                    await _s16693context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Meetings));
                 }
@@ -440,7 +440,7 @@ namespace Agencja_Interaktywna.Controllers
                 {
                     _s16693context.Entry(oldPK).State = EntityState.Detached;
                     _s16693context.Update(mEM.PracownikKlient);
-                    _s16693context.SaveChanges();
+                    await _s16693context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Meetings));
                 }
@@ -449,8 +449,8 @@ namespace Agencja_Interaktywna.Controllers
             else if (!ModelState.IsValid)
             {
 
-                var klients = _s16693context.Klient.Include(o => o.IdKlientNavigation).ToList();
-                var pracowniks = _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToList();
+                var klients = await _s16693context.Klient.Include(o => o.IdKlientNavigation).ToListAsync();
+                var pracowniks = await _s16693context.Pracownik.Include(o => o.IdPracownikNavigation).ToListAsync();
 
                 var newMEM = new MeetingEditModel
                 {
@@ -469,23 +469,23 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult MeetingsDelete(int? id1, int? id2, string data)
+        public async Task<IActionResult> MeetingsDelete(int? id1, int? id2, string data)
         {
             var fromDateAsDateTime = DateTime.Parse(data);
-            var spotkanie = _s16693context.PracownikKlient.FirstOrDefault(x => x.IdKlient == id1 & x.IdPracownik == id2 & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
+            var spotkanie = await _s16693context.PracownikKlient.FirstOrDefaultAsync(x => x.IdKlient == id1 & x.IdPracownik == id2 & x.DataRozpoczeciaSpotkania == fromDateAsDateTime);
 
             _s16693context.Remove(spotkanie);
-            _s16693context.SaveChanges();
+            await _s16693context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Meetings));
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            var sz = _s16693context.Pracownik
+            var sz = await _s16693context.Pracownik
                 .Include(o => o.IdPracownikNavigation)
-                .FirstOrDefault(i => i.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+                .FirstOrDefaultAsync(i => i.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
 
             if (sz == null)
             {
@@ -498,40 +498,40 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult Teams()
+        public async Task<IActionResult> Teams()
         {
-            var teams = _s16693context.Zespol.ToList();
+            var teams = await _s16693context.Zespol.ToListAsync();
 
             return View(teams);
         }
 
         [HttpGet]
-        public IActionResult Team(int? id, string view)
+        public async Task<IActionResult> Team(int? id, string view)
         {
             if (view.Equals("Project"))
             {
-                var team = _s16693context.ZespolProjekt
+                var team = await _s16693context.ZespolProjekt
                     .Include(p => p.IdProjektNavigation)
                     .Include(z => z.IdZespolNavigation)
-                    .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
+                    .FirstOrDefaultAsync(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
 
-                var members = _s16693context.PracownikZespol
+                var members = await _s16693context.PracownikZespol
                     .Include(z => z.IdZespolNavigation)
                     .Include(p => p.IdPracownikNavigation)
                         .ThenInclude(o => o.IdPracownikNavigation)
                         .Where(x => x.IdZespol == team.IdZespol)
-                        .ToList();
+                        .ToListAsync();
                 return View(members);
             }
             else if (view.Equals("Teams"))
             {
-                var members = _s16693context.PracownikZespol
+                var members = await _s16693context.PracownikZespol
                     .Include(z => z.IdZespolNavigation)
                     .Include(p => p.IdPracownikNavigation)
                         .ThenInclude(o => o.IdPracownikNavigation)
                         .Where(x => x.IdZespol == id)
-                        .ToList();
+                        .ToListAsync();
                 return View(members);
             }
 
@@ -540,15 +540,15 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult TeamsCreate()
+        public async Task<IActionResult> TeamsCreate()
         {
-            var pracownik = _s16693context.Pracownik
+            var pracownik = await _s16693context.Pracownik
                 .Include(o => o.IdPracownikNavigation)
                 .Select(x => new SelectListItem()
                 {
                     Text = x.IdPracownikNavigation.AdresEmail,
                     Value = x.IdPracownik.ToString()
-                }).ToList();
+                }).ToListAsync();
 
             var tCM = new TeamCreateModel
             {
@@ -560,7 +560,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult TeamsCreate(TeamCreateModel tCM)
+        public async Task<IActionResult> TeamsCreate(TeamCreateModel tCM)
         {
 
             if (ModelState.IsValid)
@@ -574,13 +574,13 @@ namespace Agencja_Interaktywna.Controllers
 
                 if (pracownikIds.Count() == 0)
                 {
-                    var pracownik = _s16693context.Pracownik
+                    var pracownik = await _s16693context.Pracownik
                         .Include(o => o.IdPracownikNavigation)
                         .Select(x => new SelectListItem()
                         {
                             Text = x.IdPracownikNavigation.AdresEmail,
                             Value = x.IdPracownik.ToString()
-                        }).ToList();
+                        }).ToListAsync();
 
                     tCM.pracowniks = pracownik;
 
@@ -588,7 +588,7 @@ namespace Agencja_Interaktywna.Controllers
                 }
 
                 _s16693context.Add(newTeam);
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
 
                 foreach (var id in pracownikIds)
                 {
@@ -601,18 +601,18 @@ namespace Agencja_Interaktywna.Controllers
                     _s16693context.Add(PZ);
                 }
 
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
                 return RedirectToAction(nameof(Teams));
             }
             else if (!ModelState.IsValid)
             {
-                var pracownik = _s16693context.Pracownik
+                var pracownik = await _s16693context.Pracownik
                 .Include(o => o.IdPracownikNavigation)
                 .Select(x => new SelectListItem()
                 {
                     Text = x.IdPracownikNavigation.AdresEmail,
                     Value = x.IdPracownik.ToString()
-                }).ToList();
+                }).ToListAsync();
 
                 var newTCM = new TeamCreateModel
                 {
@@ -625,7 +625,7 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult TeamsEdit(int? id)
+        public async Task<IActionResult> TeamsEdit(int? id)
         {
             if (id == null)
             {
@@ -633,24 +633,24 @@ namespace Agencja_Interaktywna.Controllers
             }
 
 
-            var zespol = _s16693context.Zespol
+            var zespol = await _s16693context.Zespol
                 .Include(z => z.PracownikZespol)
                 .ThenInclude(p => p.IdPracownikNavigation).AsNoTracking()
-                .SingleOrDefault(z => z.IdZespol == id);
+                .SingleOrDefaultAsync(z => z.IdZespol == id);
 
             if (zespol == null)
             {
                 return NotFound();
             }
 
-            var allpracownik = _s16693context.Pracownik
+            var allpracownik = await _s16693context.Pracownik
                 .Include(o => o.IdPracownikNavigation)
                 .Select(x => new CheckBoxItem()
                 {
                     Id = x.IdPracownik,
                     Nazwa = x.IdPracownikNavigation.AdresEmail,
                     IsChecked = x.PracownikZespol.Any(x => x.IdZespol == zespol.IdZespol) ? true : false
-                }).ToList();
+                }).ToListAsync();
 
             var tEM = new TeamEditModel()
             {
@@ -663,7 +663,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult TeamsEdit(TeamEditModel tEM)
+        public async Task<IActionResult> TeamsEdit(TeamEditModel tEM)
         {
             if (ModelState.IsValid)
             {
@@ -684,36 +684,36 @@ namespace Agencja_Interaktywna.Controllers
                     }
                 }
 
-                var dt = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
+                var dt = await _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToListAsync();
                 foreach (var item in dt)
                 {
                     _s16693context.PracownikZespol.Remove(item);
-                    _s16693context.SaveChanges();
+                    await _s16693context.SaveChangesAsync();
                 }
 
-                var idS = _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToList();
+                var idS = await _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToListAsync();
                 foreach (var item in pracowniklist)
                 {
                     if (idS.Contains(item))
                     {
                         _s16693context.PracownikZespol.Add(item);
-                        _s16693context.SaveChanges();
+                        await _s16693context.SaveChangesAsync();
                     }
                 }
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
                 return RedirectToAction(nameof(Teams));
             }
 
             else if (!ModelState.IsValid)
             {
-                var allpracownik = _s16693context.Pracownik
+                var allpracownik = await _s16693context.Pracownik
                 .Include(o => o.IdPracownikNavigation)
                 .Select(x => new CheckBoxItem()
                 {
                     Id = x.IdPracownik,
                     Nazwa = x.IdPracownikNavigation.AdresEmail,
                     IsChecked = x.PracownikZespol.Any(x => x.IdZespol == tEM.zespol.IdZespol) ? true : false
-                }).ToList();
+                }).ToListAsync();
 
                 var newTEM = new TeamEditModel()
                 {
@@ -728,7 +728,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult TeamsDelete(int? id)
+        public async Task<IActionResult> TeamsDelete(int? id)
         {
             foreach (var delPZ in _s16693context.PracownikZespol)
             {
@@ -738,10 +738,10 @@ namespace Agencja_Interaktywna.Controllers
                 }
             }
 
-            var zespol = _s16693context.Zespol.Find(id);
+            var zespol = await _s16693context.Zespol.FindAsync(id);
 
             _s16693context.Remove(zespol);
-            _s16693context.SaveChanges();
+            await _s16693context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Teams));
         }
@@ -752,7 +752,7 @@ namespace Agencja_Interaktywna.Controllers
             return View();
         }
 
-        public IActionResult TaskDetails(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskDetails(int? id1, int? id2, string data)
         {
             if (id1 == null)
             {
@@ -760,9 +760,9 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             var fromDateAsDateTime = DateTime.Parse(data);
-            var uslugaprojekt = _s16693context.UslugaProjekt
+            var uslugaprojekt = await _s16693context.UslugaProjekt
                 .Include(x => x.IdUslugaNavigation)
-                .FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+                .FirstOrDefaultAsync(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
 
             if (uslugaprojekt == null)
             {
@@ -773,17 +773,17 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult TaskCreate(int? id)
+        public async Task<IActionResult> TaskCreate(int? id)
         {
-            var pakiet = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == id && x.DataZakonczeniaWspolpracy == null);
-            var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToList();
+            var pakiet = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == id && x.DataZakonczeniaWspolpracy == null);
+            var pU = await _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToListAsync();
             List<Usluga> uslugas = new List<Usluga>();
             foreach (var item in pU)
             {
-                uslugas.Add(_s16693context.Usluga.FirstOrDefault(x => x.IdUsluga == item.IdUsluga));
+                uslugas.Add(await _s16693context.Usluga.FirstOrDefaultAsync(x => x.IdUsluga == item.IdUsluga));
             }
 
-            var projekt = _s16693context.Projekt.Find(id);
+            var projekt = await _s16693context.Projekt.FindAsync(id);
 
             var tCM = new TaskCreateModel
             {
@@ -796,7 +796,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult TaskCreate(TaskCreateModel tCM)
+        public async Task<IActionResult> TaskCreate(TaskCreateModel tCM)
         {
             if (ModelState.IsValid)
             {
@@ -811,19 +811,19 @@ namespace Agencja_Interaktywna.Controllers
                 };
 
                 _s16693context.Add(newZadanie);
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
 
                 return RedirectToAction("ProjectDetails", new { id = tCM.projekt.IdProjekt });
             }
             else if (!ModelState.IsValid)
             {
-                var pakiet = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == tCM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null);
-                var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToList();
+                var pakiet = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == tCM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null);
+                var pU = await _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToListAsync();
                 List<Usluga> uslugas = new List<Usluga>();
 
                 foreach (var item in pU)
                 {
-                    uslugas.Add(_s16693context.Usluga.FirstOrDefault(x => x.IdUsluga == item.IdUsluga));
+                    uslugas.Add(await _s16693context.Usluga.FirstOrDefaultAsync(x => x.IdUsluga == item.IdUsluga));
                 }
 
                 var newTCM = new TaskCreateModel
@@ -838,7 +838,7 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult TaskEdit(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskEdit(int? id1, int? id2, string data)
         {
             if (id1 == null)
             {
@@ -846,18 +846,18 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             var fromDateAsDateTime = DateTime.Parse(data);
-            var uslugaprojekt = _s16693context.UslugaProjekt.FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+            var uslugaprojekt = await _s16693context.UslugaProjekt.FirstOrDefaultAsync(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
             if (uslugaprojekt == null)
             {
                 return NotFound();
             }
 
-            var pakiet = _s16693context.ProjektPakiet.FirstOrDefault(x => x.IdProjekt == id1 && x.DataZakonczeniaWspolpracy == null);
-            var pU = _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToList();
+            var pakiet = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == id1 && x.DataZakonczeniaWspolpracy == null);
+            var pU = await _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToListAsync();
             List<Usluga> uslugas = new List<Usluga>();
             foreach (var item in pU)
             {
-                uslugas.Add(_s16693context.Usluga.FirstOrDefault(x => x.IdUsluga == item.IdUsluga));
+                uslugas.Add(await _s16693context.Usluga.FirstOrDefaultAsync(x => x.IdUsluga == item.IdUsluga));
             }
 
             var tEM = new TaskEditModel
@@ -871,12 +871,12 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult TaskEdit(TaskEditModel tEM)
+        public async Task<IActionResult> TaskEdit(TaskEditModel tEM)
         {
             if (ModelState.IsValid)
             {
                 _s16693context.Update(tEM.UslugaProjekt);
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
 
                 return RedirectToAction("ProjectDetails", new { id = tEM.UslugaProjekt.IdProjekt });
 
@@ -890,13 +890,13 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult TaskDelete(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskDelete(int? id1, int? id2, string data)
         {
             var fromDateAsDateTime = DateTime.Parse(data);
-            var zadanie = _s16693context.UslugaProjekt.FirstOrDefault(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+            var zadanie = await _s16693context.UslugaProjekt.FirstOrDefaultAsync(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
 
             _s16693context.Remove(zadanie);
-            _s16693context.SaveChanges();
+            await _s16693context.SaveChangesAsync();
 
             return RedirectToAction("ProjectDetails", new { id = id1 });
         }

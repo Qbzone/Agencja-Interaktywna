@@ -14,6 +14,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agencja_Interaktywna.Controllers
 {
@@ -40,7 +41,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(Osoba osoba)
+        public async Task<IActionResult> Register(Osoba osoba)
         {
             bool Status = false;
             string Message = "";
@@ -52,7 +53,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 s16693Context context1 = new s16693Context();
                 {
-                    var check = context1.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
+                    var check = await context1.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
 
                     if (check != null)
                     {
@@ -68,7 +69,7 @@ namespace Agencja_Interaktywna.Controllers
                         s16693Context context2 = new s16693Context();
                         {
                             context2.Osoba.Add(osoba);
-                            context2.SaveChanges();
+                            await context2.SaveChangesAsync();
 
                             SendVerificationLink(osoba);
 
@@ -89,12 +90,12 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public ActionResult Verify(string id)
+        public async Task<IActionResult> Verify(string id)
         {
             bool Status = false;
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
+                var v = await dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
@@ -106,7 +107,7 @@ namespace Agencja_Interaktywna.Controllers
                      };
 
                     dc.Klient.Add(klient);
-                    dc.SaveChanges();
+                    await dc.SaveChangesAsync();
                     Status = true;
                 }
                 else
@@ -126,11 +127,11 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(OsobaLogin login)
+        public async Task<IActionResult> Login(OsobaLogin login)
         {
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefault();
+                var v = await dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefaultAsync();
                 if (v != null)
                 {
                     if (v.CzyEmailZweryfikowany != false)
@@ -261,14 +262,14 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpPost]
-        public IActionResult Token(OsobaToken osoba)
+        public async Task<IActionResult> Token(OsobaToken osoba)
         {
             bool Status = false;
             string Message = "";
 
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefault();
+                var v = await dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
@@ -289,11 +290,11 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public IActionResult ForgottenPassword(string id)
+        public async Task<IActionResult> ForgottenPassword(string id)
         {
             using (s16693Context dc = new s16693Context())
             {
-                var v = dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefault();
+                var v = await dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
@@ -310,7 +311,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ForgottenPassword(OsobaForgottenPassword oFP)
+        public async Task<IActionResult> ForgottenPassword(OsobaForgottenPassword oFP)
         {
             var Message = "";
 
@@ -318,7 +319,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 using (s16693Context dc = new s16693Context())
                 {
-                    var v = dc.Osoba.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefault();
+                    var v = await dc.Osoba.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefaultAsync();
 
                     if (v != null)
                     {

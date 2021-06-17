@@ -20,22 +20,22 @@ namespace Agencja_Interaktywna.Controllers
     public class KlientController : Controller
     {
         private readonly s16693Context _s16693context = new s16693Context();
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
-            var pr = _s16693context.Projekt
+            var pr = await _s16693context.Projekt
                 .Include(f => f.IdFirmaNavigation)
                     .ThenInclude(kf => kf.KlientFirma)
                         .ThenInclude(k => k.IdKlientNavigation)
                             .ThenInclude(o => o.IdKlientNavigation)
                 .Where(x => x.IdFirmaNavigation.KlientFirma.Any(e => e.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value))
-                .ToList();
+                .ToListAsync();
             
-            var kf = _s16693context.KlientFirma
+            var kf = await _s16693context.KlientFirma
                 .Include(k => k.IdKlientNavigation)
                     .ThenInclude(o => o.IdKlientNavigation)
-                .FirstOrDefault(e => e.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+                .FirstOrDefaultAsync(e => e.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
 
             if (kf != null)
             {
@@ -48,11 +48,11 @@ namespace Agencja_Interaktywna.Controllers
         }
         
         [HttpGet]
-        public IActionResult AssignCompany()
+        public async Task<IActionResult> AssignCompany()
         {
-            var kl = _s16693context.Klient
+            var kl = await _s16693context.Klient
                 .Include(o => o.IdKlientNavigation)
-                    .FirstOrDefault(e => e.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+                    .FirstOrDefaultAsync(e => e.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
             
             var aCM = new AssignCompanyModel
             {
@@ -64,7 +64,7 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AssignCompany(AssignCompanyModel aCM)
+        public async Task<IActionResult> AssignCompany(AssignCompanyModel aCM)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace Agencja_Interaktywna.Controllers
                 };
 
                 _s16693context.Add(newFirma);
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
 
                 var newKF = new KlientFirma()
                 {
@@ -85,7 +85,7 @@ namespace Agencja_Interaktywna.Controllers
 
                 _s16693context.Add(newKF);
 
-                _s16693context.SaveChanges();
+                await _s16693context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             else if (!ModelState.IsValid)
@@ -95,27 +95,27 @@ namespace Agencja_Interaktywna.Controllers
             return View(aCM);
         }
 
-        public IActionResult Meetings()
+        public async Task<IActionResult> Meetings()
         {
-            var meet = _s16693context.PracownikKlient
+            var meet = await _s16693context.PracownikKlient
                 .Include(k => k.IdKlientNavigation)
                     .ThenInclude(o => o.IdKlientNavigation)
                 .Include(p => p.IdPracownikNavigation)
                     .ThenInclude(po => po.IdPracownikNavigation)
                 .Where(x => x.IdKlientNavigation.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)
-                .ToList();
+                .ToListAsync();
             return View(meet);
         }
 
-        public IActionResult ProjectDetails(int? id)
+        public async Task<IActionResult> ProjectDetails(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var project = _s16693context.Projekt
-            .FirstOrDefault(e => e.IdProjekt == id);
+            var project = await _s16693context.Projekt
+            .FirstOrDefaultAsync(e => e.IdProjekt == id);
 
             if (project == null)
             {
@@ -129,41 +129,41 @@ namespace Agencja_Interaktywna.Controllers
 
         }
 
-        public IActionResult Team(int? id)
+        public async Task<IActionResult> Team(int? id)
         {
-            var team = _s16693context.ZespolProjekt
+            var team = await _s16693context.ZespolProjekt
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdZespolNavigation)
-                .FirstOrDefault(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
+                .FirstOrDefaultAsync(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
-            var members = _s16693context.PracownikZespol
+            var members = await _s16693context.PracownikZespol
                 .Include(z => z.IdZespolNavigation)
                 .Include(p => p.IdPracownikNavigation)
                     .ThenInclude(o => o.IdPracownikNavigation)
                     .Where(x => x.IdZespol == team.IdZespol)
-                    .ToList();
+                    .ToListAsync();
 
             return View(members);
 
         }
 
-        public IActionResult Contract(int? id)
+        public async Task<IActionResult> Contract(int? id)
         {
-            var contract = _s16693context.ProjektPakiet
+            var contract = await _s16693context.ProjektPakiet
                 .Include(pr => pr.IdProjektNavigation)
                 .Include(pa => pa.IdPakietNavigation)
                 .Where(x => x.IdProjekt == id && x.DataZakonczeniaWspolpracy == null)
                 .OrderByDescending(e => e.IdPakiet)
-                .ToList();
+                .ToListAsync();
 
             return View(contract);
         }
 
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            var kl = _s16693context.Klient
+            var kl = await _s16693context.Klient
                 .Include(o => o.IdKlientNavigation)
-                .FirstOrDefault(i => i.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+                .FirstOrDefaultAsync(i => i.IdKlientNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
            
             if(kl == null)
             {
