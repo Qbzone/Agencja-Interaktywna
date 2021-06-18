@@ -2739,6 +2739,16 @@ fieldset:disabled a.btn {
     margin: 5px;
 }
 
+.btn-primary-disabled-href {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 25px;
+    margin: 5px;
+    cursor: default;
+    pointer-events: none;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #007bff;

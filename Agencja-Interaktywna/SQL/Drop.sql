@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-04-21 16:35:26.077
+-- Last modification date: 2021-06-18 14:28:01.705
 
 -- foreign keys
 ALTER TABLE KlientFirma DROP CONSTRAINT KlientFirma_Firma;
@@ -104,3 +104,4 @@ DROP TABLE Zespol;
 DROP TABLE ZespolProjekt;
 
 -- End of file.
+
