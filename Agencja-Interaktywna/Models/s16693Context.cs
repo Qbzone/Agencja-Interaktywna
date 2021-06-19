@@ -45,8 +45,8 @@ namespace Agencja_Interaktywna.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s16693;Integrated Security=True;");
-                //optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s17379;Integrated Security=True;");
+                //optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s16693;Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Data Source=db-mssql;Initial Catalog=s17379;Integrated Security=True;");
 
             }
         }
@@ -267,9 +267,9 @@ namespace Agencja_Interaktywna.Models
                 entity.HasKey(e => new { e.IdPracownik, e.IdUmowa, e.DataPodpisaniaUmowy })
                     .HasName("PracownikUmowa_pk");
 
-                entity.Property(e => e.DataPodpisaniaUmowy).HasColumnType("datetime");
+                entity.Property(e => e.DataPodpisaniaUmowy).HasColumnType("date");
 
-                entity.Property(e => e.DataZakonczeniaUmowy).HasColumnType("datetime");
+                entity.Property(e => e.DataZakonczeniaUmowy).HasColumnType("date");
 
                 entity.HasOne(d => d.IdPracownikNavigation)
                     .WithMany(p => p.PracownikUmowa)
@@ -367,9 +367,9 @@ namespace Agencja_Interaktywna.Models
                 entity.HasKey(e => new { e.IdPakiet, e.IdProjekt, e.DataRozpoczeciaWspolpracy })
                     .HasName("ProjektPakiet_pk");
 
-                entity.Property(e => e.DataRozpoczeciaWspolpracy).HasColumnType("datetime");
+                entity.Property(e => e.DataRozpoczeciaWspolpracy).HasColumnType("date");
 
-                entity.Property(e => e.DataZakonczeniaWspolpracy).HasColumnType("datetime");
+                entity.Property(e => e.DataZakonczeniaWspolpracy).HasColumnType("date");
 
                 entity.HasOne(d => d.IdPakietNavigation)
                     .WithMany(p => p.ProjektPakiet)

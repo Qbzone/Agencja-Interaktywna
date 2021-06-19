@@ -21,92 +21,149 @@ namespace Agencja_Interaktywna.Migrations
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Firma", b =>
                 {
-                    b.Property<int>("IdFirma")
+                    b.Property<int>("Idfirma")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("idfirma")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
+                        .HasColumnName("nazwa")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdFirma")
-                        .HasName("Firma_pk");
+                    b.HasKey("Idfirma")
+                        .HasName("firmapk");
 
-                    b.ToTable("Firma");
+                    b.ToTable("firma");
+                });
+
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Firmatag", b =>
+                {
+                    b.Property<int>("Idfirma")
+                        .HasColumnName("idfirma")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Idtag")
+                        .HasColumnName("idtag")
+                        .HasColumnType("int");
+
+                    b.HasKey("Idfirma", "Idtag")
+                        .HasName("firmatagpk");
+
+                    b.HasIndex("Idtag");
+
+                    b.ToTable("firmatag");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Grafik", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
                     b.Property<string>("Specjalizacja")
                         .IsRequired()
+                        .HasColumnName("specjalizacja")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdPracownik")
-                        .HasName("Grafik_pk");
+                    b.HasKey("Idpracownik")
+                        .HasName("grafikpk");
 
-                    b.ToTable("Grafik");
+                    b.ToTable("grafik");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.JezykProgramowania", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Jezykprogramowania", b =>
                 {
-                    b.Property<int>("IdJezyk")
+                    b.Property<int>("Idjezyk")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("idjezyk")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
+                        .HasColumnName("nazwa")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdJezyk")
-                        .HasName("JezykProgramowania_pk");
+                    b.HasKey("Idjezyk")
+                        .HasName("jezykprogramowaniapk");
 
-                    b.ToTable("JezykProgramowania");
+                    b.ToTable("jezykprogramowania");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Klient", b =>
                 {
-                    b.Property<int>("IdKlient")
+                    b.Property<int>("Idklient")
+                        .HasColumnName("idklient")
                         .HasColumnType("int");
 
                     b.Property<string>("Priorytet")
                         .IsRequired()
+                        .HasColumnName("priorytet")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdKlient")
-                        .HasName("Klient_pk");
+                    b.HasKey("Idklient")
+                        .HasName("klientpk");
 
-                    b.ToTable("Klient");
+                    b.ToTable("klient");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.KlientFirma", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Klientfirma", b =>
                 {
-                    b.Property<int>("IdKlient")
+                    b.Property<int>("Idklient")
+                        .HasColumnName("idklient")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdFirma")
+                    b.Property<int>("Idfirma")
+                        .HasColumnName("idfirma")
                         .HasColumnType("int");
 
-                    b.HasKey("IdKlient", "IdFirma")
-                        .HasName("KlientFirma_pk");
+                    b.HasKey("Idklient", "Idfirma")
+                        .HasName("klientfirmapk");
 
-                    b.HasIndex("IdFirma");
+                    b.HasIndex("Idfirma");
 
-                    b.ToTable("KlientFirma");
+                    b.ToTable("klientfirma");
+                });
+
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Klientpakiet", b =>
+                {
+                    b.Property<DateTime>("Datarozpoczeciawspolpracy")
+                        .HasColumnName("datarozpoczeciawspolpracy")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Idklient")
+                        .HasColumnName("idklient")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Idpakiet")
+                        .HasColumnName("idpakiet")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Datazakonczeniawspolpracy")
+                        .HasColumnName("datazakonczeniawspolpracy")
+                        .HasColumnType("date");
+
+                    b.HasKey("Datarozpoczeciawspolpracy", "Idklient", "Idpakiet")
+                        .HasName("klientpakietpk");
+
+                    b.HasIndex("Idklient");
+
+                    b.HasIndex("Idpakiet");
+
+                    b.ToTable("klientpakiet");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Osoba", b =>
                 {
-                    b.Property<int>("IdOsoba")
+                    b.Property<int>("Idosoba")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("idosoba")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -115,7 +172,7 @@ namespace Agencja_Interaktywna.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("CzyEmailZweryfikowany")
+                    b.Property<bool>("CzyEmailZweryfikowane")
                         .HasColumnType("bit");
 
                     b.Property<string>("Haslo")
@@ -124,6 +181,7 @@ namespace Agencja_Interaktywna.Migrations
 
                     b.Property<string>("Imie")
                         .IsRequired()
+                        .HasColumnName("imie")
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
@@ -148,26 +206,23 @@ namespace Agencja_Interaktywna.Migrations
                         .HasMaxLength(9)
                         .IsUnicode(false);
 
-                    b.Property<string>("Rola")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
+                    b.HasKey("Idosoba")
+                        .HasName("osobapk");
 
-                    b.HasKey("IdOsoba")
-                        .HasName("Osoba_pk");
-
-                    b.ToTable("Osoba");
+                    b.ToTable("osoba");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Pakiet", b =>
                 {
-                    b.Property<int?>("IdPakiet")
+                    b.Property<int>("Idpakiet")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("idpakiet")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
+                        .HasColumnName("nazwa")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -179,51 +234,57 @@ namespace Agencja_Interaktywna.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdPakiet")
-                        .HasName("Pakiet_pk");
+                    b.HasKey("Idpakiet")
+                        .HasName("pakietpk");
 
-                    b.ToTable("Pakiet");
+                    b.ToTable("pakiet");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.PakietUsluga", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Pakietusluga", b =>
                 {
-                    b.Property<int>("IdPakiet")
+                    b.Property<int>("Idpakiet")
+                        .HasColumnName("idpakiet")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUsluga")
+                    b.Property<int>("Idusluga")
+                        .HasColumnName("idusluga")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPakiet", "IdUsluga")
-                        .HasName("PakietUsluga_pk");
+                    b.HasKey("Idpakiet", "Idusluga")
+                        .HasName("pakietuslugapk");
 
-                    b.HasIndex("IdUsluga");
+                    b.HasIndex("Idusluga");
 
-                    b.ToTable("PakietUsluga");
+                    b.ToTable("pakietusluga");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Pozycjoner", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
-                    b.Property<string>("PelnionaFunkcja")
+                    b.Property<string>("Pelnionafunkcja")
                         .IsRequired()
+                        .HasColumnName("pelnionafunkcja")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdPracownik")
-                        .HasName("Pozycjoner_pk");
+                    b.HasKey("Idpracownik")
+                        .HasName("pozycjonerpk");
 
-                    b.ToTable("Pozycjoner");
+                    b.ToTable("pozycjoner");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Pracownik", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
-                    b.Property<string>("AdresZamieszkania")
+                    b.Property<string>("Adreszamieszkania")
                         .IsRequired()
+                        .HasColumnName("adreszamieszkania")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
@@ -232,520 +293,600 @@ namespace Agencja_Interaktywna.Migrations
 
                     b.Property<string>("Pesel")
                         .IsRequired()
+                        .HasColumnName("PESEL")
                         .HasColumnType("char(11)")
                         .IsFixedLength(true)
                         .HasMaxLength(11)
                         .IsUnicode(false);
 
-                    b.Property<int>("Premia")
+                    b.Property<int?>("Premia")
                         .HasColumnType("int");
 
                     b.Property<int>("StazPracy")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPracownik")
-                        .HasName("Pracownik_pk");
+                    b.HasKey("Idpracownik")
+                        .HasName("pracownikpk");
 
-                    b.ToTable("Pracownik");
+                    b.ToTable("pracownik");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.PracownikKlient", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Pracownikklient", b =>
                 {
-                    b.Property<int?>("IdKlient")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdPracownik")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DataRozpoczeciaSpotkania")
+                    b.Property<DateTime>("Datarozpoczeciaspotkania")
+                        .HasColumnName("datarozpoczeciaspotkania")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("DataZakonczeniaSpotkania")
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Idklient")
+                        .HasColumnName("idklient")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Datazakonczeniaspotkania")
+                        .HasColumnName("datazakonczeniaspotkania")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("MiejsceSpotkania")
+                    b.Property<string>("Miejscespotkania")
                         .IsRequired()
+                        .HasColumnName("miejscespotkania")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdKlient", "IdPracownik", "DataRozpoczeciaSpotkania")
-                        .HasName("PracownikKlient_pk");
+                    b.HasKey("Datarozpoczeciaspotkania", "Idpracownik", "Idklient")
+                        .HasName("pracownikklientpk");
 
-                    b.HasIndex("IdPracownik");
+                    b.HasIndex("Idklient");
 
-                    b.ToTable("PracownikKlient");
+                    b.HasIndex("Idpracownik");
+
+                    b.ToTable("pracownikklient");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.PracownikUmowa", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Pracownikumowa", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<DateTime>("Datapodpisaniaumowy")
+                        .HasColumnName("datapodpisaniaumowy")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUmowa")
+                    b.Property<int>("Idumowa")
+                        .HasColumnName("idumowa")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DataPodpisaniaUmowy")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime>("Datawygasnieciaumowy")
+                        .HasColumnName("datawygasnieciaumowy")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("DataZakonczeniaUmowy")
-                        .HasColumnType("datetime");
+                    b.HasKey("Datapodpisaniaumowy", "Idpracownik", "Idumowa")
+                        .HasName("pracownikumowapk");
 
-                    b.HasKey("IdPracownik", "IdUmowa", "DataPodpisaniaUmowy")
-                        .HasName("PracownikUmowa_pk");
+                    b.HasIndex("Idpracownik");
 
-                    b.HasIndex("IdUmowa");
+                    b.HasIndex("Idumowa");
 
-                    b.ToTable("PracownikUmowa");
+                    b.ToTable("pracownikumowa");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.PracownikZespol", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Pracownikzespol", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<DateTime>("Dataprzypisaniapracownika")
+                        .HasColumnName("dataprzypisaniapracownika")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdZespol")
+                    b.Property<int>("Idzespol")
+                        .HasColumnName("idzespol")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DataPrzypisaniaPracownika")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime?>("Datawypisaniapracownika")
+                        .HasColumnName("datawypisaniapracownika")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime?>("DataWypisaniaPracownika")
-                        .HasColumnType("datetime");
+                    b.Property<bool>("Menadzer")
+                        .HasColumnName("menadzer")
+                        .HasColumnType("bit");
 
-                    b.HasKey("IdPracownik", "IdZespol", "DataPrzypisaniaPracownika")
-                        .HasName("PracownikZespol_pk");
+                    b.HasKey("Dataprzypisaniapracownika", "Idpracownik", "Idzespol")
+                        .HasName("pracownikzespolpk");
 
-                    b.HasIndex("IdZespol");
+                    b.HasIndex("Idpracownik");
 
-                    b.ToTable("PracownikZespol");
+                    b.HasIndex("Idzespol");
+
+                    b.ToTable("pracownikzespol");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Programista", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
-                    b.Property<string>("PoziomZaawansowania")
+                    b.Property<string>("Poziomzaawansowania")
                         .IsRequired()
+                        .HasColumnName("poziomzaawansowania")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdPracownik")
-                        .HasName("Programista_pk");
+                    b.HasKey("Idpracownik")
+                        .HasName("programistapk");
 
-                    b.ToTable("Programista");
+                    b.ToTable("programista");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.ProgramistaJezyk", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Programistajezyk", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdJezyk")
+                    b.Property<int>("Idjezyk")
+                        .HasColumnName("idjezyk")
                         .HasColumnType("int");
 
                     b.Property<int>("Staz")
+                        .HasColumnName("staz")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPracownik", "IdJezyk")
-                        .HasName("ProgramistaJezyk_pk");
+                    b.HasKey("Idpracownik", "Idjezyk")
+                        .HasName("programistajezykpk");
 
-                    b.HasIndex("IdJezyk");
+                    b.HasIndex("Idjezyk");
 
-                    b.ToTable("ProgramistaJezyk");
+                    b.ToTable("programistajezyk");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Projekt", b =>
                 {
-                    b.Property<int>("IdProjekt")
+                    b.Property<int>("Idprojekt")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("idprojekt")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("IdFirma")
+                    b.Property<int>("FirmaIdFirma")
+                        .HasColumnName("Firma_IdFirma")
                         .HasColumnType("int");
-
-                    b.Property<string>("Logo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
+                        .HasColumnName("nazwa")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdProjekt")
-                        .HasName("Projekt_pk");
+                    b.HasKey("Idprojekt")
+                        .HasName("projektpk");
 
-                    b.HasIndex("IdFirma");
+                    b.HasIndex("FirmaIdFirma");
 
-                    b.ToTable("Projekt");
-                });
-
-            modelBuilder.Entity("Agencja_Interaktywna.Models.ProjektPakiet", b =>
-                {
-                    b.Property<int>("IdPakiet")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProjekt")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataRozpoczeciaWspolpracy")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("DataZakonczeniaWspolpracy")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("IdPakiet", "IdProjekt", "DataRozpoczeciaWspolpracy")
-                        .HasName("ProjektPakiet_pk");
-
-                    b.HasIndex("IdProjekt");
-
-                    b.ToTable("ProjektPakiet");
+                    b.ToTable("projekt");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Szef", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPracownik")
-                        .HasName("Szef_pk");
+                    b.HasKey("Idpracownik")
+                        .HasName("szefpk");
 
-                    b.ToTable("Szef");
+                    b.ToTable("szef");
+                });
+
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Tag", b =>
+                {
+                    b.Property<int>("Idtag")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("idtag")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nazwa")
+                        .IsRequired()
+                        .HasColumnName("nazwa")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Idtag")
+                        .HasName("tagpk");
+
+                    b.ToTable("tag");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Tester", b =>
                 {
-                    b.Property<int>("IdPracownik")
+                    b.Property<int>("Idpracownik")
+                        .HasColumnName("idpracownik")
                         .HasColumnType("int");
 
-                    b.Property<int>("TesterDoswiadczenie")
+                    b.Property<int>("Testerdoswiadczenie")
+                        .HasColumnName("testerdoswiadczenie")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPracownik")
-                        .HasName("Tester_pk");
+                    b.HasKey("Idpracownik")
+                        .HasName("testerpk");
 
-                    b.ToTable("Tester");
+                    b.ToTable("tester");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Umowa", b =>
                 {
-                    b.Property<int>("IdUmowa")
+                    b.Property<int>("Idumowa")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("idumowa")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("RodzajUmowy")
+                    b.Property<string>("Rodzajumowy")
                         .IsRequired()
+                        .HasColumnName("rodzajumowy")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdUmowa")
-                        .HasName("Umowa_pk");
+                    b.HasKey("Idumowa")
+                        .HasName("umowapk");
 
-                    b.ToTable("Umowa");
+                    b.ToTable("umowa");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Usluga", b =>
                 {
-                    b.Property<int>("IdUsluga")
+                    b.Property<int>("Idusluga")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("idusluga")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Klasyfikacja")
+                    b.Property<string>("Nazwa")
                         .IsRequired()
+                        .HasColumnName("nazwa")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<string>("Opis")
+                        .HasColumnName("opis")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Idusluga")
+                        .HasName("uslugapk");
+
+                    b.ToTable("usluga");
+                });
+
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Zadanie", b =>
+                {
+                    b.Property<int>("Idzadanie")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("idzadanie")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
+                        .HasColumnName("nazwa")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdUsluga")
-                        .HasName("Usluga_pk");
+                    b.HasKey("Idzadanie")
+                        .HasName("zadaniepk");
 
-                    b.ToTable("Usluga");
+                    b.ToTable("zadanie");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.UslugaProjekt", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Zadanieprojekt", b =>
                 {
-                    b.Property<int>("IdProjekt")
+                    b.Property<int>("Idprojekt")
+                        .HasColumnName("idprojekt")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdUsluga")
+                    b.Property<int>("Idzadanie")
+                        .HasColumnName("idzadanie")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DataPrzypisaniaZadania")
+                    b.Property<DateTime>("Datarozpoczeciazadania")
+                        .HasColumnName("datarozpoczeciazadania")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("DataZakonczeniaZadania")
+                    b.Property<DateTime?>("Datazakonczeniazadania")
+                        .HasColumnName("datazakonczeniazadania")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Opis")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasColumnName("opis")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnName("status")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
-                    b.HasKey("IdProjekt", "IdUsluga", "DataPrzypisaniaZadania")
-                        .HasName("ZadanieProjekt_pk");
+                    b.HasKey("Idprojekt", "Idzadanie", "Datarozpoczeciazadania")
+                        .HasName("zadanieprojektpk");
 
-                    b.HasIndex("IdUsluga");
+                    b.HasIndex("Idzadanie");
 
-                    b.ToTable("UslugaProjekt");
+                    b.ToTable("zadanieprojekt");
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Zespol", b =>
                 {
-                    b.Property<int?>("IdZespol")
+                    b.Property<int>("Idzespol")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("idzespol")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
+                        .HasColumnName("nazwa")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("IdZespol")
-                        .HasName("Zespol_pk");
+                    b.HasKey("Idzespol")
+                        .HasName("zespolpk");
 
-                    b.ToTable("Zespol");
+                    b.ToTable("zespol");
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.ZespolProjekt", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Zespolprojekt", b =>
                 {
-                    b.Property<int>("IdZespol")
+                    b.Property<DateTime>("Dataprzypisaniazespolu")
+                        .HasColumnName("dataprzypisaniazespolu")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Idprojekt")
+                        .HasColumnName("idprojekt")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdProjekt")
+                    b.Property<int>("Idzespol")
+                        .HasColumnName("idzespol")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DataPrzypisaniaZespolu")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime?>("Dataoddaniaprojektu")
+                        .HasColumnName("dataoddaniaprojektu")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime?>("DataWypisaniaZespolu")
-                        .HasColumnType("datetime");
+                    b.HasKey("Dataprzypisaniazespolu", "Idprojekt", "Idzespol")
+                        .HasName("zespolprojektpk");
 
-                    b.HasKey("IdZespol", "IdProjekt", "DataPrzypisaniaZespolu")
-                        .HasName("ZespolProjekt_pk");
+                    b.HasIndex("Idprojekt");
 
-                    b.HasIndex("IdProjekt");
+                    b.HasIndex("Idzespol");
 
-                    b.ToTable("ZespolProjekt");
+                    b.ToTable("zespolprojekt");
+                });
+
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Firmatag", b =>
+                {
+                    b.HasOne("Agencja_Interaktywna.Models.Firma", "IdfirmaNavigation")
+                        .WithMany("Firmatag")
+                        .HasForeignKey("Idfirma")
+                        .HasConstraintName("firmatagfirmafk")
+                        .IsRequired();
+
+                    b.HasOne("Agencja_Interaktywna.Models.Tag", "IdtagNavigation")
+                        .WithMany("Firmatag")
+                        .HasForeignKey("Idtag")
+                        .HasConstraintName("firmatagtagfk")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Grafik", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdPracownikNavigation")
+                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdpracownikNavigation")
                         .WithOne("Grafik")
-                        .HasForeignKey("Agencja_Interaktywna.Models.Grafik", "IdPracownik")
-                        .HasConstraintName("Table_16_Pracownik")
+                        .HasForeignKey("Agencja_Interaktywna.Models.Grafik", "Idpracownik")
+                        .HasConstraintName("grafikpracownikfk")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Klient", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Osoba", "IdKlientNavigation")
+                    b.HasOne("Agencja_Interaktywna.Models.Osoba", "IdklientNavigation")
                         .WithOne("Klient")
-                        .HasForeignKey("Agencja_Interaktywna.Models.Klient", "IdKlient")
-                        .HasConstraintName("Klient_Osoba")
+                        .HasForeignKey("Agencja_Interaktywna.Models.Klient", "Idklient")
+                        .HasConstraintName("klientosobafk")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.KlientFirma", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Klientfirma", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Firma", "IdFirmaNavigation")
-                        .WithMany("KlientFirma")
-                        .HasForeignKey("IdFirma")
-                        .HasConstraintName("KlientFirma_Firma")
+                    b.HasOne("Agencja_Interaktywna.Models.Firma", "IdfirmaNavigation")
+                        .WithMany("Klientfirma")
+                        .HasForeignKey("Idfirma")
+                        .HasConstraintName("klientfirmafirmafk")
                         .IsRequired();
 
-                    b.HasOne("Agencja_Interaktywna.Models.Klient", "IdKlientNavigation")
-                        .WithMany("KlientFirma")
-                        .HasForeignKey("IdKlient")
-                        .HasConstraintName("KlientFirma_Klient")
+                    b.HasOne("Agencja_Interaktywna.Models.Klient", "IdklientNavigation")
+                        .WithMany("Klientfirma")
+                        .HasForeignKey("Idklient")
+                        .HasConstraintName("klientfirmaklientfk")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.PakietUsluga", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Klientpakiet", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Pakiet", "IdPakietNavigation")
-                        .WithMany("PakietUsluga")
-                        .HasForeignKey("IdPakiet")
-                        .HasConstraintName("PakietUsluga_Pakiet")
+                    b.HasOne("Agencja_Interaktywna.Models.Klient", "IdklientNavigation")
+                        .WithMany("Klientpakiet")
+                        .HasForeignKey("Idklient")
+                        .HasConstraintName("klientpakietklientfk")
                         .IsRequired();
 
-                    b.HasOne("Agencja_Interaktywna.Models.Usluga", "IdUslugaNavigation")
-                        .WithMany("PakietUsluga")
-                        .HasForeignKey("IdUsluga")
-                        .HasConstraintName("PakietUsluga_Usluga")
+                    b.HasOne("Agencja_Interaktywna.Models.Pakiet", "IdpakietNavigation")
+                        .WithMany("Klientpakiet")
+                        .HasForeignKey("Idpakiet")
+                        .HasConstraintName("klientpakietpakietfk")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Pakietusluga", b =>
+                {
+                    b.HasOne("Agencja_Interaktywna.Models.Pakiet", "IdpakietNavigation")
+                        .WithMany("Pakietusluga")
+                        .HasForeignKey("Idpakiet")
+                        .HasConstraintName("pakietuslugapakietfk")
+                        .IsRequired();
+
+                    b.HasOne("Agencja_Interaktywna.Models.Usluga", "IduslugaNavigation")
+                        .WithMany("Pakietusluga")
+                        .HasForeignKey("Idusluga")
+                        .HasConstraintName("pakietuslugauslugafk")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Pozycjoner", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdPracownikNavigation")
+                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdpracownikNavigation")
                         .WithOne("Pozycjoner")
-                        .HasForeignKey("Agencja_Interaktywna.Models.Pozycjoner", "IdPracownik")
-                        .HasConstraintName("Table_15_Pracownik")
+                        .HasForeignKey("Agencja_Interaktywna.Models.Pozycjoner", "Idpracownik")
+                        .HasConstraintName("pozycjonerpracownikfk")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Pracownik", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Osoba", "IdPracownikNavigation")
+                    b.HasOne("Agencja_Interaktywna.Models.Osoba", "IdpracownikNavigation")
                         .WithOne("Pracownik")
-                        .HasForeignKey("Agencja_Interaktywna.Models.Pracownik", "IdPracownik")
-                        .HasConstraintName("Pracownik_Osoba")
+                        .HasForeignKey("Agencja_Interaktywna.Models.Pracownik", "Idpracownik")
+                        .HasConstraintName("pracownikosobafk")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.PracownikKlient", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Pracownikklient", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Klient", "IdKlientNavigation")
-                        .WithMany("PracownikKlient")
-                        .HasForeignKey("IdKlient")
-                        .HasConstraintName("PracownikKlient_Klient")
+                    b.HasOne("Agencja_Interaktywna.Models.Klient", "IdklientNavigation")
+                        .WithMany("Pracownikklient")
+                        .HasForeignKey("Idklient")
+                        .HasConstraintName("pracownikklientklientfk")
                         .IsRequired();
 
-                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdPracownikNavigation")
-                        .WithMany("PracownikKlient")
-                        .HasForeignKey("IdPracownik")
-                        .HasConstraintName("PracownikKlient_Pracownik")
+                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdpracownikNavigation")
+                        .WithMany("Pracownikklient")
+                        .HasForeignKey("Idpracownik")
+                        .HasConstraintName("pracownikklientpracownikfk")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.PracownikUmowa", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Pracownikumowa", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdPracownikNavigation")
-                        .WithMany("PracownikUmowa")
-                        .HasForeignKey("IdPracownik")
-                        .HasConstraintName("PracownikUmowa_Pracownik")
+                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdpracownikNavigation")
+                        .WithMany("Pracownikumowa")
+                        .HasForeignKey("Idpracownik")
+                        .HasConstraintName("pracownikumowapracownikfk")
                         .IsRequired();
 
-                    b.HasOne("Agencja_Interaktywna.Models.Umowa", "IdUmowaNavigation")
-                        .WithMany("PracownikUmowa")
-                        .HasForeignKey("IdUmowa")
-                        .HasConstraintName("PracownikUmowa_Umowa")
+                    b.HasOne("Agencja_Interaktywna.Models.Umowa", "IdumowaNavigation")
+                        .WithMany("Pracownikumowa")
+                        .HasForeignKey("Idumowa")
+                        .HasConstraintName("pracownikumowaumowafk")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.PracownikZespol", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Pracownikzespol", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdPracownikNavigation")
-                        .WithMany("PracownikZespol")
-                        .HasForeignKey("IdPracownik")
-                        .HasConstraintName("Table_22_Pracownik")
+                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdpracownikNavigation")
+                        .WithMany("Pracownikzespol")
+                        .HasForeignKey("Idpracownik")
+                        .HasConstraintName("pracownikzespolpracownikfk")
                         .IsRequired();
 
-                    b.HasOne("Agencja_Interaktywna.Models.Zespol", "IdZespolNavigation")
-                        .WithMany("PracownikZespol")
-                        .HasForeignKey("IdZespol")
-                        .HasConstraintName("Table_22_Zespol")
+                    b.HasOne("Agencja_Interaktywna.Models.Zespol", "IdzespolNavigation")
+                        .WithMany("Pracownikzespol")
+                        .HasForeignKey("Idzespol")
+                        .HasConstraintName("pracownikzespolzespolfk")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Programista", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdPracownikNavigation")
+                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdpracownikNavigation")
                         .WithOne("Programista")
-                        .HasForeignKey("Agencja_Interaktywna.Models.Programista", "IdPracownik")
-                        .HasConstraintName("Table_17_Pracownik")
+                        .HasForeignKey("Agencja_Interaktywna.Models.Programista", "Idpracownik")
+                        .HasConstraintName("programistapracownikfk")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.ProgramistaJezyk", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Programistajezyk", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.JezykProgramowania", "IdJezykNavigation")
-                        .WithMany("ProgramistaJezyk")
-                        .HasForeignKey("IdJezyk")
-                        .HasConstraintName("Table_18_JezykProgramowania")
+                    b.HasOne("Agencja_Interaktywna.Models.Jezykprogramowania", "IdjezykNavigation")
+                        .WithMany("Programistajezyk")
+                        .HasForeignKey("Idjezyk")
+                        .HasConstraintName("programistajezykjezykprogrfk")
                         .IsRequired();
 
-                    b.HasOne("Agencja_Interaktywna.Models.Programista", "IdPracownikNavigation")
-                        .WithMany("ProgramistaJezyk")
-                        .HasForeignKey("IdPracownik")
-                        .HasConstraintName("Table_18_Programista")
+                    b.HasOne("Agencja_Interaktywna.Models.Programista", "IdpracownikNavigation")
+                        .WithMany("Programistajezyk")
+                        .HasForeignKey("Idpracownik")
+                        .HasConstraintName("programistajezykprogramistafk")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Projekt", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Firma", "IdFirmaNavigation")
+                    b.HasOne("Agencja_Interaktywna.Models.Firma", "FirmaIdFirmaNavigation")
                         .WithMany("Projekt")
-                        .HasForeignKey("IdFirma")
-                        .HasConstraintName("Projekt_Firma");
-                });
-
-            modelBuilder.Entity("Agencja_Interaktywna.Models.ProjektPakiet", b =>
-                {
-                    b.HasOne("Agencja_Interaktywna.Models.Pakiet", "IdPakietNavigation")
-                        .WithMany("ProjektPakiet")
-                        .HasForeignKey("IdPakiet")
-                        .HasConstraintName("ProjektPakiet_Pakiet")
-                        .IsRequired();
-
-                    b.HasOne("Agencja_Interaktywna.Models.Projekt", "IdProjektNavigation")
-                        .WithMany("ProjektPakiet")
-                        .HasForeignKey("IdProjekt")
-                        .HasConstraintName("ProjektPakiet_Projekt")
+                        .HasForeignKey("FirmaIdFirma")
+                        .HasConstraintName("projekt_firma_fk")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Szef", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdPracownikNavigation")
+                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdpracownikNavigation")
                         .WithOne("Szef")
-                        .HasForeignKey("Agencja_Interaktywna.Models.Szef", "IdPracownik")
-                        .HasConstraintName("Pracownik_Szef")
+                        .HasForeignKey("Agencja_Interaktywna.Models.Szef", "Idpracownik")
+                        .HasConstraintName("szefpracownikfk")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Agencja_Interaktywna.Models.Tester", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdPracownikNavigation")
+                    b.HasOne("Agencja_Interaktywna.Models.Pracownik", "IdpracownikNavigation")
                         .WithOne("Tester")
-                        .HasForeignKey("Agencja_Interaktywna.Models.Tester", "IdPracownik")
-                        .HasConstraintName("Table_14_Pracownik")
+                        .HasForeignKey("Agencja_Interaktywna.Models.Tester", "Idpracownik")
+                        .HasConstraintName("testerpracownikfk")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.UslugaProjekt", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Zadanieprojekt", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Projekt", "IdProjektNavigation")
-                        .WithMany("UslugaProjekt")
-                        .HasForeignKey("IdProjekt")
-                        .HasConstraintName("Table_26_Projekt")
+                    b.HasOne("Agencja_Interaktywna.Models.Projekt", "IdprojektNavigation")
+                        .WithMany("Zadanieprojekt")
+                        .HasForeignKey("Idprojekt")
+                        .HasConstraintName("zadanieprojektprojektfk")
                         .IsRequired();
 
-                    b.HasOne("Agencja_Interaktywna.Models.Usluga", "IdUslugaNavigation")
-                        .WithMany("UslugaProjekt")
-                        .HasForeignKey("IdUsluga")
-                        .HasConstraintName("Table_26_Zadanie")
+                    b.HasOne("Agencja_Interaktywna.Models.Zadanie", "IdzadanieNavigation")
+                        .WithMany("Zadanieprojekt")
+                        .HasForeignKey("Idzadanie")
+                        .HasConstraintName("zadanieprojektzadaniefk")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Agencja_Interaktywna.Models.ZespolProjekt", b =>
+            modelBuilder.Entity("Agencja_Interaktywna.Models.Zespolprojekt", b =>
                 {
-                    b.HasOne("Agencja_Interaktywna.Models.Projekt", "IdProjektNavigation")
-                        .WithMany("ZespolProjekt")
-                        .HasForeignKey("IdProjekt")
-                        .HasConstraintName("Table_24_Projekt")
+                    b.HasOne("Agencja_Interaktywna.Models.Projekt", "IdprojektNavigation")
+                        .WithMany("Zespolprojekt")
+                        .HasForeignKey("Idprojekt")
+                        .HasConstraintName("zespolprojektprojektfk")
                         .IsRequired();
 
-                    b.HasOne("Agencja_Interaktywna.Models.Zespol", "IdZespolNavigation")
-                        .WithMany("ZespolProjekt")
-                        .HasForeignKey("IdZespol")
-                        .HasConstraintName("Table_24_Zespol")
+                    b.HasOne("Agencja_Interaktywna.Models.Zespol", "IdzespolNavigation")
+                        .WithMany("Zespolprojekt")
+                        .HasForeignKey("Idzespol")
+                        .HasConstraintName("zespolprojektzespolfk")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

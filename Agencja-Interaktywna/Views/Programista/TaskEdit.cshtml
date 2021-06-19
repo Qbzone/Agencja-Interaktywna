@@ -37,15 +37,6 @@
             <div class="btn-goup">
                 <a asp-action="ProjectDetails" asp-route-id="@Model.UslugaProjekt.IdProjekt" class="btn btn-primary">Wstecz</a>
                 <input type="submit" value="Potwierdź zmiany" class="btn btn-primary" />
-                @{ if (Model.UslugaProjekt.Status.Equals("Opóźnione"))
-                    {
-                        <input type="submit" value="Zgłoś Opóźnienie" class="btn btn-primary" asp-action="TaskDelay" disabled="disabled" />
-                    }
-                    else
-                    {
-                        <input type="submit" value="Zgłoś Opóźnienie" class="btn btn-primary" asp-action="TaskDelay" />
-                    }
-                }
             </div>
         </form>
     </div>

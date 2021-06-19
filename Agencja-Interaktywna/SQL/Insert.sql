@@ -61,11 +61,11 @@ VALUES(8,5,'2020-08-10','2030-08-10');
 INSERT INTO Programista
 VALUES (4,'senior');
 INSERT INTO Grafik
-VALUES (6,'Grafika 2D');
+VALUES (7,'Grafika 2D');
 INSERT INTO Tester
 VALUES (5,2);
 INSERT INTO Pozycjoner
-VALUES (7,'marketing szeptany');
+VALUES (6,'marketing szeptany');
 INSERT INTO Szef
 VALUES (8);
 
