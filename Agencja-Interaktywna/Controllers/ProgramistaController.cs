@@ -171,6 +171,28 @@ namespace Agencja_Interaktywna.Controllers
             return View(tEM);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TaskDelay(TaskEditModel tEM)
+        {
+            if (ModelState.IsValid)
+            {
+                DateTime tmpDate = (DateTime)tEM.UslugaProjekt.DataZakonczeniaZadania;
+                tEM.UslugaProjekt.DataZakonczeniaZadania = tmpDate.AddDays(7);
+                tEM.UslugaProjekt.Status = "Opóźnione";
+                _s16693context.Update(tEM.UslugaProjekt);
+                await _s16693context.SaveChangesAsync();
+
+                return RedirectToAction("ProjectDetails", new { id = tEM.UslugaProjekt.IdProjekt });
+
+            }
+            else if (!ModelState.IsValid)
+            {
+                return View("TaskEdit", tEM);
+            }
+            return View(tEM);
+        }
+
         public async Task<IActionResult> TaskDetails(int? id1, int? id2, string data)
         {
             if (id1 == null)
@@ -207,11 +229,11 @@ namespace Agencja_Interaktywna.Controllers
 
         public async Task<IActionResult> Profile()
         {
-            var kl = await _s16693context.Pracownik
-                .Include(o => o.IdPracownikNavigation)
-                .Include(pu => pu.PracownikUmowa)
-                    .ThenInclude(u => u.IdUmowaNavigation)
-                .FirstOrDefaultAsync(i => i.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+            var kl = await _s16693context.PracownikUmowa
+                .Include(p => p.IdPracownikNavigation)
+                    .ThenInclude(o => o.IdPracownikNavigation)
+                .Include(u => u.IdUmowaNavigation)
+                .FirstOrDefaultAsync(i => i.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
 
             if (kl == null)
             {

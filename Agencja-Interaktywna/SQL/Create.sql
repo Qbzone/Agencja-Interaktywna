@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-04-21 16:35:26.077
+-- Last modification date: 2021-06-18 14:28:01.705
 
 -- tables
 -- Table: Firma
@@ -100,8 +100,8 @@ CREATE TABLE PracownikKlient (
 CREATE TABLE PracownikUmowa (
     IdPracownik int  NOT NULL,
     IdUmowa int  NOT NULL,
-    DataPodpisaniaUmowy date  NOT NULL,
-    DataZakonczeniaUmowy date  NOT NULL,
+    DataPodpisaniaUmowy datetime  NOT NULL,
+    DataZakonczeniaUmowy datetime  NOT NULL,
     CONSTRAINT PracownikUmowa_pk PRIMARY KEY  (IdPracownik,IdUmowa,DataPodpisaniaUmowy)
 );
 
@@ -142,8 +142,8 @@ CREATE TABLE Projekt (
 CREATE TABLE ProjektPakiet (
     IdProjekt int  NOT NULL,
     IdPakiet int  NOT NULL,
-    DataRozpoczeciaWspolpracy date  NOT NULL,
-    DataZakonczeniaWspolpracy date  NULL,
+    DataRozpoczeciaWspolpracy datetime  NOT NULL,
+    DataZakonczeniaWspolpracy datetime  NULL,
     CONSTRAINT ProjektPakiet_pk PRIMARY KEY  (IdPakiet,IdProjekt,DataRozpoczeciaWspolpracy)
 );
 
@@ -334,3 +334,4 @@ ALTER TABLE UslugaProjekt ADD CONSTRAINT ZadanieProjekt_Usluga
     REFERENCES Usluga (IdUsluga);
 
 -- End of file.
+

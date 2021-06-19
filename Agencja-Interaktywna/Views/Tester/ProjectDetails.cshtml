@@ -48,8 +48,15 @@
                 </td>
                 <td>
                     <a asp-action="TaskDetails" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" class="btn btn-primary">Szczegóły</a>
-
-                    <a asp-action="TaskEdit" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" class="btn btn-primary">Edytuj</a>
+                    @{ if (item.Status.Equals("Zakończone"))
+                        {
+                            <a asp-action="TaskEdit" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" class="btn btn-primary-disabled-href" new { onclick="javascript:return false;" }>Edytuj</a>
+                        }
+                        else
+                        {
+                            <a asp-action="TaskEdit" asp-route-id1="@Model.projekt.IdProjekt" asp-route-id2="@item.IdUsluga" asp-route-data="@item.DataPrzypisaniaZadania" class="btn btn-primary">Edytuj</a>
+                        }
+                    }
                 </td>
             </tr>
         }
