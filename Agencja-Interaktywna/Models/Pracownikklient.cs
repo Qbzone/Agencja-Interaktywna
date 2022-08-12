@@ -17,6 +17,7 @@ namespace Agencja_Interaktywna.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
+            
             if (IdPracownik == null)
             {
                 errors.Add(new ValidationResult($"Proszę wybrać pracownika.", new List<string> { nameof(IdPracownik) }));

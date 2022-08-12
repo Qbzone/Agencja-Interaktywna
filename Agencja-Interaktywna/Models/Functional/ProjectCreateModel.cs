@@ -32,6 +32,7 @@ namespace Agencja_Interaktywna.Models.Functional
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
+
             if (projekt.Nazwa == null)
             {
                 errors.Add(new ValidationResult($"Proszę wprowadzić nazwę projektu.", new List<string> { nameof(ErrorHandler1) }));
@@ -52,6 +53,7 @@ namespace Agencja_Interaktywna.Models.Functional
             {
                 errors.Add(new ValidationResult($"Proszę wybrać zespół.", new List<string> { nameof(ErrorHandler4) }));
             }
+
             return errors;
         }
     }

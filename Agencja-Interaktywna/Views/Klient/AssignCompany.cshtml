@@ -8,10 +8,10 @@
     <div class="col-md-4">
         <form method="post" asp-action="AssignCompany">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.klient.IdKlient" />
+            <input type="hidden" asp-for="@Model.Klient.IdKlient" />
             <div class="form-group">
-                <label asp-for="@Model.firma.Nazwa" class="control-label">Nazwa firmy</label>
-                <input type="text" class="form-control" asp-for="@Model.firma.Nazwa" />
+                <label asp-for="@Model.Firma.Nazwa" class="control-label">Nazwa firmy</label>
+                <input type="text" class="form-control" asp-for="@Model.Firma.Nazwa" />
                 <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="btn-group">

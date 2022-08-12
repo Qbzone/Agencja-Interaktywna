@@ -56,7 +56,7 @@ namespace Agencja_Interaktywna.Controllers
             
             var aCM = new AssignCompanyModel
             {
-                klient = kl
+                Klient = kl
             };
 
             return View(aCM);
@@ -70,8 +70,8 @@ namespace Agencja_Interaktywna.Controllers
             {
                 var newFirma = new Firma()
                 {
-                    IdFirma = aCM.firma.IdFirma,
-                    Nazwa = aCM.firma.Nazwa
+                    IdFirma = aCM.Firma.IdFirma,
+                    Nazwa = aCM.Firma.Nazwa
                 };
 
                 _s16693context.Add(newFirma);
@@ -79,7 +79,7 @@ namespace Agencja_Interaktywna.Controllers
 
                 var newKF = new KlientFirma()
                 {
-                    IdKlient = aCM.klient.IdKlient,
+                    IdKlient = aCM.Klient.IdKlient,
                     IdFirma = newFirma.IdFirma
                 };
 

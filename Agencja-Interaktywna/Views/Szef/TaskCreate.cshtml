@@ -8,13 +8,13 @@
     <div class="col-md-4">
         <form method="post" asp-action="TaskCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.projekt.IdProjekt" />
+            <input type="hidden" asp-for="@Model.Projekt.IdProjekt" />
             <div class="form-group">
                 <label asp-for="@Model.UslugaProjekt.IdUsluga" class="control-label">Nazwa zadania</label>
                 <select class="form-control" asp-for="@Model.UslugaProjekt.IdUsluga">
                     <option value="">Wybierz zadanie</option>
                     @{
-                        foreach (var item in Model.uslugas)
+                        foreach (var item in Model.Uslugas)
                         {
                             <option class="form-control" value="@item.IdUsluga">@item.Nazwa</option>
                         }
@@ -39,7 +39,7 @@
             </div>
             <input type="hidden" asp-for="@Model.UslugaProjekt.Status" value="Oczekuje na realizację" />
             <div class="btn-group">
-                <a asp-action="ProjectDetails" asp-route-id="@Model.projekt.IdProjekt" class="btn btn-primary">Wstecz</a>
+                <a asp-action="ProjectDetails" asp-route-id="@Model.Projekt.IdProjekt" class="btn btn-primary">Wstecz</a>
                 <input type="submit" value="Zatwierdź" class="btn btn-primary"/>
             </div>
         </form>

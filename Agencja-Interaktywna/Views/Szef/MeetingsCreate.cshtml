@@ -28,7 +28,7 @@
             <select class="form-control" asp-for="@Model.PracownikKlient.IdKlient">
                 <option value="">Wybierz klienta</option>
                 @{
-                    foreach (var item in Model.klients)
+                    foreach (var item in Model.Klients)
                     {
                         <option class="form-control" value="@item.IdKlient">@item.IdKlientNavigation.AdresEmail</option>
                     }
@@ -41,7 +41,7 @@
             <select class="form-control" asp-for="@Model.PracownikKlient.IdPracownik">
                 <option value="">Wybierz pracownika</option>
                 @{
-                    foreach (var item in Model.pracowniks)
+                    foreach (var item in Model.Pracowniks)
                     {
                         <option class="form-control" value="@item.IdPracownik">@item.IdPracownikNavigation.AdresEmail</option>
                     }

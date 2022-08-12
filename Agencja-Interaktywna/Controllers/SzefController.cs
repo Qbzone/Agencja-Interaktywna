@@ -334,8 +334,8 @@ namespace Agencja_Interaktywna.Controllers
 
             var mCM = new MeetingCreateModel
             {
-                klients = klient,
-                pracowniks = pracownik
+                Klients = klient,
+                Pracowniks = pracownik
             };
 
             return View(mCM);
@@ -368,8 +368,8 @@ namespace Agencja_Interaktywna.Controllers
 
                 var newMCM = new MeetingCreateModel
                 {
-                    klients = klient,
-                    pracowniks = pracownik
+                    Klients = klient,
+                    Pracowniks = pracownik
                 };
                 
                 return View("MeetingsCreate", newMCM);
@@ -552,7 +552,7 @@ namespace Agencja_Interaktywna.Controllers
 
             var tCM = new TeamCreateModel
             {
-                pracowniks = pracownik
+                Pracowniks = pracownik
             };
 
             return View(tCM);
@@ -567,10 +567,10 @@ namespace Agencja_Interaktywna.Controllers
             {
                 var newTeam = new Zespol()
                 {
-                    Nazwa = tCM.zespol.Nazwa
+                    Nazwa = tCM.Zespol.Nazwa
                 };
 
-                var pracownikIds = tCM.pracowniks.Where(x => x.Selected).Select(y => y.Value);
+                var pracownikIds = tCM.Pracowniks.Where(x => x.Selected).Select(y => y.Value);
 
                 if (pracownikIds.Count() == 0)
                 {
@@ -582,7 +582,7 @@ namespace Agencja_Interaktywna.Controllers
                             Value = x.IdPracownik.ToString()
                         }).ToListAsync();
 
-                    tCM.pracowniks = pracownik;
+                    tCM.Pracowniks = pracownik;
 
                     return View("TeamsCreate", tCM);
                 }
@@ -616,7 +616,7 @@ namespace Agencja_Interaktywna.Controllers
 
                 var newTCM = new TeamCreateModel
                 {
-                    pracowniks = pracownik
+                    Pracowniks = pracownik
                 };
 
                 return View("TeamsCreate", newTCM);
@@ -654,8 +654,8 @@ namespace Agencja_Interaktywna.Controllers
 
             var tEM = new TeamEditModel()
             {
-                zespol = zespol,
-                pracowniks = allpracownik,
+                Zespol = zespol,
+                Pracowniks = allpracownik,
             };
 
             return View(tEM);
@@ -667,31 +667,31 @@ namespace Agencja_Interaktywna.Controllers
         {
             if (ModelState.IsValid)
             {
-                _s16693context.Update(tEM.zespol);
+                _s16693context.Update(tEM.Zespol);
                 List<PracownikZespol> pracowniklist = new List<PracownikZespol>();
 
-                foreach (var item in tEM.pracowniks)
+                foreach (var item in tEM.Pracowniks)
                 {
                     if (item.IsChecked == true)
                     {
                         var PZ = new PracownikZespol()
                         {
                             IdPracownik = item.Id,
-                            IdZespol = (int)tEM.zespol.IdZespol,
+                            IdZespol = (int)tEM.Zespol.IdZespol,
                             DataPrzypisaniaPracownika = DateTime.Now
                         };
                         _s16693context.Add(PZ);
                     }
                 }
 
-                var dt = await _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToListAsync();
+                var dt = await _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.Zespol.IdZespol).ToListAsync();
                 foreach (var item in dt)
                 {
                     _s16693context.PracownikZespol.Remove(item);
                     await _s16693context.SaveChangesAsync();
                 }
 
-                var idS = await _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.zespol.IdZespol).ToListAsync();
+                var idS = await _s16693context.PracownikZespol.Where(x => x.IdZespol == tEM.Zespol.IdZespol).ToListAsync();
                 foreach (var item in pracowniklist)
                 {
                     if (idS.Contains(item))
@@ -712,13 +712,13 @@ namespace Agencja_Interaktywna.Controllers
                 {
                     Id = x.IdPracownik,
                     Nazwa = x.IdPracownikNavigation.AdresEmail,
-                    IsChecked = x.PracownikZespol.Any(x => x.IdZespol == tEM.zespol.IdZespol) ? true : false
+                    IsChecked = x.PracownikZespol.Any(x => x.IdZespol == tEM.Zespol.IdZespol) ? true : false
                 }).ToListAsync();
 
                 var newTEM = new TeamEditModel()
                 {
-                    zespol = tEM.zespol,
-                    pracowniks = allpracownik,
+                    Zespol = tEM.Zespol,
+                    Pracowniks = allpracownik,
                 };
 
                 return View("TeamsEdit", newTEM);
@@ -787,8 +787,8 @@ namespace Agencja_Interaktywna.Controllers
 
             var tCM = new TaskCreateModel
             {
-                uslugas = uslugas,
-                projekt = projekt
+                Uslugas = uslugas,
+                Projekt = projekt
             };
 
             return View(tCM);
@@ -802,7 +802,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 var newZadanie = new UslugaProjekt()
                 {
-                    IdProjekt = tCM.projekt.IdProjekt,
+                    IdProjekt = tCM.Projekt.IdProjekt,
                     IdUsluga = tCM.UslugaProjekt.IdUsluga,
                     Opis = tCM.UslugaProjekt.Opis,
                     DataPrzypisaniaZadania = tCM.UslugaProjekt.DataPrzypisaniaZadania,
@@ -813,11 +813,11 @@ namespace Agencja_Interaktywna.Controllers
                 _s16693context.Add(newZadanie);
                 await _s16693context.SaveChangesAsync();
 
-                return RedirectToAction("ProjectDetails", new { id = tCM.projekt.IdProjekt });
+                return RedirectToAction("ProjectDetails", new { id = tCM.Projekt.IdProjekt });
             }
             else if (!ModelState.IsValid)
             {
-                var pakiet = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == tCM.projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null);
+                var pakiet = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == tCM.Projekt.IdProjekt && x.DataZakonczeniaWspolpracy == null);
                 var pU = await _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToListAsync();
                 List<Usluga> uslugas = new List<Usluga>();
 
@@ -828,8 +828,8 @@ namespace Agencja_Interaktywna.Controllers
 
                 var newTCM = new TaskCreateModel
                 {
-                    uslugas = uslugas,
-                    projekt = tCM.projekt
+                    Uslugas = uslugas,
+                    Projekt = tCM.Projekt
                 };
 
                 return View("TaskCreate", newTCM);
@@ -863,7 +863,7 @@ namespace Agencja_Interaktywna.Controllers
             var tEM = new TaskEditModel
             {
                 UslugaProjekt = uslugaprojekt,
-                uslugas = uslugas
+                Uslugas = uslugas
             };
 
             return View(tEM);

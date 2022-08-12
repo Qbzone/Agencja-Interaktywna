@@ -363,8 +363,9 @@ namespace Agencja_Interaktywna.Controllers
             mail.IsBodyHtml = true;
 
             SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("johnytestin@gmail.com", "123qwER#$");
             SmtpServer.EnableSsl = true;
+            SmtpServer.UseDefaultCredentials = false;
+            SmtpServer.Credentials = new NetworkCredential("johnytestin@gmail.com", "adgqnuoumkbqfecg");
 
             SmtpServer.Send(mail);
         }
@@ -385,8 +386,9 @@ namespace Agencja_Interaktywna.Controllers
             mail.IsBodyHtml = true;
 
             SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("johnytestin@gmail.com", "123qwER#$");
             SmtpServer.EnableSsl = true;
+            SmtpServer.UseDefaultCredentials = false;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("johnytestin@gmail.com", "adgqnuoumkbqfecg");
 
             SmtpServer.Send(mail);
         }

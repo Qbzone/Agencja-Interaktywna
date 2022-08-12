@@ -146,7 +146,7 @@ namespace Agencja_Interaktywna.Controllers
             var tEM = new TaskEditModel
             {
                 UslugaProjekt = uslugaprojekt,
-                uslugas = uslugas
+                Uslugas = uslugas
             };
 
             return View(tEM);

@@ -9,9 +9,9 @@ namespace Agencja_Interaktywna.Models.Functional
 {
     public class AssignCompanyModel : IValidatableObject
     {
-        public Klient klient { get; set; }
+        public Klient Klient { get; set; }
 
-        public Firma firma { get; set; }
+        public Firma Firma { get; set; }
 
         [NotMapped]
         public string ErrorHandler1 { get; set; }
@@ -19,10 +19,12 @@ namespace Agencja_Interaktywna.Models.Functional
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
-            if (firma.Nazwa == null)
+
+            if (Firma.Nazwa == null)
             {
                 errors.Add(new ValidationResult($"Proszę wprowadzić nazwę firmy.", new List<string> { nameof(ErrorHandler1) }));
             }
+
             return errors;
         }
     }

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Agencja_Interaktywna.Models
 {
-    public partial class Projekt 
+    public partial class Projekt
     {
         public Projekt()
         {
@@ -22,7 +22,7 @@ namespace Agencja_Interaktywna.Models
         public int? IdFirma { get; set; }
         [NotMapped]
         public string Widok { get; set; }
-        
+
         public virtual Firma IdFirmaNavigation { get; set; }
         public virtual ICollection<ProjektPakiet> ProjektPakiet { get; set; }
         public virtual ICollection<UslugaProjekt> UslugaProjekt { get; set; }
