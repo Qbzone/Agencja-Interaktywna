@@ -1,337 +1,333 @@
--- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-06-18 14:28:01.705
-
 -- tables
--- Table: Firma
-CREATE TABLE Firma (
-    IdFirma int  NOT NULL IDENTITY,
-    Nazwa nvarchar(50)  NOT NULL,
-    CONSTRAINT Firma_pk PRIMARY KEY  (IdFirma)
+-- Table: Company
+CREATE TABLE Company (
+    CompanyId int  NOT NULL IDENTITY,
+    CompanyName nvarchar(50)  NOT NULL,
+    CONSTRAINT Company_pk PRIMARY KEY  (CompanyId)
 );
 
--- Table: Grafik
-CREATE TABLE Grafik (
-    IdPracownik int  NOT NULL,
-    Specjalizacja nvarchar(50)  NOT NULL,
-    CONSTRAINT Grafik_pk PRIMARY KEY  (IdPracownik)
+-- Table: Graphician
+CREATE TABLE Graphician (
+    EmployeeId int  NOT NULL,
+    Specialization nvarchar(50)  NOT NULL,
+    CONSTRAINT Graphician_pk PRIMARY KEY  (EmployeeId)
 );
 
--- Table: JezykProgramowania
-CREATE TABLE JezykProgramowania (
-    IdJezyk int  NOT NULL IDENTITY,
-    Nazwa nvarchar(50)  NOT NULL,
-    CONSTRAINT JezykProgramowania_pk PRIMARY KEY  (IdJezyk)
+-- Table: ProgrammingLanguage
+CREATE TABLE ProgrammingLanguage (
+    LanguageId int  NOT NULL IDENTITY,
+    LanguageName nvarchar(50)  NOT NULL,
+    CONSTRAINT ProgrammingLanguage_pk PRIMARY KEY  (LanguageId)
 );
 
--- Table: Klient
-CREATE TABLE Klient (
-    IdKlient int  NOT NULL,
-    Priorytet nvarchar(50)  NOT NULL,
-    CONSTRAINT Klient_pk PRIMARY KEY  (IdKlient)
+-- Table: Client
+CREATE TABLE Client (
+    ClientId int  NOT NULL,
+    Priority nvarchar(50)  NOT NULL,
+    CONSTRAINT Client_pk PRIMARY KEY  (ClientId)
 );
 
--- Table: KlientFirma
-CREATE TABLE KlientFirma (
-    IdKlient int  NOT NULL,
-    IdFirma int  NOT NULL,
-    CONSTRAINT KlientFirma_pk PRIMARY KEY  (IdKlient,IdFirma)
+-- Table: ClientCompany
+CREATE TABLE ClientCompany (
+    ClientId int  NOT NULL,
+    CompanyId int  NOT NULL,
+    CONSTRAINT ClientCompany_pk PRIMARY KEY  (ClientId,CompanyId)
 );
 
--- Table: Osoba
-CREATE TABLE Osoba (
-    IdOsoba int  NOT NULL IDENTITY,
-    Imie nvarchar(25)  NOT NULL,
-    Nazwisko nvarchar(50)  NOT NULL,
-    NumerTelefonuPrywatny char(9)  NULL,
-    NumerTelefonuSluzbowego char(9)  NOT NULL,
-    AdresEmail nvarchar(50)  NOT NULL,
-    Haslo nvarchar(max)  NOT NULL,
-    CzyEmailZweryfikowany bit  NOT NULL,
-    KodAktywacyjny uniqueidentifier  NOT NULL,
-    Rola nvarchar(25)  NOT NULL,
-    CONSTRAINT Osoba_pk PRIMARY KEY  (IdOsoba)
+-- Table: Person
+CREATE TABLE Person (
+    PersonId int  NOT NULL IDENTITY,
+    FirstName nvarchar(25)  NOT NULL,
+    LastName nvarchar(50)  NOT NULL,
+    PrivatePhoneNumber char(9)  NULL,
+    BusinessPhoneNumber char(9)  NOT NULL,
+    EmailAddress nvarchar(50)  NOT NULL,
+    Password nvarchar(max)  NOT NULL,
+    IsEmailVerified bit  NOT NULL,
+    ActivationCode uniqueidentifier  NOT NULL,
+    Role nvarchar(25)  NOT NULL,
+    CONSTRAINT Person_pk PRIMARY KEY  (PersonId)
 );
 
--- Table: Pakiet
-CREATE TABLE Pakiet (
-    IdPakiet int  NOT NULL IDENTITY,
-    Nazwa nvarchar(50)  NOT NULL,
-    Oplata int  NOT NULL,
-    RodzajOplaty nvarchar(50)  NOT NULL,
-    CONSTRAINT Pakiet_pk PRIMARY KEY  (IdPakiet)
+-- Table: Package
+CREATE TABLE Package (
+    PackageId int  NOT NULL IDENTITY,
+    PackageName nvarchar(50)  NOT NULL,
+    Fee int  NOT NULL,
+    FeeType nvarchar(50)  NOT NULL,
+    CONSTRAINT Package_pk PRIMARY KEY  (PackageId)
 );
 
--- Table: PakietUsluga
-CREATE TABLE PakietUsluga (
-    IdPakiet int  NOT NULL,
-    IdUsluga int  NOT NULL,
-    CONSTRAINT PakietUsluga_pk PRIMARY KEY  (IdPakiet,IdUsluga)
+-- Table: PackageService
+CREATE TABLE PackageService (
+    PackageId int  NOT NULL,
+    ServiceId int  NOT NULL,
+    CONSTRAINT PackageService_pk PRIMARY KEY  (PackageId,ServiceId)
 );
 
--- Table: Pozycjoner
-CREATE TABLE Pozycjoner (
-    IdPracownik int  NOT NULL,
-    PelnionaFunkcja nvarchar(50)  NOT NULL,
-    CONSTRAINT Pozycjoner_pk PRIMARY KEY  (IdPracownik)
+-- Table: Positioner
+CREATE TABLE Positioner (
+    EmployeeId int  NOT NULL,
+    FullFunction nvarchar(50)  NOT NULL,
+    CONSTRAINT Positioner_pk PRIMARY KEY  (EmployeeId)
 );
 
--- Table: Pracownik
-CREATE TABLE Pracownik (
-    IdPracownik int  NOT NULL,
-    AdresZamieszkania nvarchar(100)  NOT NULL,
-    Pensja int  NOT NULL,
-    Premia int  NOT NULL,
-    Pesel char(11)  NOT NULL,
-    StazPracy int  NOT NULL,
-    CONSTRAINT Pracownik_pk PRIMARY KEY  (IdPracownik)
+-- Table: Employee
+CREATE TABLE Employee (
+    EmployeeId int  NOT NULL,
+    HomeAddress nvarchar(100)  NOT NULL,
+    Salary int  NOT NULL,
+    Bonus int  NOT NULL,
+    PeselNumber char(11)  NOT NULL,
+    Seniority int  NOT NULL,
+    CONSTRAINT Employee_pk PRIMARY KEY  (EmployeeId)
 );
 
--- Table: PracownikKlient
-CREATE TABLE PracownikKlient (
-    IdPracownik int  NOT NULL,
-    IdKlient int  NOT NULL,
-    DataRozpoczeciaSpotkania datetime  NOT NULL,
-    DataZakonczeniaSpotkania datetime  NOT NULL,
-    MiejsceSpotkania nvarchar(50)  NOT NULL,
-    CONSTRAINT PracownikKlient_pk PRIMARY KEY  (IdKlient,IdPracownik,DataRozpoczeciaSpotkania)
+-- Table: EmployeeClient
+CREATE TABLE EmployeeClient (
+    EmployeeId int  NOT NULL,
+    ClientId int  NOT NULL,
+    MeetingStart datetime  NOT NULL,
+    MeetingEnd datetime  NOT NULL,
+    MeetingLocation nvarchar(50)  NOT NULL,
+    CONSTRAINT EmployeeClient_pk PRIMARY KEY  (ClientId,EmployeeId,MeetingStart)
 );
 
--- Table: PracownikUmowa
-CREATE TABLE PracownikUmowa (
-    IdPracownik int  NOT NULL,
-    IdUmowa int  NOT NULL,
-    DataPodpisaniaUmowy datetime  NOT NULL,
-    DataZakonczeniaUmowy datetime  NOT NULL,
-    CONSTRAINT PracownikUmowa_pk PRIMARY KEY  (IdPracownik,IdUmowa,DataPodpisaniaUmowy)
+-- Table: EmployeeContract
+CREATE TABLE EmployeeContract (
+    EmployeeId int  NOT NULL,
+    ContractId int  NOT NULL,
+    ContractStart datetime  NOT NULL,
+    ContractEnd datetime NOT NULL,
+    CONSTRAINT EmployeeContract_pk PRIMARY KEY  (EmployeeId,ContractId,ContractStart)
 );
 
--- Table: PracownikZespol
-CREATE TABLE PracownikZespol (
-    IdPracownik int  NOT NULL,
-    IdZespol int  NOT NULL,
-    DataPrzypisaniaPracownika datetime  NOT NULL,
-    DataWypisaniaPracownika datetime  NULL,
-    CONSTRAINT PracownikZespol_pk PRIMARY KEY  (IdPracownik,IdZespol,DataPrzypisaniaPracownika)
+-- Table: EmployeeTeam
+CREATE TABLE EmployeeTeam (
+    EmployeeId int  NOT NULL,
+    TeamId int  NOT NULL,
+    AssignStart datetime  NOT NULL,
+    AssignEnd datetime  NULL,
+    CONSTRAINT EmployeeTeam_pk PRIMARY KEY  (EmployeeId,TeamId,AssignStart)
 );
 
--- Table: Programista
-CREATE TABLE Programista (
-    IdPracownik int  NOT NULL,
-    PoziomZaawansowania nvarchar(50)  NOT NULL,
-    CONSTRAINT Programista_pk PRIMARY KEY  (IdPracownik)
+-- Table: Programmer
+CREATE TABLE Programmer (
+    EmployeeId int  NOT NULL,
+    AdvancementLevel nvarchar(50)  NOT NULL,
+    CONSTRAINT Programmer_pk PRIMARY KEY  (EmployeeId)
 );
 
--- Table: ProgramistaJezyk
-CREATE TABLE ProgramistaJezyk (
-    IdPracownik int  NOT NULL,
-    IdJezyk int  NOT NULL,
-    Staz int  NOT NULL,
-    CONSTRAINT ProgramistaJezyk_pk PRIMARY KEY  (IdPracownik,IdJezyk)
+-- Table: ProgrammerLanguage
+CREATE TABLE ProgrammerLanguage (
+    EmployeeId int  NOT NULL,
+    LanguageId int  NOT NULL,
+    KnowledgeLevel int  NOT NULL,
+    CONSTRAINT ProgrammeLanguage_pk PRIMARY KEY  (EmployeeId,LanguageId)
 );
 
--- Table: Projekt
-CREATE TABLE Projekt (
-    IdProjekt int  NOT NULL IDENTITY,
-    Nazwa nvarchar(50)  NOT NULL,
-    Logo nvarchar(MAX)  NOT NULL,
-    IdFirma int  NOT NULL,
-    CONSTRAINT Projekt_pk PRIMARY KEY  (IdProjekt)
+-- Table: Project
+CREATE TABLE Project (
+    ProjectId int  NOT NULL IDENTITY,
+    ProjectName nvarchar(50)  NOT NULL,
+    ProjectLogo nvarchar(MAX)  NOT NULL,
+    CompanyId int  NOT NULL,
+    CONSTRAINT Project_pk PRIMARY KEY  (ProjectId)
 );
 
--- Table: ProjektPakiet
-CREATE TABLE ProjektPakiet (
-    IdProjekt int  NOT NULL,
-    IdPakiet int  NOT NULL,
-    DataRozpoczeciaWspolpracy datetime  NOT NULL,
-    DataZakonczeniaWspolpracy datetime  NULL,
-    CONSTRAINT ProjektPakiet_pk PRIMARY KEY  (IdPakiet,IdProjekt,DataRozpoczeciaWspolpracy)
+-- Table: ProjectPackage
+CREATE TABLE ProjectPackage (
+    ProjectId int  NOT NULL,
+    PackageId int  NOT NULL,
+    DealStart datetime  NOT NULL,
+    DealEnd datetime  NULL,
+    CONSTRAINT ProjectPackage_pk PRIMARY KEY  (PackageId,ProjectId,DealStart)
 );
 
--- Table: Szef
-CREATE TABLE Szef (
-    IdPracownik int  NOT NULL,
-    CONSTRAINT Szef_pk PRIMARY KEY  (IdPracownik)
+-- Table: Boss
+CREATE TABLE Boss (
+    EmployeeId int  NOT NULL,
+    CONSTRAINT Boss_pk PRIMARY KEY  (EmployeeId)
 );
 
 -- Table: Tester
 CREATE TABLE Tester (
-    IdPracownik int  NOT NULL,
-    TesterDoswiadczenie int  NOT NULL,
-    CONSTRAINT Tester_pk PRIMARY KEY  (IdPracownik)
+    EmployeeId int  NOT NULL,
+    TestingExperience int  NOT NULL,
+    CONSTRAINT Tester_pk PRIMARY KEY  (EmployeeId)
 );
 
--- Table: Umowa
-CREATE TABLE Umowa (
-    IdUmowa int  NOT NULL IDENTITY,
-    RodzajUmowy nvarchar(50)  NOT NULL,
-    CONSTRAINT Umowa_pk PRIMARY KEY  (IdUmowa)
+-- Table: Contract
+CREATE TABLE Contract (
+    ContractId int  NOT NULL IDENTITY,
+    ContractType nvarchar(50)  NOT NULL,
+    CONSTRAINT Contract_pk PRIMARY KEY  (ContractId)
 );
 
--- Table: Usluga
-CREATE TABLE Usluga (
-    IdUsluga int  NOT NULL IDENTITY,
-    Nazwa nvarchar(50)  NOT NULL,
-    Klasyfikacja nvarchar(50)  NOT NULL,
-    CONSTRAINT Usluga_pk PRIMARY KEY  (IdUsluga)
+-- Table: Service
+CREATE TABLE Service (
+    ServiceId int  NOT NULL IDENTITY,
+    ServiceName nvarchar(50)  NOT NULL,
+    Classification nvarchar(50)  NOT NULL,
+    CONSTRAINT Service_pk PRIMARY KEY  (ServiceId)
 );
 
--- Table: UslugaProjekt
-CREATE TABLE UslugaProjekt (
-    IdProjekt int  NOT NULL,
-    IdUsluga int  NOT NULL,
-    DataPrzypisaniaZadania datetime  NOT NULL,
-    DataZakonczeniaZadania datetime  NULL,
+-- Table: ServiceProject
+CREATE TABLE ServiceProject (
+    ProjectId int  NOT NULL,
+    ServiceId int  NOT NULL,
+    AssignStart datetime  NOT NULL,
+    AssignEnd datetime  NULL,
     Status nvarchar(30)  NOT NULL,
-    Opis nvarchar(max)  NOT NULL,
-    CONSTRAINT UslugaProjekt_pk PRIMARY KEY  (IdProjekt,DataPrzypisaniaZadania,IdUsluga)
+    Description nvarchar(max)  NOT NULL,
+    CONSTRAINT ServiceProject_pk PRIMARY KEY  (ProjectId,AssignStart,ServiceId)
 );
 
--- Table: Zespol
-CREATE TABLE Zespol (
-    IdZespol int  NOT NULL IDENTITY,
-    Nazwa nvarchar(50)  NOT NULL,
-    CONSTRAINT Zespol_pk PRIMARY KEY  (IdZespol)
+-- Table: Team
+CREATE TABLE Team (
+    TeamId int  NOT NULL IDENTITY,
+    TeamName nvarchar(50)  NOT NULL,
+    CONSTRAINT Team_pk PRIMARY KEY  (TeamId)
 );
 
--- Table: ZespolProjekt
-CREATE TABLE ZespolProjekt (
-    IdZespol int  NOT NULL,
-    IdProjekt int  NOT NULL,
-    DataPrzypisaniaZespolu datetime  NOT NULL,
-    DataWypisaniaZespolu datetime  NULL,
-    CONSTRAINT ZespolProjekt_pk PRIMARY KEY  (IdZespol,IdProjekt,DataPrzypisaniaZespolu)
+-- Table: TeamProject
+CREATE TABLE TeamProject (
+    TeamId int  NOT NULL,
+    ProjectId int  NOT NULL,
+    AssignStart datetime  NOT NULL,
+    AssignEnd datetime  NULL,
+    CONSTRAINT TeamProject_pk PRIMARY KEY  (TeamId,ProjectId,AssignStart)
 );
 
 -- foreign keys
--- Reference: KlientFirma_Firma (table: KlientFirma)
-ALTER TABLE KlientFirma ADD CONSTRAINT KlientFirma_Firma
-    FOREIGN KEY (IdFirma)
-    REFERENCES Firma (IdFirma);
+-- Reference: ClientCompany_Company (table: ClientCompany)
+ALTER TABLE ClientCompany ADD CONSTRAINT ClientCompany_Company
+    FOREIGN KEY (CompanyId)
+    REFERENCES Company (CompanyId);
 
--- Reference: KlientFirma_Klient (table: KlientFirma)
-ALTER TABLE KlientFirma ADD CONSTRAINT KlientFirma_Klient
-    FOREIGN KEY (IdKlient)
-    REFERENCES Klient (IdKlient);
+-- Reference: ClientCompany_Client (table: ClientCompany)
+ALTER TABLE ClientCompany ADD CONSTRAINT ClientCompany_Client
+    FOREIGN KEY (ClientId)
+    REFERENCES Client (ClientId);
 
--- Reference: Klient_Osoba (table: Klient)
-ALTER TABLE Klient ADD CONSTRAINT Klient_Osoba
-    FOREIGN KEY (IdKlient)
-    REFERENCES Osoba (IdOsoba);
+-- Reference: Client_Person (table: Client)
+ALTER TABLE Client ADD CONSTRAINT Client_Person
+    FOREIGN KEY (ClientId)
+    REFERENCES Person (PersonId);
 
--- Reference: PakietUsluga_Pakiet (table: PakietUsluga)
-ALTER TABLE PakietUsluga ADD CONSTRAINT PakietUsluga_Pakiet
-    FOREIGN KEY (IdPakiet)
-    REFERENCES Pakiet (IdPakiet);
+-- Reference: PackageService_Package (table: PackageService)
+ALTER TABLE PackageService ADD CONSTRAINT PackageService_Package
+    FOREIGN KEY (PackageID)
+    REFERENCES Package (PackageId);
 
--- Reference: PakietUsluga_Usluga (table: PakietUsluga)
-ALTER TABLE PakietUsluga ADD CONSTRAINT PakietUsluga_Usluga
-    FOREIGN KEY (IdUsluga)
-    REFERENCES Usluga (IdUsluga);
+-- Reference: PackageService_Service (table: PackageService)
+ALTER TABLE PackageService ADD CONSTRAINT PackageService_Service
+    FOREIGN KEY (ServiceId)
+    REFERENCES Service (ServiceId);
 
--- Reference: PracownikKlient_Klient (table: PracownikKlient)
-ALTER TABLE PracownikKlient ADD CONSTRAINT PracownikKlient_Klient
-    FOREIGN KEY (IdKlient)
-    REFERENCES Klient (IdKlient);
+-- Reference: EmployeeClient_Client (table: EmployeeClient)
+ALTER TABLE EmployeeClient ADD CONSTRAINT EmployeeClient_Client
+    FOREIGN KEY (ClientId)
+    REFERENCES Client (ClientId);
 
--- Reference: PracownikKlient_Pracownik (table: PracownikKlient)
-ALTER TABLE PracownikKlient ADD CONSTRAINT PracownikKlient_Pracownik
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Pracownik (IdPracownik);
+-- Reference: EmployeeClient_Employee (table: EmployeeClient)
+ALTER TABLE EmployeeClient ADD CONSTRAINT EmployeeClient_Employee
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Employee (EmployeeId);
 
--- Reference: PracownikUmowa_Pracownik (table: PracownikUmowa)
-ALTER TABLE PracownikUmowa ADD CONSTRAINT PracownikUmowa_Pracownik
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Pracownik (IdPracownik);
+-- Reference: EmployeeContract_Employee (table: EmployeeContract)
+ALTER TABLE EmployeeContract ADD CONSTRAINT EmployeeContract_Employee
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Employee (EmployeeId);
 
--- Reference: PracownikUmowa_Umowa (table: PracownikUmowa)
-ALTER TABLE PracownikUmowa ADD CONSTRAINT PracownikUmowa_Umowa
-    FOREIGN KEY (IdUmowa)
-    REFERENCES Umowa (IdUmowa);
+-- Reference: EmployeeContract_Contract (table: EmployeeContract)
+ALTER TABLE EmployeeContract ADD CONSTRAINT EmployeeContract_Contract
+    FOREIGN KEY (ContractId)
+    REFERENCES Contract (ContractId);
 
--- Reference: Pracownik_Osoba (table: Pracownik)
-ALTER TABLE Pracownik ADD CONSTRAINT Pracownik_Osoba
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Osoba (IdOsoba);
+-- Reference: Employee_Person (table: Employee)
+ALTER TABLE Employee ADD CONSTRAINT Employee_Person
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Person (PersonId);
 
--- Reference: Pracownik_Szef (table: Szef)
-ALTER TABLE Szef ADD CONSTRAINT Pracownik_Szef
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Pracownik (IdPracownik);
+-- Reference: Employee_Boss (table: Boss)
+ALTER TABLE Boss ADD CONSTRAINT Employee_Boss
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Employee (EmployeeId);
 
--- Reference: ProjektPakiet_Pakiet (table: ProjektPakiet)
-ALTER TABLE ProjektPakiet ADD CONSTRAINT ProjektPakiet_Pakiet
-    FOREIGN KEY (IdPakiet)
-    REFERENCES Pakiet (IdPakiet);
+-- Reference: ProjectPackage_Package (table: ProjectPackage)
+ALTER TABLE ProjectPackage ADD CONSTRAINT ProjectPackage_Package
+    FOREIGN KEY (PackageId)
+    REFERENCES Package (PackageId);
 
--- Reference: ProjektPakiet_Projekt (table: ProjektPakiet)
-ALTER TABLE ProjektPakiet ADD CONSTRAINT ProjektPakiet_Projekt
-    FOREIGN KEY (IdProjekt)
-    REFERENCES Projekt (IdProjekt);
+-- Reference: ProjectPackage_Project (table: ProjectPackage)
+ALTER TABLE ProjectPackage ADD CONSTRAINT ProjectPackage_Project
+    FOREIGN KEY (ProjectId)
+    REFERENCES Project (ProjectId);
 
--- Reference: Projekt_Firma (table: Projekt)
-ALTER TABLE Projekt ADD CONSTRAINT Projekt_Firma
-    FOREIGN KEY (IdFirma)
-    REFERENCES Firma (IdFirma);
+-- Reference: Project_Company (table: Project)
+ALTER TABLE Project ADD CONSTRAINT Project_Company
+    FOREIGN KEY (CompanyId)
+    REFERENCES Company (CompanyId);
 
--- Reference: Table_14_Pracownik (table: Tester)
-ALTER TABLE Tester ADD CONSTRAINT Table_14_Pracownik
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Pracownik (IdPracownik);
+-- Reference: Employee_Tester (table: Tester)
+ALTER TABLE Tester ADD CONSTRAINT Employee_Tester
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Employee (EmployeeId);
 
--- Reference: Table_15_Pracownik (table: Pozycjoner)
-ALTER TABLE Pozycjoner ADD CONSTRAINT Table_15_Pracownik
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Pracownik (IdPracownik);
+-- Reference: Employee_Positioner (table: Positioner)
+ALTER TABLE Positioner ADD CONSTRAINT Employee_Positioner
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Employee (EmployeeId);
 
--- Reference: Table_16_Pracownik (table: Grafik)
-ALTER TABLE Grafik ADD CONSTRAINT Table_16_Pracownik
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Pracownik (IdPracownik);
+-- Reference: Employee_Graphician (table: Graphician)
+ALTER TABLE Graphician ADD CONSTRAINT Employee_Graphician
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Employee (EmployeeId);
 
--- Reference: Table_17_Pracownik (table: Programista)
-ALTER TABLE Programista ADD CONSTRAINT Table_17_Pracownik
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Pracownik (IdPracownik);
+-- Reference: Employee_Programmer (table: Programmer)
+ALTER TABLE Programmer ADD CONSTRAINT Employee_Programmer
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Employee (EmployeeId);
 
--- Reference: Table_18_JezykProgramowania (table: ProgramistaJezyk)
-ALTER TABLE ProgramistaJezyk ADD CONSTRAINT Table_18_JezykProgramowania
-    FOREIGN KEY (IdJezyk)
-    REFERENCES JezykProgramowania (IdJezyk);
+-- Reference: ProgrammerProgrammingLanguage_ProgrammingLanguage (table: ProgrammerLanguage)
+ALTER TABLE ProgrammerLanguage ADD CONSTRAINT ProgrammerProgrammingLanguage_ProgrammingLanguage
+    FOREIGN KEY (LanguageId)
+    REFERENCES ProgrammingLanguage (LanguageId);
 
--- Reference: Table_18_Programista (table: ProgramistaJezyk)
-ALTER TABLE ProgramistaJezyk ADD CONSTRAINT Table_18_Programista
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Programista (IdPracownik);
+-- Reference: ProgrammerProgrammingLanguage_Programmer (table: ProgrammerLanguage)
+ALTER TABLE ProgrammerLanguage ADD CONSTRAINT ProgrammerProgrammingLanguage_Programmer
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Programmer (EmployeeId);
 
--- Reference: Table_22_Pracownik (table: PracownikZespol)
-ALTER TABLE PracownikZespol ADD CONSTRAINT Table_22_Pracownik
-    FOREIGN KEY (IdPracownik)
-    REFERENCES Pracownik (IdPracownik);
+-- Reference: EmployeeTeam_Employee (table: EmployeeTeam)
+ALTER TABLE EmployeeTeam ADD CONSTRAINT EmployeeTeam_Employee
+    FOREIGN KEY (EmployeeId)
+    REFERENCES Employee (EmployeeId);
 
--- Reference: Table_22_Zespol (table: PracownikZespol)
-ALTER TABLE PracownikZespol ADD CONSTRAINT Table_22_Zespol
-    FOREIGN KEY (IdZespol)
-    REFERENCES Zespol (IdZespol);
+-- Reference: EmployeeTeam_Team (table: EmployeeTeam)
+ALTER TABLE EmployeeTeam ADD CONSTRAINT EmployeeTeam_Team
+    FOREIGN KEY (TeamId)
+    REFERENCES Team (TeamId);
 
--- Reference: Table_24_Projekt (table: ZespolProjekt)
-ALTER TABLE ZespolProjekt ADD CONSTRAINT Table_24_Projekt
-    FOREIGN KEY (IdProjekt)
-    REFERENCES Projekt (IdProjekt);
+-- Reference: TeamProject_Project (table: TeamProject)
+ALTER TABLE TeamProject ADD CONSTRAINT TeamProject_Project
+    FOREIGN KEY (ProjectId)
+    REFERENCES Project (ProjectId);
 
--- Reference: Table_24_Zespol (table: ZespolProjekt)
-ALTER TABLE ZespolProjekt ADD CONSTRAINT Table_24_Zespol
-    FOREIGN KEY (IdZespol)
-    REFERENCES Zespol (IdZespol);
+-- Reference: TeamProject_Team (table: TeamProject)
+ALTER TABLE TeamProject ADD CONSTRAINT TeamProject_Team
+    FOREIGN KEY (TeamId)
+    REFERENCES Team (TeamId);
 
--- Reference: Table_26_Projekt (table: UslugaProjekt)
-ALTER TABLE UslugaProjekt ADD CONSTRAINT Table_26_Projekt
-    FOREIGN KEY (IdProjekt)
-    REFERENCES Projekt (IdProjekt);
+-- Reference: ServiceProject_Project (table: ServiceProject)
+ALTER TABLE ServiceProject ADD CONSTRAINT ServiceProject_Project
+    FOREIGN KEY (ProjectId)
+    REFERENCES Project (ProjectId);
 
--- Reference: ZadanieProjekt_Usluga (table: UslugaProjekt)
-ALTER TABLE UslugaProjekt ADD CONSTRAINT ZadanieProjekt_Usluga
-    FOREIGN KEY (IdUsluga)
-    REFERENCES Usluga (IdUsluga);
+-- Reference: ServiceProject_Service (table: ServiceProject)
+ALTER TABLE ServiceProject ADD CONSTRAINT ServiceProject_Service
+    FOREIGN KEY (ServiceId)
+    REFERENCES Service (ServiceId);
 
 -- End of file.
-

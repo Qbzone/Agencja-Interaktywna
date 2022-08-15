@@ -1,107 +1,103 @@
--- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2021-06-18 14:28:01.705
-
 -- foreign keys
-ALTER TABLE KlientFirma DROP CONSTRAINT KlientFirma_Firma;
+ALTER TABLE ClientCompany DROP CONSTRAINT ClientCompany_Company;
 
-ALTER TABLE KlientFirma DROP CONSTRAINT KlientFirma_Klient;
+ALTER TABLE ClientCompany DROP CONSTRAINT ClientCompany_Client;
 
-ALTER TABLE Klient DROP CONSTRAINT Klient_Osoba;
+ALTER TABLE Client DROP CONSTRAINT Client_Person;
 
-ALTER TABLE PakietUsluga DROP CONSTRAINT PakietUsluga_Pakiet;
+ALTER TABLE PackageService DROP CONSTRAINT PackageService_Package;
 
-ALTER TABLE PakietUsluga DROP CONSTRAINT PakietUsluga_Usluga;
+ALTER TABLE PackageService DROP CONSTRAINT PackageService_Service;
 
-ALTER TABLE PracownikKlient DROP CONSTRAINT PracownikKlient_Klient;
+ALTER TABLE EmployeeClient DROP CONSTRAINT EmployeeClient_Client;
 
-ALTER TABLE PracownikKlient DROP CONSTRAINT PracownikKlient_Pracownik;
+ALTER TABLE EmployeeClient DROP CONSTRAINT EmployeeClient_Employee;
 
-ALTER TABLE PracownikUmowa DROP CONSTRAINT PracownikUmowa_Pracownik;
+ALTER TABLE EmployeeContract DROP CONSTRAINT EmployeeContract_Employee;
 
-ALTER TABLE PracownikUmowa DROP CONSTRAINT PracownikUmowa_Umowa;
+ALTER TABLE EmployeeContract DROP CONSTRAINT EmployeeContract_Contract;
 
-ALTER TABLE Pracownik DROP CONSTRAINT Pracownik_Osoba;
+ALTER TABLE Employee DROP CONSTRAINT Employee_Person;
 
-ALTER TABLE Szef DROP CONSTRAINT Pracownik_Szef;
+ALTER TABLE Boss DROP CONSTRAINT Employee_Boss;
 
-ALTER TABLE ProjektPakiet DROP CONSTRAINT ProjektPakiet_Pakiet;
+ALTER TABLE ProjectPackage DROP CONSTRAINT ProjectPackage_Package;
 
-ALTER TABLE ProjektPakiet DROP CONSTRAINT ProjektPakiet_Projekt;
+ALTER TABLE ProjectPackage DROP CONSTRAINT ProjectPackage_Project;
 
-ALTER TABLE Projekt DROP CONSTRAINT Projekt_Firma;
+ALTER TABLE Project DROP CONSTRAINT Project_Company;
 
-ALTER TABLE Tester DROP CONSTRAINT Table_14_Pracownik;
+ALTER TABLE Tester DROP CONSTRAINT Employee_Tester;
 
-ALTER TABLE Pozycjoner DROP CONSTRAINT Table_15_Pracownik;
+ALTER TABLE Positioner DROP CONSTRAINT Employee_Positioner;
 
-ALTER TABLE Grafik DROP CONSTRAINT Table_16_Pracownik;
+ALTER TABLE Graphician DROP CONSTRAINT Employee_Graphician;
 
-ALTER TABLE Programista DROP CONSTRAINT Table_17_Pracownik;
+ALTER TABLE Programmer DROP CONSTRAINT Employee_Programmer;
 
-ALTER TABLE ProgramistaJezyk DROP CONSTRAINT Table_18_JezykProgramowania;
+ALTER TABLE ProgrammerLanguage DROP CONSTRAINT ProgrammerProgrammingLanguage_ProgrammingLanguage;
 
-ALTER TABLE ProgramistaJezyk DROP CONSTRAINT Table_18_Programista;
+ALTER TABLE ProgrammerLanguage DROP CONSTRAINT ProgrammerProgrammingLanguage_Programmer;
 
-ALTER TABLE PracownikZespol DROP CONSTRAINT Table_22_Pracownik;
+ALTER TABLE EmployeeTeam DROP CONSTRAINT EmployeeTeam_Team;
 
-ALTER TABLE PracownikZespol DROP CONSTRAINT Table_22_Zespol;
+ALTER TABLE EmployeeTeam DROP CONSTRAINT EmployeeTeam_Employee;
 
-ALTER TABLE ZespolProjekt DROP CONSTRAINT Table_24_Projekt;
+ALTER TABLE TeamProject DROP CONSTRAINT TeamProject_Team;
 
-ALTER TABLE ZespolProjekt DROP CONSTRAINT Table_24_Zespol;
+ALTER TABLE TeamProject DROP CONSTRAINT TeamProject_Project;
 
-ALTER TABLE UslugaProjekt DROP CONSTRAINT Table_26_Projekt;
+ALTER TABLE ServiceProject DROP CONSTRAINT ServiceProject_Project;
 
-ALTER TABLE UslugaProjekt DROP CONSTRAINT ZadanieProjekt_Usluga;
+ALTER TABLE ServiceProject DROP CONSTRAINT ServiceProject_Service;
 
 -- tables
-DROP TABLE Firma;
+DROP TABLE ClientCompany;
 
-DROP TABLE Grafik;
+DROP TABLE PackageService;
 
-DROP TABLE JezykProgramowania;
+DROP TABLE EmployeeClient;
 
-DROP TABLE Klient;
+DROP TABLE EmployeeContract;
 
-DROP TABLE KlientFirma;
+DROP TABLE EmployeeTeam;
 
-DROP TABLE Osoba;
+DROP TABLE ProgrammerLanguage;
 
-DROP TABLE Pakiet;
+DROP TABLE ProjectPackage;
 
-DROP TABLE PakietUsluga;
+DROP TABLE ServiceProject;
 
-DROP TABLE Pozycjoner;
+DROP TABLE TeamProject;
 
-DROP TABLE Pracownik;
+DROP TABLE ProgrammingLanguage;
 
-DROP TABLE PracownikKlient;
+DROP TABLE Company;
 
-DROP TABLE PracownikUmowa;
+DROP TABLE Package;
 
-DROP TABLE PracownikZespol;
+DROP TABLE Project;
 
-DROP TABLE Programista;
+DROP TABLE Contract;
 
-DROP TABLE ProgramistaJezyk;
+DROP TABLE Service;
 
-DROP TABLE Projekt;
+DROP TABLE Team;
 
-DROP TABLE ProjektPakiet;
+DROP TABLE Graphician;
 
-DROP TABLE Szef;
+DROP TABLE Positioner;
+
+DROP TABLE Programmer;
 
 DROP TABLE Tester;
 
-DROP TABLE Umowa;
+DROP TABLE Boss;
 
-DROP TABLE Usluga;
+DROP TABLE Client;
 
-DROP TABLE UslugaProjekt;
+DROP TABLE Employee;
 
-DROP TABLE Zespol;
-
-DROP TABLE ZespolProjekt;
+DROP TABLE Person;
 
 -- End of file.
-
