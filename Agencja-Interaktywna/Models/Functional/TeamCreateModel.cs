@@ -10,8 +10,8 @@ namespace Agencja_Interaktywna.Models.Functional
 {
     public class TeamCreateModel : IValidatableObject
     {
-        public Zespol Zespol { get; set; }
-        public Pracownik Pracownik { get; set; }
+        public Team Zespol { get; set; }
+        public Employee Pracownik { get; set; }
         public IList<SelectListItem> Pracowniks { get; set; }
 
         [NotMapped]

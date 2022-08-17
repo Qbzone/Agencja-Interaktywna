@@ -9,9 +9,9 @@ namespace Agencja_Interaktywna.Models.Functional
 {
     public class AssignCompanyModel : IValidatableObject
     {
-        public Klient Klient { get; set; }
+        public Client Klient { get; set; }
 
-        public Firma Firma { get; set; }
+        public Company Firma { get; set; }
 
         [NotMapped]
         public string ErrorHandler1 { get; set; }

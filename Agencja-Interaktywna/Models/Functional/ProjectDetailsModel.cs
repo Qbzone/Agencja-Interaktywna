@@ -7,8 +7,8 @@ namespace Agencja_Interaktywna.Models.Functional
 {
     public class ProjectDetailsModel
     {
-        public Projekt projekt { get; set; }
-        public List<UslugaProjekt> zadanies { get; set; }
+        public Project projekt { get; set; }
+        public List<ServiceProject> zadanies { get; set; }
 
     }
 }

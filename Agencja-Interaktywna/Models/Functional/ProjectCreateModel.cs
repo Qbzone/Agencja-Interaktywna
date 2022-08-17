@@ -10,12 +10,12 @@ namespace Agencja_Interaktywna.Models.Functional
 {
     public class ProjectCreateModel : IValidatableObject
     {
-        public Projekt projekt { get; set; }
-        public Zespol zespol { get; set; }
-        public Pakiet pakiet { get; set; }
-        public List<Firma> firmas { get; set; }
-        public List<Zespol> zespols { get; set; }
-        public List<Pakiet> pakiets { get; set; }
+        public Project projekt { get; set; }
+        public Team zespol { get; set; }
+        public Package pakiet { get; set; }
+        public List<Company> firmas { get; set; }
+        public List<Team> zespols { get; set; }
+        public List<Package> pakiets { get; set; }
 
         [NotMapped]
         public IFormFile FormFile { get; set; }

@@ -8,6 +8,6 @@ namespace Agencja_Interaktywna.Models
         public int IdPracownik { get; set; }
         public int TesterDoswiadczenie { get; set; }
 
-        public virtual Pracownik IdPracownikNavigation { get; set; }
+        public virtual Employee IdPracownikNavigation { get; set; }
     }
 }

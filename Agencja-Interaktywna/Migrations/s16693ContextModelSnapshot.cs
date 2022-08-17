@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Agencja_Interaktywna.Migrations
 {
-    [DbContext(typeof(s16693Context))]
+    [DbContext(typeof(Models.DbContext))]
     partial class s16693ContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Agencja_Interaktywna.Migrations
 {
-    [DbContext(typeof(s16693Context))]
+    [DbContext(typeof(Models.DbContext))]
     [Migration("20200817132308_Initial")]
     partial class Initial
     {

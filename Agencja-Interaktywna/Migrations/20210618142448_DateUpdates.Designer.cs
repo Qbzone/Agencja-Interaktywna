@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Agencja_Interaktywna.Migrations
 {
-    [DbContext(typeof(s16693Context))]
+    [DbContext(typeof(Models.DbContext))]
     [Migration("20210618142448_DateUpdates")]
     partial class DateUpdates
     {

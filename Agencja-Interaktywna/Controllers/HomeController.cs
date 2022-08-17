@@ -41,17 +41,17 @@ namespace Agencja_Interaktywna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(Osoba osoba)
+        public async Task<IActionResult> Register(Person osoba)
         {
             bool Status = false;
             string Message = "";
 
-            ModelState.Remove(nameof(Osoba.CzyEmailZweryfikowany));
-            ModelState.Remove(nameof(Osoba.KodAktywacyjny));
+            ModelState.Remove(nameof(Person.CzyEmailZweryfikowany));
+            ModelState.Remove(nameof(Person.KodAktywacyjny));
 
             if (ModelState.IsValid)
             {
-                s16693Context context1 = new s16693Context();
+                Models.DbContext context1 = new Models.DbContext();
                 {
                     var check = await context1.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
 
@@ -66,7 +66,7 @@ namespace Agencja_Interaktywna.Controllers
                         osoba.CzyEmailZweryfikowany = false;
                         osoba.Rola = "Klient";
 
-                        s16693Context context2 = new s16693Context();
+                        Models.DbContext context2 = new Models.DbContext();
                         {
                             context2.Osoba.Add(osoba);
                             await context2.SaveChangesAsync();
@@ -93,14 +93,14 @@ namespace Agencja_Interaktywna.Controllers
         public async Task<IActionResult> Verify(string id)
         {
             bool Status = false;
-            using (s16693Context dc = new s16693Context())
+            using (Models.DbContext dc = new Models.DbContext())
             {
                 var v = await dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
                     v.CzyEmailZweryfikowany = true;
-                    Klient klient = new Klient() 
+                    Client klient = new Client() 
                     {
                         IdKlient = v.IdOsoba,
                         Priorytet = "nie"
@@ -127,9 +127,9 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(OsobaLogin login)
+        public async Task<IActionResult> Login(PersonLogin login)
         {
-            using (s16693Context dc = new s16693Context())
+            using (Models.DbContext dc = new Models.DbContext())
             {
                 var v = await dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefaultAsync();
                 if (v != null)
@@ -153,7 +153,7 @@ namespace Agencja_Interaktywna.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return RedirectToAction("Index", "Klient");
+                                return base.RedirectToAction("Index", "Klient");
                             }
                             else if (v.Rola == "Szef")
                             {
@@ -168,7 +168,7 @@ namespace Agencja_Interaktywna.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return RedirectToAction("Index", "Szef");
+                                return base.RedirectToAction("Index", "Szef");
                             }
                             else if (v.Rola == "Programista")
                             {
@@ -183,7 +183,7 @@ namespace Agencja_Interaktywna.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return RedirectToAction("Index", "Programista");
+                                return base.RedirectToAction("Index", "Programista");
                             }
                             else if (v.Rola == "Grafik")
                             {
@@ -198,7 +198,7 @@ namespace Agencja_Interaktywna.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return RedirectToAction("Index", "Grafik");
+                                return base.RedirectToAction("Index", "Grafik");
                             }
                             else if (v.Rola == "Pozycjoner")
                             {
@@ -213,7 +213,7 @@ namespace Agencja_Interaktywna.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return RedirectToAction("Index", "Pozycjoner");
+                                return base.RedirectToAction("Index", "Pozycjoner");
                             }
                             else if (v.Rola == "Tester")
                             {
@@ -228,7 +228,7 @@ namespace Agencja_Interaktywna.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return RedirectToAction("Index", "Tester");
+                                return base.RedirectToAction("Index", "Tester");
                             }
 
                         }
@@ -262,12 +262,12 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Token(OsobaToken osoba)
+        public async Task<IActionResult> Token(PersonToken osoba)
         {
             bool Status = false;
             string Message = "";
 
-            using (s16693Context dc = new s16693Context())
+            using (Models.DbContext dc = new Models.DbContext())
             {
                 var v = await dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
 
@@ -292,32 +292,32 @@ namespace Agencja_Interaktywna.Controllers
         [HttpGet]
         public async Task<IActionResult> ForgottenPassword(string id)
         {
-            using (s16693Context dc = new s16693Context())
+            using (Models.DbContext dc = new Models.DbContext())
             {
                 var v = await dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
-                    OsobaForgottenPassword oFP = new OsobaForgottenPassword();
+                    PersonForgottenPassword oFP = new PersonForgottenPassword();
                     oFP.AdresEmail = v.AdresEmail;
-                    return View(oFP);
+                    return base.View(oFP);
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    return base.RedirectToAction("Index", "Home");
                 }
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgottenPassword(OsobaForgottenPassword oFP)
+        public async Task<IActionResult> ForgottenPassword(PersonForgottenPassword oFP)
         {
             var Message = "";
 
             if (ModelState.IsValid)
             {
-                using (s16693Context dc = new s16693Context())
+                using (Models.DbContext dc = new Models.DbContext())
                 {
                     var v = await dc.Osoba.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefaultAsync();
 
@@ -325,10 +325,10 @@ namespace Agencja_Interaktywna.Controllers
                     {
                         oFP.Haslo = Hash(oFP.Haslo);
                         v.Haslo = oFP.Haslo;
-                        dc.Update(v);
+                        dc.Update<Person>(v);
                         dc.SaveChanges();
                         Message = "Hasło zostało zaktualizowane pomyślnie";
-                        return RedirectToAction("Login", "Home");
+                        return base.RedirectToAction("Login", "Home");
                     }
                 }
             }
@@ -347,7 +347,7 @@ namespace Agencja_Interaktywna.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public void SendVerificationLink(Osoba osoba)
+        public void SendVerificationLink(Person osoba)
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
@@ -370,7 +370,7 @@ namespace Agencja_Interaktywna.Controllers
             SmtpServer.Send(mail);
         }
 
-        public void SendPasswordReset(Osoba osoba)
+        public void SendPasswordReset(Person osoba)
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");

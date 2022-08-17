@@ -7,8 +7,8 @@ namespace Agencja_Interaktywna.Models.Functional
 {
     public class MeetingCreateModel
     {
-        public PracownikKlient PracownikKlient { get; set; }
-        public List<Pracownik> Pracowniks { get; set; }
-        public List<Klient> Klients { get; set; }
+        public EmployeeClient PracownikKlient { get; set; }
+        public List<Employee> Pracowniks { get; set; }
+        public List<Client> Klients { get; set; }
     }
 }

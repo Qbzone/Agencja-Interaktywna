@@ -16,7 +16,7 @@ namespace Agencja_Interaktywna.Controllers
     [Authorize(Roles = "Tester")]
     public class TesterController : Controller
     {
-        private readonly s16693Context _s16693context = new s16693Context();
+        private readonly Models.DbContext _s16693context = new Models.DbContext();
         public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
@@ -27,7 +27,7 @@ namespace Agencja_Interaktywna.Controllers
                             .ThenInclude(o => o.IdPracownikNavigation)
                     .Where(x => x.PracownikZespol.Any(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
 
-            List<Projekt> projekts = new List<Projekt>();
+            List<Project> projekts = new List<Project>();
 
             foreach (var item in zespol)
             {
@@ -137,7 +137,7 @@ namespace Agencja_Interaktywna.Controllers
 
             var pakiet = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == id1 && x.DataZakonczeniaWspolpracy == null);
             var pU = await _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToListAsync();
-            List<Usluga> uslugas = new List<Usluga>();
+            List<Service> uslugas = new List<Service>();
             foreach (var item in pU)
             {
                 uslugas.Add(await _s16693context.Usluga.FirstOrDefaultAsync(x => x.IdUsluga == item.IdUsluga));
