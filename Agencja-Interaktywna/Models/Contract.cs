@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class Contract
     {
         public Contract()
         {
-            PracownikUmowa = new HashSet<EmployeeContract>();
+            EmployeeContract = new HashSet<EmployeeContract>();
         }
 
-        public int IdUmowa { get; set; }
-        public string RodzajUmowy { get; set; }
+        public int ContractId { get; set; }
+        public string ContractType { get; set; }
 
-        public virtual ICollection<EmployeeContract> PracownikUmowa { get; set; }
+        public virtual ICollection<EmployeeContract> EmployeeContract { get; set; }
     }
 }

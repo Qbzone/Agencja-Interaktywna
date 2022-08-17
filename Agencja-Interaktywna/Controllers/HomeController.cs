@@ -6,17 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Agencja_Interaktywna.Models;
+using Interactive_Agency.Models;
 using System.Net.Mail;
 using System.Net;
-using Agencja_Interaktywna.Models.Functional;
+using Interactive_Agency.Models.Functional;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
-namespace Agencja_Interaktywna.Controllers
+namespace Interactive_Agency.Controllers
 {
     [AllowAnonymous]
     public class HomeController : Controller
@@ -53,7 +53,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 Models.InteractiveAgencyContext context1 = new Models.InteractiveAgencyContext();
                 {
-                    var check = await context1.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
+                    var check = await context1.Person.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
 
                     if (check != null)
                     {
@@ -68,7 +68,7 @@ namespace Agencja_Interaktywna.Controllers
 
                         Models.InteractiveAgencyContext context2 = new Models.InteractiveAgencyContext();
                         {
-                            context2.Osoba.Add(osoba);
+                            context2.Person.Add(osoba);
                             await context2.SaveChangesAsync();
 
                             SendVerificationLink(osoba);
@@ -95,18 +95,18 @@ namespace Agencja_Interaktywna.Controllers
             bool Status = false;
             using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
-                var v = await dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
                     v.CzyEmailZweryfikowany = true;
                     Client klient = new Client() 
                     {
-                        IdKlient = v.IdOsoba,
-                        Priorytet = "nie"
+                        ClientId = v.IdOsoba,
+                        Priority = "nie"
                      };
 
-                    dc.Klient.Add(klient);
+                    dc.Client.Add(klient);
                     await dc.SaveChangesAsync();
                     Status = true;
                 }
@@ -131,7 +131,7 @@ namespace Agencja_Interaktywna.Controllers
         {
             using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
-                var v = await dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefaultAsync();
                 if (v != null)
                 {
                     if (v.CzyEmailZweryfikowany != false)
@@ -269,7 +269,7 @@ namespace Agencja_Interaktywna.Controllers
 
             using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
-                var v = await dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
@@ -294,7 +294,7 @@ namespace Agencja_Interaktywna.Controllers
         {
             using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
-                var v = await dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
@@ -319,7 +319,7 @@ namespace Agencja_Interaktywna.Controllers
             {
                 using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
                 {
-                    var v = await dc.Osoba.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefaultAsync();
+                    var v = await dc.Person.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefaultAsync();
 
                     if (v != null)
                     {

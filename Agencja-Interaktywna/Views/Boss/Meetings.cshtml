@@ -1,4 +1,4 @@
-﻿@model List<Agencja_Interaktywna.Models.EmployeeClient>
+﻿@model List<Interactive_Agency.Models.EmployeeClient>
 @{
     ViewData["Title"] = "Meetings";
 }
@@ -20,26 +20,26 @@
         {
             <tr>
                 <td>
-                    @item.DataRozpoczeciaSpotkania
+                    @item.MeetingStart
                 </td>
                 <td>
-                    @item.MiejsceSpotkania
+                    @item.MeetingLocation
 
                 </td>
                 <td>
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Imie
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko <br />
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Rola
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Imie
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Nazwisko <br />
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Rola
                 </td>
                 <td>
-                    @item.IdKlientNavigation.IdKlientNavigation.Imie
-                    @item.IdKlientNavigation.IdKlientNavigation.Nazwisko
+                    @item.ClientIdNavigation.ClientIdNavigation.Imie
+                    @item.ClientIdNavigation.ClientIdNavigation.Nazwisko
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-action="MeetingsEdit" asp-route-id1="@item.IdKlient" asp-route-id2="@item.IdPracownik" asp-route-data="@item.DataRozpoczeciaSpotkania">Edytuj</a>
+                    <a class="btn btn-primary" asp-action="MeetingsEdit" asp-route-id1="@item.ClientId" asp-route-id2="@item.EmployeeId" asp-route-data="@item.MeetingStart">Edytuj</a>
                 </td>
                 <td>
-                    <form asp-action="MeetingsDelete" asp-route-id1="@item.IdKlient" asp-route-id2="@item.IdPracownik" asp-route-data="@item.DataRozpoczeciaSpotkania" onclick="return confirm('Czy na pewno chcesz usunąć wybrane spotkanie?')">
+                    <form asp-action="MeetingsDelete" asp-route-id1="@item.ClientId" asp-route-id2="@item.EmployeeId" asp-route-data="@item.MeetingStart" onclick="return confirm('Czy na pewno chcesz usunąć wybrane spotkanie?')">
                         <input type="submit" value="Usuń" class="btn btn-primary" />
                     </form>
                 </td>

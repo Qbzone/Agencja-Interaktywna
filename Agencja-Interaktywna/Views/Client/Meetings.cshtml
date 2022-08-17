@@ -1,4 +1,4 @@
-﻿@model List<Agencja_Interaktywna.Models.EmployeeClient>
+﻿@model List<Interactive_Agency.Models.EmployeeClient>
 @{
     ViewData["Title"] = "Meetings";
 }
@@ -19,20 +19,20 @@
         {
             <tr>
                 <td>
-                    @item.DataRozpoczeciaSpotkania
+                    @item.MeetingStart
                 </td>
                 <td>
-                    @item.MiejsceSpotkania
+                    @item.MeetingLocation
 
                 </td>
                 <td>
-                    @item.IdKlientNavigation.IdKlientNavigation.Imie
-                    @item.IdKlientNavigation.IdKlientNavigation.Nazwisko
+                    @item.ClientIdNavigation.ClientIdNavigation.Imie
+                    @item.ClientIdNavigation.ClientIdNavigation.Nazwisko
                 </td>
                 <td>
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Imie
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko <br />
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Rola
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Imie
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Nazwisko <br />
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Rola
                 </td>
             </tr>
         }

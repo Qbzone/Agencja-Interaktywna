@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class Company
     {
         public Company()
         {
-            KlientFirma = new HashSet<ClientCompany>();
-            Projekt = new HashSet<Project>();
+            ClientCompany = new HashSet<ClientCompany>();
+            Project = new HashSet<Project>();
         }
 
-        public int IdFirma { get; set; }
-        public string Nazwa { get; set; }
+        public int CompanyId { get; set; }
+        public string CompanyName { get; set; }
 
-        public virtual ICollection<ClientCompany> KlientFirma { get; set; }
-        public virtual ICollection<Project> Projekt { get; set; }
+        public virtual ICollection<ClientCompany> ClientCompany { get; set; }
+        public virtual ICollection<Project> Project { get; set; }
     }
 }

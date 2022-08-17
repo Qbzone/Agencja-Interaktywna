@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class Graphician
     {
-        public int IdPracownik { get; set; }
-        public string Specjalizacja { get; set; }
+        public int EmployeeId { get; set; }
+        public string Specialization { get; set; }
 
-        public virtual Employee IdPracownikNavigation { get; set; }
+        public virtual Employee EmployeeIdNavigation { get; set; }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class Boss
     {
-        public int IdPracownik { get; set; }
+        public int EmployeeId { get; set; }
 
-        public virtual Employee IdPracownikNavigation { get; set; }
+        public virtual Employee EmployeeIdNavigation { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Agencja_Interaktywna.Models.Client
+﻿@model Interactive_Agency.Models.Client
 @{
     ViewData["Title"] = "Profile";
 }
@@ -11,19 +11,19 @@
         <form asp-action="Profile">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label class="control-label">Imię: @Html.DisplayFor(model => model.IdKlientNavigation.Imie)</label>
+                <label class="control-label">Imię: @Html.DisplayFor(model => model.ClientIdNavigation.Imie)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Nazwisko: @Html.DisplayFor(model => model.IdKlientNavigation.Nazwisko)</label>
+                <label class="control-label">Nazwisko: @Html.DisplayFor(model => model.ClientIdNavigation.Nazwisko)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Numer telefonu prywatny:  @Html.DisplayFor(model => model.IdKlientNavigation.NumerTelefonuPrywatny)</label>
+                <label class="control-label">Numer telefonu prywatny:  @Html.DisplayFor(model => model.ClientIdNavigation.NumerTelefonuPrywatny)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Numer telefonu służbowy:  @Html.DisplayFor(model => model.IdKlientNavigation.NumerTelefonuSluzbowego)</label>
+                <label class="control-label">Numer telefonu służbowy:  @Html.DisplayFor(model => model.ClientIdNavigation.NumerTelefonuSluzbowego)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Adres e-mail: @Html.DisplayFor(model => model.IdKlientNavigation.AdresEmail)</label>
+                <label class="control-label">Adres e-mail: @Html.DisplayFor(model => model.ClientIdNavigation.AdresEmail)</label>
             </div>
         </form>
     </div>

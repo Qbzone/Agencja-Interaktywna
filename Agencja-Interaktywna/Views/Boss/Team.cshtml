@@ -1,4 +1,4 @@
-﻿@model List<Agencja_Interaktywna.Models.EmployeeTeam>
+﻿@model List<Interactive_Agency.Models.EmployeeTeam>
 @{
     ViewData["Title"] = "Teams";
 }
@@ -18,13 +18,13 @@
         {
             <tr>
                 <td>
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Imie
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Imie
                 </td>
                 <td>
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Nazwisko
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Nazwisko
                 </td>
                 <td>
-                    @item.IdPracownikNavigation.IdPracownikNavigation.Rola
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Rola
                 </td>
 
             </tr>

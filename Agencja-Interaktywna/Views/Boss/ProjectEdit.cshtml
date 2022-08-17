@@ -1,4 +1,4 @@
-﻿@model Agencja_Interaktywna.Models.Functional.ProjectEditModel
+﻿@model Interactive_Agency.Models.Functional.ProjectEditModel
 @{
     ViewData["Title"] = "ProjectEdit";
 }
@@ -39,19 +39,19 @@
                     @{
                         foreach (var item in Model.firmas)
                         {
-                            <option value="@item.IdFirma">@item.Nazwa</option>
+                            <option value="@item.CompanyId">@item.CompanyName</option>
                         }
                     }
                 </select>
                 <span asp-validation-for="ErrorHandler2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.pakiet.IdPakiet" class="control-label">Pakiet</label>
-                <select class="form-control" asp-for="@Model.pakiet.IdPakiet">
+                <label asp-for="@Model.pakiet.PackageId" class="control-label">Pakiet</label>
+                <select class="form-control" asp-for="@Model.pakiet.PackageId">
                     @{
                         foreach (var item in Model.pakiets)
                         {
-                            <option value="@item.IdPakiet">@item.Nazwa</option>
+                            <option value="@item.PackageId">@item.PackageName</option>
                         }
                     }
                 </select>

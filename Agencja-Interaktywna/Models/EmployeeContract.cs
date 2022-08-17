@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class EmployeeContract
     {
-        public int IdPracownik { get; set; }
-        public int IdUmowa { get; set; }
-        public DateTime DataPodpisaniaUmowy { get; set; }
-        public DateTime DataZakonczeniaUmowy { get; set; }
+        public int EmployeeId { get; set; }
+        public int ContractId { get; set; }
+        public DateTime ContractStart { get; set; }
+        public DateTime ContractEnd { get; set; }
 
-        public virtual Employee IdPracownikNavigation { get; set; }
-        public virtual Contract IdUmowaNavigation { get; set; }
+        public virtual Employee EmployeeIdNavigation { get; set; }
+        public virtual Contract ContractIdNavigation { get; set; }
     }
 }

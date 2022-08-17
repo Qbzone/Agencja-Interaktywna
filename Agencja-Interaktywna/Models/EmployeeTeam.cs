@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class EmployeeTeam
     {
-        public int IdPracownik { get; set; }
-        public int IdZespol { get; set; }
-        public DateTime DataPrzypisaniaPracownika { get; set; }
-        public DateTime? DataWypisaniaPracownika { get; set; }
+        public int EmployeeId { get; set; }
+        public int TeamId { get; set; }
+        public DateTime AssignStart { get; set; }
+        public DateTime? AssignEnd { get; set; }
 
-        public virtual Employee IdPracownikNavigation { get; set; }
-        public virtual Team IdZespolNavigation { get; set; }
-
+        public virtual Employee EmployeeIdNavigation { get; set; }
+        public virtual Team TeamIdNavigation { get; set; }
     }
 }

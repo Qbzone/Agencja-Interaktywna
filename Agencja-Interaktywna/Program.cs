@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Agencja_Interaktywna
+namespace Interactive_Agency
 {
     public class Program
     {

@@ -2,45 +2,45 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class EmployeeClient : IValidatableObject
     {
-        public int? IdPracownik { get; set; }
-        public int? IdKlient { get; set; }
-        public DateTime? DataRozpoczeciaSpotkania { get; set; }
-        public DateTime? DataZakonczeniaSpotkania { get; set; }
-        public string MiejsceSpotkania { get; set; }
-        public virtual Client IdKlientNavigation { get; set; }
-        public virtual Employee IdPracownikNavigation { get; set; }
+        public int? EmployeeId { get; set; }
+        public int? ClientId { get; set; }
+        public DateTime? MeetingStart { get; set; }
+        public DateTime? MeetingEnd { get; set; }
+        public string MeetingLocation { get; set; }
+        public virtual Client ClientIdNavigation { get; set; }
+        public virtual Employee EmployeeIdNavigation { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
-            
-            if (IdPracownik == null)
+
+            if (EmployeeId == null)
             {
-                errors.Add(new ValidationResult($"Proszę wybrać pracownika.", new List<string> { nameof(IdPracownik) }));
+                errors.Add(new ValidationResult($"Please select an employee.", new List<string> { nameof(EmployeeId) }));
             }
-            if (IdKlient == null)
+            if (ClientId == null)
             {
-                errors.Add(new ValidationResult($"Proszę wybrać klienta.", new List<string> { nameof(IdKlient) }));
+                errors.Add(new ValidationResult($"Please select a client.", new List<string> { nameof(ClientId) }));
             }
-            if (MiejsceSpotkania == null)
+            if (MeetingLocation == null)
             {
-                errors.Add(new ValidationResult($"Proszę wprowadzić miejsce spotkania.", new List<string> { nameof(MiejsceSpotkania) }));
+                errors.Add(new ValidationResult($"Please enter the meeting place.", new List<string> { nameof(MeetingLocation) }));
             }
-            if (DataRozpoczeciaSpotkania == null)
+            if (MeetingStart == null)
             {
-                errors.Add(new ValidationResult($"Proszę wprowadzić datę rozpoczęcia spotkania.", new List<string> { nameof(DataRozpoczeciaSpotkania) }));
+                errors.Add(new ValidationResult($"Please enter the start date of the meeting.", new List<string> { nameof(MeetingStart) }));
             }
-            if (DataZakonczeniaSpotkania == null)
+            if (MeetingEnd == null)
             {
-                errors.Add(new ValidationResult($"Proszę wprowadzić datę zakończenia spotkania.", new List<string> { nameof(DataZakonczeniaSpotkania) }));
+                errors.Add(new ValidationResult($"Please enter the end date of the meeting.", new List<string> { nameof(MeetingEnd) }));
             }
-            if (DataRozpoczeciaSpotkania > DataZakonczeniaSpotkania)
+            if (MeetingStart > MeetingEnd)
             {
-                errors.Add(new ValidationResult($"Data rozpoczęcia spotkania musi być mniejsza niż data zakończenia spotkania.", new List<string> { nameof(DataRozpoczeciaSpotkania) }));
+                errors.Add(new ValidationResult($"The start date of the meeting must be earlier than the end date of the meeting.", new List<string> { nameof(MeetingStart) }));
             }
 
             return errors;

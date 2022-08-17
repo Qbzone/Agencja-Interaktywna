@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.WebPages.Html;
 
-namespace Agencja_Interaktywna.Models.Functional
+namespace Interactive_Agency.Models.Functional
 {
     public class TeamCreateModel : IValidatableObject
     {

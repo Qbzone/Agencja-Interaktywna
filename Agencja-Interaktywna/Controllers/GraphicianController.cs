@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Agencja_Interaktywna.Models;
-using Agencja_Interaktywna.Models.Functional;
+using Interactive_Agency.Models;
+using Interactive_Agency.Models.Functional;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Agencja_Interaktywna.Controllers
+namespace Interactive_Agency.Controllers
 {
     [Authorize(Roles = "Grafik")]
     public class GraphicianController : Controller
@@ -21,18 +21,18 @@ namespace Agencja_Interaktywna.Controllers
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
-            var zespol = await _s16693context.Zespol
+            var zespol = await _s16693context.Team
                     .Include(pz => pz.PracownikZespol)
-                        .ThenInclude(p => p.IdPracownikNavigation)
-                            .ThenInclude(o => o.IdPracownikNavigation)
-                    .Where(x => x.PracownikZespol.Any(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
+                        .ThenInclude(p => p.EmployeeIdNavigation)
+                            .ThenInclude(o => o.EmployeeIdNavigation)
+                    .Where(x => x.PracownikZespol.Any(e => e.EmployeeIdNavigation.EmployeeIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
 
             List<Project> projekts = new List<Project>();
 
             foreach (var item in zespol)
             {
 
-                projekts.AddRange(await _s16693context.Projekt
+                projekts.AddRange(await _s16693context.Project
                 .Include(zp => zp.ZespolProjekt)
                     .ThenInclude(z => z.IdZespolNavigation)
                 .Where(x => x.ZespolProjekt.Any(e => e.IdZespol == item.IdZespol && e.DataWypisaniaZespolu == null)).ToListAsync());
@@ -49,10 +49,10 @@ namespace Agencja_Interaktywna.Controllers
                 return NotFound();
             }
 
-            var project = await _s16693context.Projekt
+            var project = await _s16693context.Project
             .FirstOrDefaultAsync(e => e.IdProjekt == id);
 
-            var tasks = await _s16693context.UslugaProjekt
+            var tasks = await _s16693context.ServiceProject
                 .Include(p => p.IdProjektNavigation)
                 .Include(z => z.IdUslugaNavigation)
                 .Where(e => e.IdProjekt == id && e.IdUslugaNavigation.Klasyfikacja == HttpContext.User.FindFirst(ClaimTypes.Role).Value)
@@ -77,11 +77,11 @@ namespace Agencja_Interaktywna.Controllers
         [HttpGet]
         public async Task<IActionResult> Teams()
         {
-            var teams = await _s16693context.Zespol
+            var teams = await _s16693context.Team
                     .Include(pz => pz.PracownikZespol)
-                        .ThenInclude(p => p.IdPracownikNavigation)
-                            .ThenInclude(o => o.IdPracownikNavigation)
-                    .Where(x => x.PracownikZespol.Any(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
+                        .ThenInclude(p => p.EmployeeIdNavigation)
+                            .ThenInclude(o => o.EmployeeIdNavigation)
+                    .Where(x => x.PracownikZespol.Any(e => e.EmployeeIdNavigation.EmployeeIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
 
             return View(teams);
         }
@@ -91,27 +91,27 @@ namespace Agencja_Interaktywna.Controllers
         {
             if (view.Equals("Project"))
             {
-                var team = await _s16693context.ZespolProjekt
+                var team = await _s16693context.TeamProject
                     .Include(p => p.IdProjektNavigation)
                     .Include(z => z.IdZespolNavigation)
                     .FirstOrDefaultAsync(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
 
 
-                var members = await _s16693context.PracownikZespol
-                    .Include(z => z.IdZespolNavigation)
-                    .Include(p => p.IdPracownikNavigation)
-                        .ThenInclude(o => o.IdPracownikNavigation)
-                        .Where(x => x.IdZespol == team.IdZespol)
+                var members = await _s16693context.EmployeeTeam
+                    .Include(z => z.TeamIdNavigation)
+                    .Include(p => p.EmployeeIdNavigation)
+                        .ThenInclude(o => o.EmployeeIdNavigation)
+                        .Where(x => x.TeamId == team.IdZespol)
                         .ToListAsync();
                 return View(members);
             }
             else if (view.Equals("Teams"))
             {
-                var members = await _s16693context.PracownikZespol
-                    .Include(z => z.IdZespolNavigation)
-                    .Include(p => p.IdPracownikNavigation)
-                        .ThenInclude(o => o.IdPracownikNavigation)
-                        .Where(x => x.IdZespol == id)
+                var members = await _s16693context.EmployeeTeam
+                    .Include(z => z.TeamIdNavigation)
+                    .Include(p => p.EmployeeIdNavigation)
+                        .ThenInclude(o => o.EmployeeIdNavigation)
+                        .Where(x => x.TeamId == id)
                         .ToListAsync();
                 return View(members);
             }
@@ -129,18 +129,18 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             var fromDateAsDateTime = DateTime.Parse(data);
-            var uslugaprojekt = await _s16693context.UslugaProjekt.FirstOrDefaultAsync(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
+            var uslugaprojekt = await _s16693context.ServiceProject.FirstOrDefaultAsync(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
             if (uslugaprojekt == null)
             {
                 return NotFound();
             }
 
-            var pakiet = await _s16693context.ProjektPakiet.FirstOrDefaultAsync(x => x.IdProjekt == id1 && x.DataZakonczeniaWspolpracy == null);
-            var pU = await _s16693context.PakietUsluga.Where(x => x.IdPakiet == pakiet.IdPakiet).Include(u => u.IdUslugaNavigation).ToListAsync();
+            var pakiet = await _s16693context.ProjectPackage.FirstOrDefaultAsync(x => x.IdProjekt == id1 && x.DataZakonczeniaWspolpracy == null);
+            var pU = await _s16693context.PackageService.Where(x => x.PackageId == pakiet.IdPakiet).Include(u => u.ServiceIdNavigation).ToListAsync();
             List<Service> uslugas = new List<Service>();
             foreach (var item in pU)
             {
-                uslugas.Add(await _s16693context.Usluga.FirstOrDefaultAsync(x => x.IdUsluga == item.IdUsluga));
+                uslugas.Add(await _s16693context.Service.FirstOrDefaultAsync(x => x.IdUsluga == item.ServiceId));
             }
 
             var tEM = new TaskEditModel
@@ -201,7 +201,7 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             var fromDateAsDateTime = DateTime.Parse(data);
-            var uslugaprojekt = await _s16693context.UslugaProjekt
+            var uslugaprojekt = await _s16693context.ServiceProject
                 .Include(x => x.IdUslugaNavigation)
                 .FirstOrDefaultAsync(x => x.IdProjekt == id1 & x.IdUsluga == id2 & x.DataPrzypisaniaZadania == fromDateAsDateTime);
 
@@ -215,12 +215,12 @@ namespace Agencja_Interaktywna.Controllers
 
         public async Task<IActionResult> Meetings()
         {
-            var meetings = await _s16693context.PracownikKlient
-                .Include(k => k.IdKlientNavigation)
-                    .ThenInclude(o => o.IdKlientNavigation)
-                .Include(p => p.IdPracownikNavigation)
-                    .ThenInclude(po => po.IdPracownikNavigation)
-                .Where(e => e.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value).ToListAsync();
+            var meetings = await _s16693context.EmployeeClient
+                .Include(k => k.ClientIdNavigation)
+                    .ThenInclude(o => o.ClientIdNavigation)
+                .Include(p => p.EmployeeIdNavigation)
+                    .ThenInclude(po => po.EmployeeIdNavigation)
+                .Where(e => e.EmployeeIdNavigation.EmployeeIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value).ToListAsync();
 
             return View(meetings);
         }
@@ -229,11 +229,11 @@ namespace Agencja_Interaktywna.Controllers
 
         public async Task<IActionResult> Profile()
         {
-            var kl = await _s16693context.PracownikUmowa
-                .Include(p => p.IdPracownikNavigation)
-                    .ThenInclude(o => o.IdPracownikNavigation)
-                .Include( u=> u.IdUmowaNavigation)
-                .FirstOrDefaultAsync(i => i.IdPracownikNavigation.IdPracownikNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+            var kl = await _s16693context.EmployeeContract
+                .Include(p => p.EmployeeIdNavigation)
+                    .ThenInclude(o => o.EmployeeIdNavigation)
+                .Include( u=> u.ContractIdNavigation)
+                .FirstOrDefaultAsync(i => i.EmployeeIdNavigation.EmployeeIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
 
             if (kl == null)
             {

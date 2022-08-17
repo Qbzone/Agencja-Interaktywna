@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class ClientCompany
     {
-        public int IdKlient { get; set; }
-        public int IdFirma { get; set; }
+        public int ClientId { get; set; }
+        public int CompanyId { get; set; }
 
-        public virtual Company IdFirmaNavigation { get; set; }
-        public virtual Client IdKlientNavigation { get; set; }
+        public virtual Company CompanyIdNavigation { get; set; }
+        public virtual Client ClientIdNavigation { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Agencja_Interaktywna.Models.Functional
+namespace Interactive_Agency.Models.Functional
 {
     public class ProjectCreateModel : IValidatableObject
     {
@@ -45,7 +45,7 @@ namespace Agencja_Interaktywna.Models.Functional
             {
                 errors.Add(new ValidationResult($"Proszę wybrać klienta.", new List<string> { nameof(ErrorHandler2) }));
             }
-            if (pakiet.IdPakiet == null)
+            if (pakiet.PackageId == null)
             {
                 errors.Add(new ValidationResult($"Proszę wybrać pakiet.", new List<string> { nameof(ErrorHandler3) }));
             }

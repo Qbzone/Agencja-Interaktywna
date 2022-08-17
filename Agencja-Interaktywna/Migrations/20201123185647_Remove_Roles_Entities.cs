@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Agencja_Interaktywna.Migrations
+namespace Interactive_Agency.Migrations
 {
     public partial class Remove_Roles_Entities : Migration
     {

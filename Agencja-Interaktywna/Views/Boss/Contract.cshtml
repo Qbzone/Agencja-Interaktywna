@@ -1,4 +1,4 @@
-﻿@model List<Agencja_Interaktywna.Models.ProjectPackage>
+﻿@model List<Interactive_Agency.Models.ProjectPackage>
 @{ ViewData["Title"] = "Contact"; }
 
 <h1>Umowy dla projektu</h1>
@@ -24,13 +24,13 @@
                     @item.DataZakonczeniaWspolpracy
                 </td>
                 <td>
-                    @item.IdPakietNavigation.Nazwa
+                    @item.IdPakietNavigation.PackageName
                 </td>
                 <td>
-                    @item.IdPakietNavigation.Oplata
+                    @item.IdPakietNavigation.Fee
                 </td>
                 <td>
-                    @item.IdPakietNavigation.RodzajOplaty
+                    @item.IdPakietNavigation.FeeType
                 </td>
 
             </tr>

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Agencja_Interaktywna.Models.Functional
+namespace Interactive_Agency.Models.Functional
 {
     public class AssignCompanyModel : IValidatableObject
     {
@@ -20,7 +20,7 @@ namespace Agencja_Interaktywna.Models.Functional
         {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            if (Firma.Nazwa == null)
+            if (Firma.CompanyName == null)
             {
                 errors.Add(new ValidationResult($"Proszę wprowadzić nazwę firmy.", new List<string> { nameof(ErrorHandler1) }));
             }

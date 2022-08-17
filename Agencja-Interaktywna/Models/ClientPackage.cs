@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 
 #nullable disable
-
-namespace Agencja_Interaktywna.Models
+namespace Interactive_Agency.Models
 {
     public partial class ClientPackage
     {
-        public int IdKlient { get; set; }
-        public int IdPakiet { get; set; }
-        public DateTime? DataZakonczeniaWspolpracy { get; set; }
-        public DateTime DataRozpoczeciaWspolpracy { get; set; }
+        public int ClientId { get; set; }
+        public int PackageId { get; set; }
+        public DateTime? CooperationEnd { get; set; }
+        public DateTime CooperationStart { get; set; }
 
-        public virtual Client IdKlientNavigation { get; set; }
-        public virtual Package IdPakietNavigation { get; set; }
+        public virtual Client ClientIdNavigation { get; set; }
+        public virtual Package PackageIdNavigation { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Agencja_Interaktywna.Models.Functional.MeetingEditModel
+﻿@model Interactive_Agency.Models.Functional.MeetingEditModel
 @{
     ViewData["Title"] = "MeetingEdit";
 }
@@ -12,43 +12,43 @@
             <input type="hidden" asp-for="@Model.IdPracownik" />
             <input type="hidden" asp-for="@Model.DataRozpoczeciaSpotkania" />
             <div class="form-group">
-                <label asp-for="PracownikKlient.MiejsceSpotkania" class="control-label">Miejsce spotkania</label>
-                <input type="text" class="form-control" asp-for="@Model.PracownikKlient.MiejsceSpotkania" />
-                <span asp-validation-for="PracownikKlient.MiejsceSpotkania" class="text-danger"></span>
+                <label asp-for="PracownikKlient.MeetingLocation" class="control-label">Miejsce spotkania</label>
+                <input type="text" class="form-control" asp-for="@Model.PracownikKlient.MeetingLocation" />
+                <span asp-validation-for="PracownikKlient.MeetingLocation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PracownikKlient.DataRozpoczeciaSpotkania" class="control-label">Data rozpoczęcia spotkania</label>
-                <input type="datetime-local" class="form-control" asp-for="@Model.PracownikKlient.DataRozpoczeciaSpotkania" />
-                <span asp-validation-for="PracownikKlient.DataRozpoczeciaSpotkania" class="text-danger"></span>
+                <label asp-for="PracownikKlient.MeetingStart" class="control-label">Data rozpoczęcia spotkania</label>
+                <input type="datetime-local" class="form-control" asp-for="@Model.PracownikKlient.MeetingStart" />
+                <span asp-validation-for="PracownikKlient.MeetingStart" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PracownikKlient.DataZakonczeniaSpotkania" class="control-label">Data zakończenia spotkania</label>
-                <input type="datetime-local" class="form-control" asp-for="@Model.PracownikKlient.DataZakonczeniaSpotkania" />
-                <span asp-validation-for="PracownikKlient.DataZakonczeniaSpotkania" class="text-danger"></span>
+                <label asp-for="PracownikKlient.MeetingEnd" class="control-label">Data zakończenia spotkania</label>
+                <input type="datetime-local" class="form-control" asp-for="@Model.PracownikKlient.MeetingEnd" />
+                <span asp-validation-for="PracownikKlient.MeetingEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.PracownikKlient.IdKlient" class="control-label">Klient</label>
-                <select class="form-control" asp-for="@Model.PracownikKlient.IdKlient">
+                <label asp-for="@Model.PracownikKlient.ClientId" class="control-label">Klient</label>
+                <select class="form-control" asp-for="@Model.PracownikKlient.ClientId">
                     @{
                         foreach (var item in Model.klients)
                         {
-                            <option class="form-control" value="@item.IdKlient">@item.IdKlientNavigation.AdresEmail</option>
+                            <option class="form-control" value="@item.ClientId">@item.ClientIdNavigation.AdresEmail</option>
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.PracownikKlient.IdKlient" class="text-danger"></span>
+                <span asp-validation-for="@Model.PracownikKlient.ClientId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.PracownikKlient.IdPracownik" class="control-label">Pracownik</label>
-                <select class="form-control" asp-for="@Model.PracownikKlient.IdPracownik">
+                <label asp-for="@Model.PracownikKlient.EmployeeId" class="control-label">Pracownik</label>
+                <select class="form-control" asp-for="@Model.PracownikKlient.EmployeeId">
                     @{
                         foreach (var item in Model.pracowniks)
                         {
-                            <option class="form-control" value="@item.IdPracownik">@item.IdPracownikNavigation.AdresEmail</option>
+                            <option class="form-control" value="@item.EmployeeId">@item.EmployeeIdNavigation.AdresEmail</option>
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.PracownikKlient.IdPracownik" class="text-danger"></span>
+                <span asp-validation-for="@Model.PracownikKlient.EmployeeId" class="text-danger"></span>
             </div>
             <div class="btn-group">
                 <a asp-action="Meetings" class="btn btn-primary">Wstecz</a>

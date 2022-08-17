@@ -1,4 +1,4 @@
-﻿@model Agencja_Interaktywna.Models.Functional.AssignCompanyModel
+﻿@model Interactive_Agency.Models.Functional.AssignCompanyModel
 @{
     ViewData["Title"] = "AssignCompany";
 }
@@ -8,10 +8,10 @@
     <div class="col-md-4">
         <form method="post" asp-action="AssignCompany">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.Klient.IdKlient" />
+            <input type="hidden" asp-for="@Model.Klient.ClientId" />
             <div class="form-group">
-                <label asp-for="@Model.Firma.Nazwa" class="control-label">Nazwa firmy</label>
-                <input type="text" class="form-control" asp-for="@Model.Firma.Nazwa" />
+                <label asp-for="@Model.Firma.CompanyName" class="control-label">Nazwa firmy</label>
+                <input type="text" class="form-control" asp-for="@Model.Firma.CompanyName" />
                 <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="btn-group">
