@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Agencja_Interaktywna.Migrations
 {
-    [DbContext(typeof(Models.DbContext))]
+    [DbContext(typeof(Models.InteractiveAgencyContext))]
     [Migration("20201123185647_Remove_Roles_Entities")]
     partial class Remove_Roles_Entities
     {

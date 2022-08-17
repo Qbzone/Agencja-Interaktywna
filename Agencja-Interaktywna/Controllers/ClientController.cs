@@ -19,7 +19,7 @@ namespace Agencja_Interaktywna.Controllers
     [Authorize(Roles = "Klient")]
     public class ClientController : Controller
     {
-        private readonly Models.DbContext _s16693context = new Models.DbContext();
+        private readonly Models.InteractiveAgencyContext _s16693context = new Models.InteractiveAgencyContext();
         public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;

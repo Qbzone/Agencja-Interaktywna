@@ -16,7 +16,7 @@ namespace Agencja_Interaktywna.Controllers
     [Authorize(Roles = "Grafik")]
     public class GraphicianController : Controller
     {
-        private readonly Models.DbContext _s16693context = new Models.DbContext();
+        private readonly Models.InteractiveAgencyContext _s16693context = new Models.InteractiveAgencyContext();
         public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;

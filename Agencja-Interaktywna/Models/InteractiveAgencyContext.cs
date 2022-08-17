@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Agencja_Interaktywna.Models
 {
-    public partial class DbContext : DbContext
+    public partial class InteractiveAgencyContext : DbContext
     {
-        public DbContext()
+        public InteractiveAgencyContext()
         {
         }
 
-        public DbContext(DbContextOptions<DbContext> options)
+        public InteractiveAgencyContext(DbContextOptions<InteractiveAgencyContext> options)
             : base(options)
         {
         }

@@ -20,7 +20,7 @@ namespace Agencja_Interaktywna.Controllers
     [Authorize(Roles = "Szef")]
     public class BossController : Controller
     {
-        private readonly Models.DbContext _s16693context = new Models.DbContext();
+        private readonly Models.InteractiveAgencyContext _s16693context = new Models.InteractiveAgencyContext();
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;
 

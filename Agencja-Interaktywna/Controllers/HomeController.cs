@@ -51,7 +51,7 @@ namespace Agencja_Interaktywna.Controllers
 
             if (ModelState.IsValid)
             {
-                Models.DbContext context1 = new Models.DbContext();
+                Models.InteractiveAgencyContext context1 = new Models.InteractiveAgencyContext();
                 {
                     var check = await context1.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
 
@@ -66,7 +66,7 @@ namespace Agencja_Interaktywna.Controllers
                         osoba.CzyEmailZweryfikowany = false;
                         osoba.Rola = "Klient";
 
-                        Models.DbContext context2 = new Models.DbContext();
+                        Models.InteractiveAgencyContext context2 = new Models.InteractiveAgencyContext();
                         {
                             context2.Osoba.Add(osoba);
                             await context2.SaveChangesAsync();
@@ -93,7 +93,7 @@ namespace Agencja_Interaktywna.Controllers
         public async Task<IActionResult> Verify(string id)
         {
             bool Status = false;
-            using (Models.DbContext dc = new Models.DbContext())
+            using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
                 var v = await dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
 
@@ -129,7 +129,7 @@ namespace Agencja_Interaktywna.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(PersonLogin login)
         {
-            using (Models.DbContext dc = new Models.DbContext())
+            using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
                 var v = await dc.Osoba.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefaultAsync();
                 if (v != null)
@@ -267,7 +267,7 @@ namespace Agencja_Interaktywna.Controllers
             bool Status = false;
             string Message = "";
 
-            using (Models.DbContext dc = new Models.DbContext())
+            using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
                 var v = await dc.Osoba.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
 
@@ -292,7 +292,7 @@ namespace Agencja_Interaktywna.Controllers
         [HttpGet]
         public async Task<IActionResult> ForgottenPassword(string id)
         {
-            using (Models.DbContext dc = new Models.DbContext())
+            using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
                 var v = await dc.Osoba.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
 
@@ -317,7 +317,7 @@ namespace Agencja_Interaktywna.Controllers
 
             if (ModelState.IsValid)
             {
-                using (Models.DbContext dc = new Models.DbContext())
+                using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
                 {
                     var v = await dc.Osoba.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefaultAsync();
 
