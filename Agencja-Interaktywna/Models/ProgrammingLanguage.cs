@@ -7,12 +7,12 @@ namespace Interactive_Agency.Models
     {
         public ProgrammingLanguage()
         {
-            ProgramistaJezyk = new HashSet<ProgrammerLanguage>();
+            ProgrammerLanguage = new HashSet<ProgrammerLanguage>();
         }
 
-        public int IdJezyk { get; set; }
-        public string Nazwa { get; set; }
+        public int LanguageId { get; set; }
+        public string LanguageName { get; set; }
 
-        public virtual ICollection<ProgrammerLanguage> ProgramistaJezyk { get; set; }
+        public virtual ICollection<ProgrammerLanguage> ProgrammerLanguage { get; set; }
     }
 }

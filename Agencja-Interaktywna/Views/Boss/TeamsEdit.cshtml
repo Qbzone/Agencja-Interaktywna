@@ -9,29 +9,29 @@
     <div class="col-md-4">
         <form method="post" asp-action="TeamsEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.Zespol.IdZespol" />
+            <input type="hidden" asp-for="@Model.Team.TeamId" />
             <div class="form-group">
-                <label asp-for="Zespol.Nazwa" class="control-label">Nazwa</label>
-                <input type="text" class="form-control" asp-for="@Model.Zespol.Nazwa" />
+                <label asp-for="Team.TeamName" class="control-label">Nazwa</label>
+                <input type="text" class="form-control" asp-for="@Model.Team.TeamName" />
                 <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Pracowniks" class="control-label">Lista pracowników</label>
+                <label asp-for="@Model.Employees" class="control-label">Lista pracowników</label>
                 <table class="table">
-                    @for (int i = 0; i < Model.Pracowniks.Count; i++)
+                    @for (int i = 0; i < Model.Employees.Count; i++)
                     {
                         <tr>
                             <td>
-                                @Html.HiddenFor(x => Model.Pracowniks[i].Id)
-                                @Html.DisplayFor(it => Model.Pracowniks[i].Nazwa)
+                                @Html.HiddenFor(x => Model.Employees[i].Id)
+                                @Html.DisplayFor(it => Model.Employees[i].Name)
                             </td>
                             <td>
-                                @Html.CheckBoxFor(it => Model.Pracowniks[i].IsChecked, new { Style = "vertical-align: 3px" })
+                                @Html.CheckBoxFor(it => Model.Employees[i].IsChecked, new { Style = "vertical-align: 3px" })
                             </td>
                         </tr>
                     }
                 </table>
-                <span asp-validation-for="Pracowniks" class="text-danger"></span>
+                <span asp-validation-for="Employees" class="text-danger"></span>
             </div>
             <div class="btn-group">
                 <a asp-action="Teams" class="btn btn-primary">Wstecz</a>

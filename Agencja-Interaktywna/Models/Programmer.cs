@@ -7,13 +7,13 @@ namespace Interactive_Agency.Models
     {
         public Programmer()
         {
-            ProgramistaJezyk = new HashSet<ProgrammerLanguage>();
+            ProgrammerLanguage = new HashSet<ProgrammerLanguage>();
         }
 
-        public int IdPracownik { get; set; }
-        public string PoziomZaawansowania { get; set; }
+        public int EmployeeId { get; set; }
+        public string AdvancementLevel { get; set; }
 
-        public virtual Employee IdPracownikNavigation { get; set; }
-        public virtual ICollection<ProgrammerLanguage> ProgramistaJezyk { get; set; }
+        public virtual Employee EmployeeIdkNavigation { get; set; }
+        public virtual ICollection<ProgrammerLanguage> ProgrammerLanguage { get; set; }
     }
 }

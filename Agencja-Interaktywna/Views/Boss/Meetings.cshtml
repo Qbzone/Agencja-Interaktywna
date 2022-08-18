@@ -27,13 +27,13 @@
 
                 </td>
                 <td>
-                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Imie
-                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Nazwisko <br />
-                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Rola
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.FirstName
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.LastName <br />
+                    @item.EmployeeIdNavigation.EmployeeIdNavigation.Role
                 </td>
                 <td>
-                    @item.ClientIdNavigation.ClientIdNavigation.Imie
-                    @item.ClientIdNavigation.ClientIdNavigation.Nazwisko
+                    @item.ClientIdNavigation.ClientIdNavigation.FirstName
+                    @item.ClientIdNavigation.ClientIdNavigation.LastName
                 </td>
                 <td>
                     <a class="btn btn-primary" asp-action="MeetingsEdit" asp-route-id1="@item.ClientId" asp-route-id2="@item.EmployeeId" asp-route-data="@item.MeetingStart">Edytuj</a>

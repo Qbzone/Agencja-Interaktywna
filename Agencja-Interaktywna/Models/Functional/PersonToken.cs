@@ -8,8 +8,8 @@ namespace Interactive_Agency.Models.Functional
 {
     public class PersonToken
     {
-        [Display(Name = "Adres E-mail")]
-        [Required(ErrorMessage = "Proszę podać swój adres e-mail")]
-        public string AdresEmail { get; set; }
+        [Display(Name = "EmailAddress")]
+        [Required(ErrorMessage = "Please enter your email address.")]
+        public string EmailAddress { get; set; }
     }
 }

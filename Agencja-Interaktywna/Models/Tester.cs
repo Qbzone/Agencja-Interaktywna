@@ -5,9 +5,9 @@ namespace Interactive_Agency.Models
 {
     public partial class Tester
     {
-        public int IdPracownik { get; set; }
-        public int TesterDoswiadczenie { get; set; }
+        public int EmploueeId { get; set; }
+        public int TestingExperience { get; set; }
 
-        public virtual Employee IdPracownikNavigation { get; set; }
+        public virtual Employee EmployeeIdNavigation { get; set; }
     }
 }

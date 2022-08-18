@@ -9,16 +9,16 @@ namespace Interactive_Agency.Models
     {
         public Team()
         {
-            PracownikZespol = new HashSet<EmployeeTeam>();
-            ZespolProjekt = new HashSet<TeamProject>();
+            EmployeeTeam = new HashSet<EmployeeTeam>();
+            TeamProject = new HashSet<TeamProject>();
         }
 
-        public int? IdZespol { get; set; }
-        public string Nazwa { get; set; }
+        public int? TeamId { get; set; }
+        public string TeamName { get; set; }
         [NotMapped]
-        public string Widok { get; set; }
+        public string View { get; set; }
 
-        public virtual ICollection<EmployeeTeam> PracownikZespol { get; set; }
-        public virtual ICollection<TeamProject> ZespolProjekt { get; set; }
+        public virtual ICollection<EmployeeTeam> EmployeeTeam { get; set; }
+        public virtual ICollection<TeamProject> TeamProject { get; set; }
     }
 }

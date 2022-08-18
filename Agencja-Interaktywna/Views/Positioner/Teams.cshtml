@@ -14,13 +14,13 @@
     <tbody>
         @foreach (var item in @Model)
         {
-            item.Widok = "Teams";
+            item.View = "Teams";
             <tr>
                 <td>
-                    @item.Nazwa
+                    @item.TeamName
                 </td>
                 <td>
-                    <a asp-action="Team" asp-route-id="@item.IdZespol" asp-route-view="@item.Widok" class="btn btn-primary">Wyświetl zespół</a>
+                    <a asp-action="Team" asp-route-id="@item.TeamId" asp-route-view="@item.View" class="btn btn-primary">Wyświetl zespół</a>
                 </td>
             </tr>
         }

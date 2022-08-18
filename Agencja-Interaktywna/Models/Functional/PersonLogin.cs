@@ -8,10 +8,10 @@ namespace Interactive_Agency.Models.Functional
 {
     public class PersonLogin
     {
-        [Display(Name = "Adres E-mail")]
-        [Required(ErrorMessage = "Proszę podać swój adres e-mail")]
-        public string AdresEmail { get; set; }
-        [Required(ErrorMessage = "Proszę wprowadzić hasło")]
-        public string Haslo { get; set; }
+        [Display(Name = "Email Address")]
+        [Required(ErrorMessage = "Please enter your email address.")]
+        public string EmailAddress { get; set; }
+        [Required(ErrorMessage = "Please enter your password.")]
+        public string Password { get; set; }
     }
 }

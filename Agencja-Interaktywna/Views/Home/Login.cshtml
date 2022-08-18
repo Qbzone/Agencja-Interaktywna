@@ -12,14 +12,14 @@
         <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="AdresEmail" class="control-label">Adres E-mail</label>
-                <input asp-for="AdresEmail" class="form-control" />
-                <span asp-validation-for="AdresEmail" class="text-danger"></span>
+                <label asp-for="EmailAddress" class="control-label">Adres E-mail</label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Haslo" class="control-label">Hasło</label>
-                <input asp-for="Haslo" class="form-control" type="password" />
-                <span asp-validation-for="Haslo" class="text-danger"></span>
+                <label asp-for="Password" class="control-label">Hasło</label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <a asp-action="Token">Zapomniałeś hasła? Kliknij tutaj!</a>

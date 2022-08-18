@@ -9,14 +9,14 @@ namespace Interactive_Agency.Models.Functional
 {
     public class ProjectEditModel : IValidatableObject
     {
-        public Project projekt { get; set; }
-        public Team zespol { get; set; }
-        public int IdZespol { get; set; }
-        public Package pakiet { get; set; }
-        public int IdPakiet { get; set; }
-        public List<Company> firmas { get; set; }
-        public List<Team> zespols { get; set; }
-        public List<Package> pakiets { get; set; }
+        public Project Project { get; set; }
+        public Team Team { get; set; }
+        public int TeamId { get; set; }
+        public Package Package { get; set; }
+        public int PackageId { get; set; }
+        public List<Company> Companies { get; set; }
+        public List<Team> Teams { get; set; }
+        public List<Package> Packages { get; set; }
 
         [NotMapped]
         public string ErrorHandler1 { get; set; }
@@ -27,26 +27,25 @@ namespace Interactive_Agency.Models.Functional
         [NotMapped]
         public string ErrorHandler4 { get; set; }
 
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            if (projekt.Nazwa == null)
+            if (Project.ProjectName == null)
             {
-                errors.Add(new ValidationResult($"Proszę wprowadzić nazwę projektu.", new List<string> { nameof(ErrorHandler1) }));
+                errors.Add(new ValidationResult($"Please enter the name of the project.", new List<string> { nameof(ErrorHandler1) }));
             }
-            if (projekt.IdFirma == null)
+            if (Project.CompanyId == null)
             {
-                errors.Add(new ValidationResult($"Proszę wybrać klienta.", new List<string> { nameof(ErrorHandler2) }));
+                errors.Add(new ValidationResult($"Please select a customer.", new List<string> { nameof(ErrorHandler2) }));
             }
-            if (pakiet.PackageId == null)
+            if (Package.PackageId == null)
             {
-                errors.Add(new ValidationResult($"Proszę wybrać pakiet.", new List<string> { nameof(ErrorHandler3) }));
+                errors.Add(new ValidationResult($"Please select a package.", new List<string> { nameof(ErrorHandler3) }));
             }
-            if (zespol.IdZespol == null)
+            if (Team.TeamId == null)
             {
-                errors.Add(new ValidationResult($"Proszę wybrać zespół.", new List<string> { nameof(ErrorHandler4) }));
+                errors.Add(new ValidationResult($"Please select a team.", new List<string> { nameof(ErrorHandler4) }));
             }
 
             return errors;

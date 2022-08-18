@@ -48,7 +48,7 @@ namespace Interactive_Agency.Models
             modelBuilder.Entity<Company>(entity =>
             {
                 entity.HasKey(e => e.CompanyId)
-                    .HasName("Firma_pk");
+                    .HasName("Company_pk");
 
                 entity.Property(e => e.CompanyName)
                     .IsRequired()
@@ -58,7 +58,7 @@ namespace Interactive_Agency.Models
             modelBuilder.Entity<Graphician>(entity =>
             {
                 entity.HasKey(e => e.EmployeeId)
-                    .HasName("Grafik_pk");
+                    .HasName("Graphician_pk");
 
                 entity.Property(e => e.EmployeeId).ValueGeneratedNever();
 
@@ -70,15 +70,15 @@ namespace Interactive_Agency.Models
                     .WithOne(p => p.Graphician)
                     .HasForeignKey<Graphician>(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_16_Pracownik");
+                    .HasConstraintName("Employee_Graphician");
             });
 
             modelBuilder.Entity<ProgrammingLanguage>(entity =>
             {
-                entity.HasKey(e => e.IdJezyk)
-                    .HasName("JezykProgramowania_pk");
+                entity.HasKey(e => e.LanguageId)
+                    .HasName("ProgrammingLanguage_pk");
 
-                entity.Property(e => e.Nazwa)
+                entity.Property(e => e.LanguageName)
                     .IsRequired()
                     .HasMaxLength(50);
             });
@@ -86,7 +86,7 @@ namespace Interactive_Agency.Models
             modelBuilder.Entity<Client>(entity =>
             {
                 entity.HasKey(e => e.ClientId)
-                    .HasName("Klient_pk");
+                    .HasName("Client_pk");
 
                 entity.Property(e => e.ClientId).ValueGeneratedNever();
 
@@ -95,61 +95,61 @@ namespace Interactive_Agency.Models
                     .HasMaxLength(50);
 
                 entity.HasOne(d => d.ClientIdNavigation)
-                    .WithOne(p => p.Klient)
+                    .WithOne(p => p.Client)
                     .HasForeignKey<Client>(d => d.ClientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Klient_Osoba");
+                    .HasConstraintName("Client_Person");
             });
 
             modelBuilder.Entity<ClientCompany>(entity =>
             {
                 entity.HasKey(e => new { e.ClientId, e.CompanyId })
-                    .HasName("KlientFirma_pk");
+                    .HasName("ClientCompany_pk");
 
                 entity.HasOne(d => d.CompanyIdNavigation)
                     .WithMany(p => p.ClientCompany)
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("KlientFirma_Firma");
+                    .HasConstraintName("ClientCompany_Company");
 
                 entity.HasOne(d => d.ClientIdNavigation)
                     .WithMany(p => p.ClientCompany)
                     .HasForeignKey(d => d.ClientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("KlientFirma_Klient");
+                    .HasConstraintName("ClientCompany_Client");
             });
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.HasKey(e => e.IdOsoba)
-                    .HasName("Osoba_pk");
+                entity.HasKey(e => e.PersonId)
+                    .HasName("Person_pk");
 
-                entity.Property(e => e.AdresEmail)
+                entity.Property(e => e.EmailAddress)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Haslo).IsRequired();
+                entity.Property(e => e.Password).IsRequired();
 
-                entity.Property(e => e.Imie)
+                entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(25);
 
-                entity.Property(e => e.Nazwisko)
+                entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.NumerTelefonuPrywatny)
+                entity.Property(e => e.PrivatePhoneNumber)
                     .HasMaxLength(9)
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.NumerTelefonuSluzbowego)
+                entity.Property(e => e.BusinessPhoneNumber)
                     .IsRequired()
                     .HasMaxLength(9)
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.Rola)
+                entity.Property(e => e.Role)
                     .IsRequired()
                     .HasMaxLength(25);
             });
@@ -157,7 +157,7 @@ namespace Interactive_Agency.Models
             modelBuilder.Entity<Package>(entity =>
             {
                 entity.HasKey(e => e.PackageId)
-                    .HasName("Pakiet_pk");
+                    .HasName("Package_pk");
 
                 entity.Property(e => e.PackageName)
                     .IsRequired()
@@ -171,43 +171,43 @@ namespace Interactive_Agency.Models
             modelBuilder.Entity<PackageService>(entity =>
             {
                 entity.HasKey(e => new { e.PackageId, e.ServiceId })
-                    .HasName("PakietUsluga_pk");
+                    .HasName("PackageService_pk");
 
                 entity.HasOne(d => d.PackageIdNavigation)
                     .WithMany(p => p.PackageService)
                     .HasForeignKey(d => d.PackageId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PakietUsluga_Pakiet");
+                    .HasConstraintName("PackageService_Package");
 
                 entity.HasOne(d => d.ServiceIdNavigation)
-                    .WithMany(p => p.PakietUsluga)
+                    .WithMany(p => p.PackageService)
                     .HasForeignKey(d => d.ServiceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PakietUsluga_Usluga");
+                    .HasConstraintName("PackageService_Service");
             });
 
             modelBuilder.Entity<Positioner>(entity =>
             {
-                entity.HasKey(e => e.IdPracownik)
-                    .HasName("Pozycjoner_pk");
+                entity.HasKey(e => e.EmployeeId)
+                    .HasName("Positioner_pk");
 
-                entity.Property(e => e.IdPracownik).ValueGeneratedNever();
+                entity.Property(e => e.EmployeeId).ValueGeneratedNever();
 
-                entity.Property(e => e.PelnionaFunkcja)
+                entity.Property(e => e.FullFunction)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.IdPracownikNavigation)
+                entity.HasOne(d => d.EmployeeIdNavigation)
                     .WithOne(p => p.Positioner)
-                    .HasForeignKey<Positioner>(d => d.IdPracownik)
+                    .HasForeignKey<Positioner>(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_15_Pracownik");
+                    .HasConstraintName("Employee_Positioner");
             });
 
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.HasKey(e => e.EmployeeId)
-                    .HasName("Pracownik_pk");
+                    .HasName("Employee_pk");
 
                 entity.Property(e => e.EmployeeId).ValueGeneratedNever();
 
@@ -222,16 +222,16 @@ namespace Interactive_Agency.Models
                     .IsFixedLength();
 
                 entity.HasOne(d => d.EmployeeIdNavigation)
-                    .WithOne(p => p.Pracownik)
+                    .WithOne(p => p.Employee)
                     .HasForeignKey<Employee>(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Pracownik_Osoba");
+                    .HasConstraintName("Employee_Person");
             });
 
             modelBuilder.Entity<EmployeeClient>(entity =>
             {
                 entity.HasKey(e => new { e.ClientId, e.EmployeeId, e.MeetingStart })
-                    .HasName("PracownikKlient_pk");
+                    .HasName("EmployeeClient_pk");
 
                 entity.Property(e => e.MeetingStart).HasColumnType("datetime");
 
@@ -245,19 +245,19 @@ namespace Interactive_Agency.Models
                     .WithMany(p => p.EmployeeClient)
                     .HasForeignKey(d => d.ClientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PracownikKlient_Klient");
+                    .HasConstraintName("EmployeeClient_Client");
 
                 entity.HasOne(d => d.EmployeeIdNavigation)
                     .WithMany(p => p.EmployeeClient)
                     .HasForeignKey(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PracownikKlient_Pracownik");
+                    .HasConstraintName("EmployeeClient_Employee");
             });
 
             modelBuilder.Entity<EmployeeContract>(entity =>
             {
                 entity.HasKey(e => new { e.EmployeeId, e.ContractId, e.ContractStart })
-                    .HasName("PracownikUmowa_pk");
+                    .HasName("EmployeeContract_pk");
 
                 entity.Property(e => e.ContractStart).HasColumnType("datetime");
 
@@ -267,19 +267,19 @@ namespace Interactive_Agency.Models
                     .WithMany(p => p.EmployeeContract)
                     .HasForeignKey(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PracownikUmowa_Pracownik");
+                    .HasConstraintName("EmployeeContract_Employee");
 
                 entity.HasOne(d => d.ContractIdNavigation)
                     .WithMany(p => p.EmployeeContract)
                     .HasForeignKey(d => d.ContractId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PracownikUmowa_Umowa");
+                    .HasConstraintName("EmployeeContract_Contract");
             });
 
             modelBuilder.Entity<EmployeeTeam>(entity =>
             {
                 entity.HasKey(e => new { e.EmployeeId, e.TeamId, e.AssignStart })
-                    .HasName("PracownikZespol_pk");
+                    .HasName("EmployeeTeam_pk");
 
                 entity.Property(e => e.AssignStart).HasColumnType("datetime");
 
@@ -289,97 +289,97 @@ namespace Interactive_Agency.Models
                     .WithMany(p => p.EmployeeTeam)
                     .HasForeignKey(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_22_Pracownik");
+                    .HasConstraintName("EmployeeTeam_Employee");
 
                 entity.HasOne(d => d.TeamIdNavigation)
-                    .WithMany(p => p.PracownikZespol)
+                    .WithMany(p => p.EmployeeTeam)
                     .HasForeignKey(d => d.TeamId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_22_Zespol");
+                    .HasConstraintName("EmployeeTeam_Team");
             });
 
             modelBuilder.Entity<Programmer>(entity =>
             {
-                entity.HasKey(e => e.IdPracownik)
-                    .HasName("Programista_pk");
+                entity.HasKey(e => e.EmployeeId)
+                    .HasName("Programmer_pk");
 
-                entity.Property(e => e.IdPracownik).ValueGeneratedNever();
+                entity.Property(e => e.EmployeeId).ValueGeneratedNever();
 
-                entity.Property(e => e.PoziomZaawansowania)
+                entity.Property(e => e.AdvancementLevel)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.IdPracownikNavigation)
+                entity.HasOne(d => d.EmployeeIdkNavigation)
                     .WithOne(p => p.Programmer)
-                    .HasForeignKey<Programmer>(d => d.IdPracownik)
+                    .HasForeignKey<Programmer>(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_17_Pracownik");
+                    .HasConstraintName("Employee_Programmer");
             });
 
             modelBuilder.Entity<ProgrammerLanguage>(entity =>
             {
-                entity.HasKey(e => new { e.IdPracownik, e.IdJezyk })
-                    .HasName("ProgramistaJezyk_pk");
+                entity.HasKey(e => new { e.EmployeeId, e.LanguageId })
+                    .HasName("ProgrammerLanguage_pk");
 
-                entity.HasOne(d => d.IdJezykNavigation)
-                    .WithMany(p => p.ProgramistaJezyk)
-                    .HasForeignKey(d => d.IdJezyk)
+                entity.HasOne(d => d.LanguageIdNavigation)
+                    .WithMany(p => p.ProgrammerLanguage)
+                    .HasForeignKey(d => d.LanguageId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_18_JezykProgramowania");
+                    .HasConstraintName("ProgrammerProgrammingLanguage_ProgrammingLanguage");
 
-                entity.HasOne(d => d.IdPracownikNavigation)
-                    .WithMany(p => p.ProgramistaJezyk)
-                    .HasForeignKey(d => d.IdPracownik)
+                entity.HasOne(d => d.EmployeeIdNavigation)
+                    .WithMany(p => p.ProgrammerLanguage)
+                    .HasForeignKey(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_18_Programista");
+                    .HasConstraintName("ProgrammerProgrammingLanguage_Programmer");
             });
 
             modelBuilder.Entity<Project>(entity =>
             {
-                entity.HasKey(e => e.IdProjekt)
-                    .HasName("Projekt_pk");
+                entity.HasKey(e => e.ProjectId)
+                    .HasName("Project_pk");
 
-                entity.Property(e => e.Nazwa)
+                entity.Property(e => e.ProjectName)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Logo)
+                entity.Property(e => e.ProjectLogo)
                     .IsRequired()
                     .HasMaxLength(255);
 
-                entity.HasOne(d => d.IdFirmaNavigation)
+                entity.HasOne(d => d.CompanyIdNavigation)
                     .WithMany(p => p.Project)
-                    .HasForeignKey(d => d.IdFirma)
+                    .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Projekt_Firma");
+                    .HasConstraintName("Project_Company");
             });
 
             modelBuilder.Entity<ProjectPackage>(entity =>
             {
-                entity.HasKey(e => new { e.IdPakiet, e.IdProjekt, e.DataRozpoczeciaWspolpracy })
-                    .HasName("ProjektPakiet_pk");
+                entity.HasKey(e => new { e.PackageId, e.ProjectId, e.DealStart })
+                    .HasName("ProjectPackage_pk");
 
-                entity.Property(e => e.DataRozpoczeciaWspolpracy).HasColumnType("datetime");
+                entity.Property(e => e.DealStart).HasColumnType("datetime");
 
-                entity.Property(e => e.DataZakonczeniaWspolpracy).HasColumnType("datetime");
+                entity.Property(e => e.DealEnd).HasColumnType("datetime");
 
-                entity.HasOne(d => d.IdPakietNavigation)
+                entity.HasOne(d => d.PackageIdNavigation)
                     .WithMany(p => p.ProjectPackage)
-                    .HasForeignKey(d => d.IdPakiet)
+                    .HasForeignKey(d => d.PackageId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("ProjektPakiet_Pakiet");
+                    .HasConstraintName("ProjectPackage_Package");
 
-                entity.HasOne(d => d.IdProjektNavigation)
-                    .WithMany(p => p.ProjektPakiet)
-                    .HasForeignKey(d => d.IdProjekt)
+                entity.HasOne(d => d.ProjectIdNavigation)
+                    .WithMany(p => p.ProjectPackage)
+                    .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("ProjektPakiet_Projekt");
+                    .HasConstraintName("ProjectPackage_Project");
             });
 
             modelBuilder.Entity<Boss>(entity =>
             {
                 entity.HasKey(e => e.EmployeeId)
-                    .HasName("Szef_pk");
+                    .HasName("Boss_pk");
 
                 entity.Property(e => e.EmployeeId).ValueGeneratedNever();
 
@@ -387,27 +387,27 @@ namespace Interactive_Agency.Models
                     .WithOne(p => p.Boss)
                     .HasForeignKey<Boss>(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Pracownik_Szef");
+                    .HasConstraintName("Employee_Boss");
             });
 
             modelBuilder.Entity<Tester>(entity =>
             {
-                entity.HasKey(e => e.IdPracownik)
+                entity.HasKey(e => e.EmploueeId)
                     .HasName("Tester_pk");
 
-                entity.Property(e => e.IdPracownik).ValueGeneratedNever();
+                entity.Property(e => e.EmploueeId).ValueGeneratedNever();
 
-                entity.HasOne(d => d.IdPracownikNavigation)
+                entity.HasOne(d => d.EmployeeIdNavigation)
                     .WithOne(p => p.Tester)
-                    .HasForeignKey<Tester>(d => d.IdPracownik)
+                    .HasForeignKey<Tester>(d => d.EmploueeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_14_Pracownik");
+                    .HasConstraintName("Employee_Tester");
             });
 
             modelBuilder.Entity<Contract>(entity =>
             {
                 entity.HasKey(e => e.ContractId)
-                    .HasName("Umowa_pk");
+                    .HasName("Contract_pk");
 
                 entity.Property(e => e.ContractType)
                     .IsRequired()
@@ -416,76 +416,76 @@ namespace Interactive_Agency.Models
 
             modelBuilder.Entity<Service>(entity =>
             {
-                entity.HasKey(e => e.IdUsluga)
-                    .HasName("Usluga_pk");
+                entity.HasKey(e => e.ServiceId)
+                    .HasName("Service_pk");
 
-                entity.Property(e => e.Nazwa)
+                entity.Property(e => e.ServiceName)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Klasyfikacja)
+                entity.Property(e => e.Classification)
                     .IsRequired()
                     .HasMaxLength(50);
             });
 
             modelBuilder.Entity<ServiceProject>(entity =>
             {
-                entity.HasKey(e => new { e.IdProjekt, e.IdUsluga, e.DataPrzypisaniaZadania })
-                    .HasName("ZadanieProjekt_pk");
+                entity.HasKey(e => new { e.ProjectId, e.ServiceId, e.AssignStart })
+                    .HasName("ServiceProject_pk");
 
-                entity.Property(e => e.DataPrzypisaniaZadania).HasColumnType("datetime");
+                entity.Property(e => e.AssignStart).HasColumnType("datetime");
 
-                entity.Property(e => e.DataZakonczeniaZadania).HasColumnType("datetime");
+                entity.Property(e => e.AssignEnd).HasColumnType("datetime");
 
-                entity.Property(e => e.Opis).IsRequired();
+                entity.Property(e => e.Description).IsRequired();
 
                 entity.Property(e => e.Status)
                     .IsRequired()
                     .HasMaxLength(30);
 
-                entity.HasOne(d => d.IdProjektNavigation)
-                    .WithMany(p => p.UslugaProjekt)
-                    .HasForeignKey(d => d.IdProjekt)
+                entity.HasOne(d => d.ProjectIdNavigation)
+                    .WithMany(p => p.ServiceProject)
+                    .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_26_Projekt");
+                    .HasConstraintName("ServiceProject_Project");
 
-                entity.HasOne(d => d.IdUslugaNavigation)
-                    .WithMany(p => p.UslugaProjekt)
-                    .HasForeignKey(d => d.IdUsluga)
+                entity.HasOne(d => d.ServiceIdNavigation)
+                    .WithMany(p => p.ServiceProject)
+                    .HasForeignKey(d => d.ServiceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_26_Zadanie");
+                    .HasConstraintName("ServiceProject_Service");
             });
 
             modelBuilder.Entity<Team>(entity =>
             {
-                entity.HasKey(e => e.IdZespol)
-                    .HasName("Zespol_pk");
+                entity.HasKey(e => e.TeamId)
+                    .HasName("Team_pk");
 
-                entity.Property(e => e.Nazwa)
+                entity.Property(e => e.TeamName)
                     .IsRequired()
                     .HasMaxLength(50);
             });
 
             modelBuilder.Entity<TeamProject>(entity =>
             {
-                entity.HasKey(e => new { e.IdZespol, e.IdProjekt, e.DataPrzypisaniaZespolu })
-                    .HasName("ZespolProjekt_pk");
+                entity.HasKey(e => new { e.TeamId, e.ProjectId, e.AssignStart })
+                    .HasName("TeamProject_pk");
 
-                entity.Property(e => e.DataPrzypisaniaZespolu).HasColumnType("datetime");
+                entity.Property(e => e.AssignStart).HasColumnType("datetime");
 
-                entity.Property(e => e.DataWypisaniaZespolu).HasColumnType("datetime");
+                entity.Property(e => e.AssignEnd).HasColumnType("datetime");
 
-                entity.HasOne(d => d.IdProjektNavigation)
-                    .WithMany(p => p.ZespolProjekt)
-                    .HasForeignKey(d => d.IdProjekt)
+                entity.HasOne(d => d.ProjectIdNavigation)
+                    .WithMany(p => p.TeamProject)
+                    .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_24_Projekt");
+                    .HasConstraintName("TeamProject_Project");
 
-                entity.HasOne(d => d.IdZespolNavigation)
-                    .WithMany(p => p.ZespolProjekt)
-                    .HasForeignKey(d => d.IdZespol)
+                entity.HasOne(d => d.TeamIdNavigation)
+                    .WithMany(p => p.TeamProject)
+                    .HasForeignKey(d => d.TeamId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Table_24_Zespol");
+                    .HasConstraintName("TeamProject_Team");
             });
 
             OnModelCreatingPartial(modelBuilder);

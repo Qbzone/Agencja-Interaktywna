@@ -11,19 +11,19 @@
         <form asp-action="Profile">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label class="control-label">Imię: @Html.DisplayFor(model => model.ClientIdNavigation.Imie)</label>
+                <label class="control-label">Imię: @Html.DisplayFor(model => model.ClientIdNavigation.FirstName)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Nazwisko: @Html.DisplayFor(model => model.ClientIdNavigation.Nazwisko)</label>
+                <label class="control-label">Nazwisko: @Html.DisplayFor(model => model.ClientIdNavigation.LastName)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Numer telefonu prywatny:  @Html.DisplayFor(model => model.ClientIdNavigation.NumerTelefonuPrywatny)</label>
+                <label class="control-label">Numer telefonu prywatny:  @Html.DisplayFor(model => model.ClientIdNavigation.PrivatePhoneNumber)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Numer telefonu służbowy:  @Html.DisplayFor(model => model.ClientIdNavigation.NumerTelefonuSluzbowego)</label>
+                <label class="control-label">Numer telefonu służbowy:  @Html.DisplayFor(model => model.ClientIdNavigation.BusinessPhoneNumber)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Adres e-mail: @Html.DisplayFor(model => model.ClientIdNavigation.AdresEmail)</label>
+                <label class="control-label">Adres e-mail: @Html.DisplayFor(model => model.ClientIdNavigation.EmailAddress)</label>
             </div>
         </form>
     </div>

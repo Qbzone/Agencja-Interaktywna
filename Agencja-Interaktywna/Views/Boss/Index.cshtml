@@ -18,13 +18,13 @@
         {
             <tr>
                 <td>
-                    <img src="/@item.Logo" alt="/@item.Logo" height="100" width="100" />
+                    <img src="/@item.ProjectLogo" alt="/@item.ProjectLogo" height="100" width="100" />
                 </td>
                 <td>
-                    @item.Nazwa
+                    @item.ProjectName
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-action="ProjectDetails" asp-route-id="@item.IdProjekt">Podgląd</a>
+                    <a class="btn btn-primary" asp-action="ProjectDetails" asp-route-id="@item.ProjectId">Podgląd</a>
                 </td>
             </tr>
         }

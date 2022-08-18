@@ -10,22 +10,22 @@ namespace Interactive_Agency.Models
     {
         public Project()
         {
-            ProjektPakiet = new HashSet<ProjectPackage>();
-            UslugaProjekt = new HashSet<ServiceProject>();
-            ZespolProjekt = new HashSet<TeamProject>();
+            ProjectPackage = new HashSet<ProjectPackage>();
+            ServiceProject = new HashSet<ServiceProject>();
+            TeamProject = new HashSet<TeamProject>();
         }
 
-        public int IdProjekt { get; set; }
+        public int ProjectId { get; set; }
         [MaxLength(50)]
-        public string Nazwa { get; set; }
-        public string Logo { get; set; }
-        public int? IdFirma { get; set; }
+        public string ProjectName { get; set; }
+        public string ProjectLogo { get; set; }
+        public int? CompanyId { get; set; }
         [NotMapped]
-        public string Widok { get; set; }
+        public string View { get; set; }
 
-        public virtual Company IdFirmaNavigation { get; set; }
-        public virtual ICollection<ProjectPackage> ProjektPakiet { get; set; }
-        public virtual ICollection<ServiceProject> UslugaProjekt { get; set; }
-        public virtual ICollection<TeamProject> ZespolProjekt { get; set; }
+        public virtual Company CompanyIdNavigation { get; set; }
+        public virtual ICollection<ProjectPackage> ProjectPackage { get; set; }
+        public virtual ICollection<ServiceProject> ServiceProject { get; set; }
+        public virtual ICollection<TeamProject> TeamProject { get; set; }
     }
 }

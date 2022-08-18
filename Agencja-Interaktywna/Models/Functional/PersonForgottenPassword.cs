@@ -10,14 +10,18 @@ namespace Interactive_Agency.Models.Functional
     public class PersonForgottenPassword
     {
         [Required]
-        public string AdresEmail { get; set; }
-        [Required(ErrorMessage = "Proszę wprowadzić hasło")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W]).{6,}$", ErrorMessage = "Hasło musi posiadać conajmniej jedną małą literę, jedną dużą literę, jeden znak liczbowy, jeden znak specjalny oraz składać się z co najmniej 6 znaków.")]
-        public string Haslo { get; set; }
+        public string EmailAddress { get; set; }
+        [Required(ErrorMessage = "Please enter your password.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W]).{6,}$",
+            ErrorMessage = "The password must have at least one lowercase letter, one uppercase letter, one numeric character, " +
+            "one special character, and consist of at least 6 characters.")]
+        public string Password { get; set; }
         [NotMapped]
-        [Required(ErrorMessage = "Proszę potwierdzić hasło")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W]).{6,}$", ErrorMessage = "Hasło musi posiadać conajmniej jedną małą literę, jedną dużą literę, jeden znak liczbowy, jeden znak specjalny oraz składać się z co najmniej 6 znaków.")]
+        [Required(ErrorMessage = "Please confirm your password")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W]).{6,}$",
+            ErrorMessage = "The password must have at least one lowercase letter, one uppercase letter, one numeric character, " +
+            "one special character, and consist of at least 6 characters.")]
         [Compare("Haslo", ErrorMessage = "Hasła muszą być takie same")]
-        public string PotwierdzHaslo { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

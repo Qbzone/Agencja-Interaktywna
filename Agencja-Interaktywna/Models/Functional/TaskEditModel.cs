@@ -7,7 +7,7 @@ namespace Interactive_Agency.Models.Functional
 {
     public class TaskEditModel
     {
-        public ServiceProject UslugaProjekt { get; set; }
-        public List<Service> Uslugas { get; set; }
+        public ServiceProject ServiceProject { get; set; }
+        public List<Service> Services { get; set; }
     }
 }

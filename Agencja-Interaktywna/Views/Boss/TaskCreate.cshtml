@@ -8,38 +8,38 @@
     <div class="col-md-4">
         <form method="post" asp-action="TaskCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.Projekt.IdProjekt" />
+            <input type="hidden" asp-for="@Model.Project.ProjectId" />
             <div class="form-group">
-                <label asp-for="@Model.UslugaProjekt.IdUsluga" class="control-label">Nazwa zadania</label>
-                <select class="form-control" asp-for="@Model.UslugaProjekt.IdUsluga">
+                <label asp-for="@Model.ServiceProject.ServiceId" class="control-label">Nazwa zadania</label>
+                <select class="form-control" asp-for="@Model.ServiceProject.ServiceId">
                     <option value="">Wybierz zadanie</option>
                     @{
-                        foreach (var item in Model.Uslugas)
+                        foreach (var item in Model.Services)
                         {
-                            <option class="form-control" value="@item.IdUsluga">@item.Nazwa</option>
+                            <option class="form-control" value="@item.ServiceId">@item.ServiceName</option>
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.UslugaProjekt.IdUsluga" class="text-danger"></span>
+                <span asp-validation-for="@Model.ServiceProject.ServiceId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UslugaProjekt.Opis" class="control-label">Opis zadania</label>
-                <input type="text" class="form-control" asp-for="@Model.UslugaProjekt.Opis" />
-                <span asp-validation-for="UslugaProjekt.Opis" class="text-danger"></span>
+                <label asp-for="ServiceProject.Description" class="control-label">Opis zadania</label>
+                <input type="text" class="form-control" asp-for="@Model.ServiceProject.Description" />
+                <span asp-validation-for="ServiceProject.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UslugaProjekt.DataPrzypisaniaZadania" class="control-label">Data przypisania zadania</label>
-                <input type="datetime-local" class="form-control" asp-for="@Model.UslugaProjekt.DataPrzypisaniaZadania" />
-                <span asp-validation-for="UslugaProjekt.DataPrzypisaniaZadania" class="text-danger"></span>
+                <label asp-for="ServiceProject.AssignStart" class="control-label">Data przypisania zadania</label>
+                <input type="datetime-local" class="form-control" asp-for="@Model.ServiceProject.AssignStart" />
+                <span asp-validation-for="ServiceProject.AssignStart" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UslugaProjekt.DataZakonczeniaZadania" class="control-label">Data zakończenia zadania</label>
-                <input type="datetime-local" class="form-control" asp-for="@Model.UslugaProjekt.DataZakonczeniaZadania" />
-                <span asp-validation-for="UslugaProjekt.DataZakonczeniaZadania" class="text-danger"></span>
+                <label asp-for="ServiceProject.AssignEnd" class="control-label">Data zakończenia zadania</label>
+                <input type="datetime-local" class="form-control" asp-for="@Model.ServiceProject.AssignEnd" />
+                <span asp-validation-for="ServiceProject.AssignEnd" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="@Model.UslugaProjekt.Status" value="Oczekuje na realizację" />
+            <input type="hidden" asp-for="@Model.ServiceProject.Status" value="Oczekuje na realizację" />
             <div class="btn-group">
-                <a asp-action="ProjectDetails" asp-route-id="@Model.Projekt.IdProjekt" class="btn btn-primary">Wstecz</a>
+                <a asp-action="ProjectDetails" asp-route-id="@Model.Project.ProjectId" class="btn btn-primary">Wstecz</a>
                 <input type="submit" value="Zatwierdź" class="btn btn-primary"/>
             </div>
         </form>

@@ -9,9 +9,9 @@ namespace Interactive_Agency.Models.Functional
 {
     public class TeamEditModel : IValidatableObject
     {
-        public Team Zespol { get; set; }
-        public Employee Pracownik { get; set; }
-        public List<CheckBoxItem> Pracowniks { get; set; }
+        public Team Team { get; set; }
+        public Employee Employee { get; set; }
+        public List<CheckBoxItem> Employees { get; set; }
 
         [NotMapped]
         public string ErrorHandler1 { get; set; }
@@ -20,13 +20,13 @@ namespace Interactive_Agency.Models.Functional
         {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            if (Zespol.Nazwa == null)
+            if (Team.TeamName == null)
             {
-                errors.Add(new ValidationResult($"Proszę wprowadzić nazwę zespołu.", new List<string> { nameof(ErrorHandler1) }));
+                errors.Add(new ValidationResult($"Please enter the name of the team.", new List<string> { nameof(ErrorHandler1) }));
             }
-            if (Pracowniks.Where(x => x.IsChecked).Count() == 0)
+            if (Employees.Where(x => x.IsChecked).Count() == 0)
             {
-                errors.Add(new ValidationResult($"Proszę wybrać conajmniej jednego pracownika.", new List<string> { nameof(Pracowniks) }));
+                errors.Add(new ValidationResult($"Please select at least one employee.", new List<string> { nameof(Employees) }));
             }
 
             return errors;

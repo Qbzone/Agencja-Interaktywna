@@ -10,27 +10,27 @@
         <form method="post" asp-action="TeamsCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Zespol.Nazwa" class="control-label">Nazwa</label>
-                <input type="text" class="form-control" asp-for="@Model.Zespol.Nazwa" />
+                <label asp-for="Team.TeamName" class="control-label">Nazwa</label>
+                <input type="text" class="form-control" asp-for="@Model.Team.TeamName" />
                 <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Pracowniks" class="control-label">Lista pracowników</label>
+                <label asp-for="@Model.Employees" class="control-label">Lista pracowników</label>
                 <table class="table">
-                    @for (int i = 0; i < Model.Pracowniks.Count; i++)
+                    @for (int i = 0; i < Model.Employees.Count; i++)
                     {
                         <tr>
                             <td>
-                                @Model.Pracowniks[i].Text
+                                @Model.Employees[i].Text
                             </td>
                             <td>
-                                <input type="hidden" asp-for="@Model.Pracowniks[i].Value" />
-                                <input asp-for="Pracowniks[i].Selected" style="vertical-align: 3px" />
+                                <input type="hidden" asp-for="@Model.Employees[i].Value" />
+                                <input asp-for="Employees[i].Selected" style="vertical-align: 3px" />
                             </td>
                         </tr>
                     }
                 </table>
-                <span asp-validation-for="Pracowniks" class="text-danger"></span>
+                <span asp-validation-for="Employees" class="text-danger"></span>
             </div>
             <div class="btn-group">
                 <a asp-action="Teams" class="btn btn-primary">Wstecz</a>

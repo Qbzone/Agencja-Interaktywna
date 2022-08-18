@@ -41,39 +41,40 @@ namespace Interactive_Agency.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(Person osoba)
+        public async Task<IActionResult> Register(Person person)
         {
             bool Status = false;
             string Message = "";
 
-            ModelState.Remove(nameof(Person.CzyEmailZweryfikowany));
-            ModelState.Remove(nameof(Person.KodAktywacyjny));
+            ModelState.Remove(nameof(Person.IsEmailVerified));
+            ModelState.Remove(nameof(Person.ActivationCode));
 
             if (ModelState.IsValid)
             {
-                Models.InteractiveAgencyContext context1 = new Models.InteractiveAgencyContext();
+                InteractiveAgencyContext context1 = new InteractiveAgencyContext();
                 {
-                    var check = await context1.Person.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
+                    var check = await context1.Person.Where(e => e.EmailAddress == person.EmailAddress).FirstOrDefaultAsync();
 
                     if (check != null)
                     {
-                        ModelState.AddModelError("AdresEmail", "Podany adres e-mail już istnieje");
+                        ModelState.AddModelError("EmailAddress", "Podany adres e-mail już istnieje");
                     }
                     else
                     {
-                        osoba.KodAktywacyjny = Guid.NewGuid();
-                        osoba.Haslo = Hash(osoba.Haslo);
-                        osoba.CzyEmailZweryfikowany = false;
-                        osoba.Rola = "Klient";
+                        person.ActivationCode = Guid.NewGuid();
+                        person.Password = Hash(person.Password);
+                        person.IsEmailVerified = false;
+                        person.Role = "Client";
 
-                        Models.InteractiveAgencyContext context2 = new Models.InteractiveAgencyContext();
+                        InteractiveAgencyContext context2 = new InteractiveAgencyContext();
                         {
-                            context2.Person.Add(osoba);
+                            context2.Person.Add(person);
                             await context2.SaveChangesAsync();
 
-                            SendVerificationLink(osoba);
+                            SendVerificationLink(person);
 
-                            Message = "Rejestracja zakończona pomyślnie. Link do aktywacji konta został przesłany na twój adres e-mail " + osoba.AdresEmail;
+                            Message = "Rejestracja zakończona pomyślnie. Link do aktywacji konta został przesłany na twój adres e-mail " + 
+                                person.EmailAddress;
                             Status = true;
                         }
                     }
@@ -86,24 +87,25 @@ namespace Interactive_Agency.Controllers
 
             ViewBag.Message = Message;
             ViewBag.Status = Status;
-            return View(osoba);
+            
+            return View(person);
         }
 
         [HttpGet]
         public async Task<IActionResult> Verify(string id)
         {
             bool Status = false;
-            using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
+            using (InteractiveAgencyContext dc = new InteractiveAgencyContext())
             {
-                var v = await dc.Person.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.ActivationCode == new Guid(id)).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
-                    v.CzyEmailZweryfikowany = true;
+                    v.IsEmailVerified = true;
                     Client klient = new Client() 
                     {
-                        ClientId = v.IdOsoba,
-                        Priority = "nie"
+                        ClientId = v.PersonId,
+                        Priority = "no"
                      };
 
                     dc.Client.Add(klient);
@@ -129,23 +131,23 @@ namespace Interactive_Agency.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(PersonLogin login)
         {
-            using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
+            using (InteractiveAgencyContext dc = new InteractiveAgencyContext())
             {
-                var v = await dc.Person.Where(e => e.AdresEmail == login.AdresEmail).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.EmailAddress == login.EmailAddress).FirstOrDefaultAsync();
                 if (v != null)
                 {
-                    if (v.CzyEmailZweryfikowany != false)
+                    if (v.IsEmailVerified != false)
                     {
-                        if (Hash(login.Haslo) == v.Haslo)
+                        if (Hash(login.Password) == v.Password)
                         {
                             ClaimsIdentity identity = null;
                             bool isAutheticate = false;
-                            if (v.Rola == "Klient")
+                            if (v.Role == "Klient")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
-                                        new Claim(ClaimTypes.Name, v.AdresEmail),
-                                        new Claim(ClaimTypes.Role, v.Rola)
+                                        new Claim(ClaimTypes.Name, v.EmailAddress),
+                                        new Claim(ClaimTypes.Role, v.Role)
                                     }, CookieAuthenticationDefaults.AuthenticationScheme);
                                 isAutheticate = true;
                                 if (isAutheticate)
@@ -155,12 +157,12 @@ namespace Interactive_Agency.Controllers
                                 }
                                 return base.RedirectToAction("Index", "Klient");
                             }
-                            else if (v.Rola == "Szef")
+                            else if (v.Role == "Szef")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
-                                        new Claim(ClaimTypes.Name, v.AdresEmail),
-                                        new Claim(ClaimTypes.Role, v.Rola)
+                                        new Claim(ClaimTypes.Name, v.EmailAddress),
+                                        new Claim(ClaimTypes.Role, v.Role)
                                     }, CookieAuthenticationDefaults.AuthenticationScheme);
                                 isAutheticate = true;
                                 if (isAutheticate)
@@ -170,12 +172,12 @@ namespace Interactive_Agency.Controllers
                                 }
                                 return base.RedirectToAction("Index", "Szef");
                             }
-                            else if (v.Rola == "Programista")
+                            else if (v.Role == "Programista")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
-                                        new Claim(ClaimTypes.Name, v.AdresEmail),
-                                        new Claim(ClaimTypes.Role, v.Rola)
+                                        new Claim(ClaimTypes.Name, v.EmailAddress),
+                                        new Claim(ClaimTypes.Role, v.Role)
                                     }, CookieAuthenticationDefaults.AuthenticationScheme);
                                 isAutheticate = true;
                                 if (isAutheticate)
@@ -185,12 +187,12 @@ namespace Interactive_Agency.Controllers
                                 }
                                 return base.RedirectToAction("Index", "Programista");
                             }
-                            else if (v.Rola == "Grafik")
+                            else if (v.Role == "Grafik")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
-                                        new Claim(ClaimTypes.Name, v.AdresEmail),
-                                        new Claim(ClaimTypes.Role, v.Rola)
+                                        new Claim(ClaimTypes.Name, v.EmailAddress),
+                                        new Claim(ClaimTypes.Role, v.Role)
                                     }, CookieAuthenticationDefaults.AuthenticationScheme);
                                 isAutheticate = true;
                                 if (isAutheticate)
@@ -200,12 +202,12 @@ namespace Interactive_Agency.Controllers
                                 }
                                 return base.RedirectToAction("Index", "Grafik");
                             }
-                            else if (v.Rola == "Pozycjoner")
+                            else if (v.Role == "Pozycjoner")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
-                                        new Claim(ClaimTypes.Name, v.AdresEmail),
-                                        new Claim(ClaimTypes.Role, v.Rola)
+                                        new Claim(ClaimTypes.Name, v.EmailAddress),
+                                        new Claim(ClaimTypes.Role, v.Role)
                                     }, CookieAuthenticationDefaults.AuthenticationScheme);
                                 isAutheticate = true;
                                 if (isAutheticate)
@@ -215,12 +217,12 @@ namespace Interactive_Agency.Controllers
                                 }
                                 return base.RedirectToAction("Index", "Pozycjoner");
                             }
-                            else if (v.Rola == "Tester")
+                            else if (v.Role == "Tester")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
-                                        new Claim(ClaimTypes.Name, v.AdresEmail),
-                                        new Claim(ClaimTypes.Role, v.Rola)
+                                        new Claim(ClaimTypes.Name, v.EmailAddress),
+                                        new Claim(ClaimTypes.Role, v.Role)
                                     }, CookieAuthenticationDefaults.AuthenticationScheme);
                                 isAutheticate = true;
                                 if (isAutheticate)
@@ -269,17 +271,17 @@ namespace Interactive_Agency.Controllers
 
             using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
             {
-                var v = await dc.Person.Where(e => e.AdresEmail == osoba.AdresEmail).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.EmailAddress == osoba.EmailAddress).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
                     SendPasswordReset(v);
-                    Message = "Link do zmiany hasła został przesłany na twój adres e-mail " + osoba.AdresEmail;
+                    Message = "Link do zmiany hasła został przesłany na twój adres e-mail " + osoba.EmailAddress;
                     Status = true;
                 }
                 else
                 {
-                    ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie istnieje");
+                    ModelState.AddModelError("EmailAddress", "Podany adres e-mail nie istnieje");
                 }
             }
 
@@ -292,14 +294,14 @@ namespace Interactive_Agency.Controllers
         [HttpGet]
         public async Task<IActionResult> ForgottenPassword(string id)
         {
-            using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
+            using (InteractiveAgencyContext dc = new InteractiveAgencyContext())
             {
-                var v = await dc.Person.Where(e => e.KodAktywacyjny == new Guid(id)).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.ActivationCode == new Guid(id)).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
                     PersonForgottenPassword oFP = new PersonForgottenPassword();
-                    oFP.AdresEmail = v.AdresEmail;
+                    oFP.EmailAddress = v.EmailAddress;
                     return base.View(oFP);
                 }
                 else
@@ -317,14 +319,14 @@ namespace Interactive_Agency.Controllers
 
             if (ModelState.IsValid)
             {
-                using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
+                using (InteractiveAgencyContext dc = new InteractiveAgencyContext())
                 {
-                    var v = await dc.Person.Where(e => e.AdresEmail == oFP.AdresEmail).FirstOrDefaultAsync();
+                    var v = await dc.Person.Where(e => e.EmailAddress == oFP.EmailAddress).FirstOrDefaultAsync();
 
                     if (v != null)
                     {
-                        oFP.Haslo = Hash(oFP.Haslo);
-                        v.Haslo = oFP.Haslo;
+                        oFP.Password = Hash(oFP.Password);
+                        v.Password = oFP.Password;
                         dc.Update<Person>(v);
                         dc.SaveChanges();
                         Message = "Hasło zostało zaktualizowane pomyślnie";
@@ -352,10 +354,10 @@ namespace Interactive_Agency.Controllers
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            string confirmationLink = Request.Scheme + "://" + Request.Host + "/Home/Verify/" + osoba.KodAktywacyjny;
+            string confirmationLink = Request.Scheme + "://" + Request.Host + "/Home/Verify/" + osoba.ActivationCode;
 
             mail.From = new MailAddress("johnytestin@gmail.com");
-            mail.To.Add(osoba.AdresEmail);
+            mail.To.Add(osoba.EmailAddress);
             mail.Subject = "Twoje konto jest w pełni utworzone";
             mail.Body = "<br/><br/>Z dumą informujemy, iż twoje konto zostało pomyślnie utworzone. " + "" +
                 "Prosimy o wejście w wysłany przez nas link w celu aktywacji twojego konta. <br/><br/><a href='" +
@@ -375,10 +377,10 @@ namespace Interactive_Agency.Controllers
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            string resetLink = Request.Scheme + "://" + Request.Host + "/Home/ForgottenPassword/" + osoba.KodAktywacyjny;
+            string resetLink = Request.Scheme + "://" + Request.Host + "/Home/ForgottenPassword/" + osoba.ActivationCode;
 
             mail.From = new MailAddress("johnytestin@gmail.com");
-            mail.To.Add(osoba.AdresEmail);
+            mail.To.Add(osoba.EmailAddress);
             mail.Subject = "Resetowanie hasła";
             mail.Body = "<br/><br/>Na ten adres e-mail złożono prośbę o zmianę hasła. " + "" +
                 "W celu zmiany hasła przypisanego do konta należy wejść w ten link. <br/><br/><a href='" +

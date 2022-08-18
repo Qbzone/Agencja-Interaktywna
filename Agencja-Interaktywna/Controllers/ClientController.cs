@@ -16,26 +16,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Interactive_Agency.Controllers
 {
-    [Authorize(Roles = "Klient")]
+    [Authorize(Roles = "Client")]
     public class ClientController : Controller
     {
-        private readonly Models.InteractiveAgencyContext _s16693context = new Models.InteractiveAgencyContext();
+        private readonly InteractiveAgencyContext _s16693context = new InteractiveAgencyContext();
         public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
             var pr = await _s16693context.Project
-                .Include(f => f.IdFirmaNavigation)
+                .Include(f => f.CompanyIdNavigation)
                     .ThenInclude(kf => kf.ClientCompany)
                         .ThenInclude(k => k.ClientIdNavigation)
                             .ThenInclude(o => o.ClientIdNavigation)
-                .Where(x => x.IdFirmaNavigation.ClientCompany.Any(e => e.ClientIdNavigation.ClientIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value))
+                .Where(x => x.CompanyIdNavigation.ClientCompany.Any(e => e.ClientIdNavigation.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value))
                 .ToListAsync();
             
             var kf = await _s16693context.ClientCompany
                 .Include(k => k.ClientIdNavigation)
                     .ThenInclude(o => o.ClientIdNavigation)
-                .FirstOrDefaultAsync(e => e.ClientIdNavigation.ClientIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+                .FirstOrDefaultAsync(e => e.ClientIdNavigation.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
 
             if (kf != null)
             {
@@ -52,11 +52,11 @@ namespace Interactive_Agency.Controllers
         {
             var kl = await _s16693context.Client
                 .Include(o => o.ClientIdNavigation)
-                    .FirstOrDefaultAsync(e => e.ClientIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+                    .FirstOrDefaultAsync(e => e.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
             
             var aCM = new AssignCompanyModel
             {
-                Klient = kl
+                Client = kl
             };
 
             return View(aCM);
@@ -70,8 +70,8 @@ namespace Interactive_Agency.Controllers
             {
                 var newFirma = new Company()
                 {
-                    CompanyId = aCM.Firma.CompanyId,
-                    CompanyName = aCM.Firma.CompanyName
+                    CompanyId = aCM.Company.CompanyId,
+                    CompanyName = aCM.Company.CompanyName
                 };
 
                 _s16693context.Add(newFirma);
@@ -79,7 +79,7 @@ namespace Interactive_Agency.Controllers
 
                 var newKF = new ClientCompany()
                 {
-                    ClientId = aCM.Klient.ClientId,
+                    ClientId = aCM.Client.ClientId,
                     CompanyId = newFirma.CompanyId
                 };
 
@@ -102,7 +102,7 @@ namespace Interactive_Agency.Controllers
                     .ThenInclude(o => o.ClientIdNavigation)
                 .Include(p => p.EmployeeIdNavigation)
                     .ThenInclude(po => po.EmployeeIdNavigation)
-                .Where(x => x.ClientIdNavigation.ClientIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value)
+                .Where(x => x.ClientIdNavigation.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value)
                 .ToListAsync();
             return View(meet);
         }
@@ -115,7 +115,7 @@ namespace Interactive_Agency.Controllers
             }
 
             var project = await _s16693context.Project
-            .FirstOrDefaultAsync(e => e.IdProjekt == id);
+            .FirstOrDefaultAsync(e => e.ProjectId == id);
 
             if (project == null)
             {
@@ -132,15 +132,15 @@ namespace Interactive_Agency.Controllers
         public async Task<IActionResult> Team(int? id)
         {
             var team = await _s16693context.TeamProject
-                .Include(p => p.IdProjektNavigation)
-                .Include(z => z.IdZespolNavigation)
-                .FirstOrDefaultAsync(x => x.IdProjekt == id && x.DataWypisaniaZespolu == null);
+                .Include(p => p.ProjectIdNavigation)
+                .Include(z => z.TeamIdNavigation)
+                .FirstOrDefaultAsync(x => x.ProjectId == id && x.AssignEnd == null);
 
             var members = await _s16693context.EmployeeTeam
                 .Include(z => z.TeamIdNavigation)
                 .Include(p => p.EmployeeIdNavigation)
                     .ThenInclude(o => o.EmployeeIdNavigation)
-                    .Where(x => x.TeamId == team.IdZespol)
+                    .Where(x => x.TeamId == team.TeamId)
                     .ToListAsync();
 
             return View(members);
@@ -150,10 +150,10 @@ namespace Interactive_Agency.Controllers
         public async Task<IActionResult> Contract(int? id)
         {
             var contract = await _s16693context.ProjectPackage
-                .Include(pr => pr.IdProjektNavigation)
-                .Include(pa => pa.IdPakietNavigation)
-                .Where(x => x.IdProjekt == id && x.DataZakonczeniaWspolpracy == null)
-                .OrderByDescending(e => e.IdPakiet)
+                .Include(pr => pr.ProjectIdNavigation)
+                .Include(pa => pa.PackageIdNavigation)
+                .Where(x => x.ProjectId == id && x.DealEnd == null)
+                .OrderByDescending(e => e.PackageId)
                 .ToListAsync();
 
             return View(contract);
@@ -163,7 +163,7 @@ namespace Interactive_Agency.Controllers
         {
             var kl = await _s16693context.Client
                 .Include(o => o.ClientIdNavigation)
-                .FirstOrDefaultAsync(i => i.ClientIdNavigation.AdresEmail == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+                .FirstOrDefaultAsync(i => i.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
            
             if(kl == null)
             {

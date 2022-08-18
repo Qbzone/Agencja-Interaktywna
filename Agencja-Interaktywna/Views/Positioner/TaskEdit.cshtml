@@ -8,36 +8,36 @@
     <div class="col-md-4">
         <form method="post" asp-action="TaskEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.UslugaProjekt.IdProjekt" />
+            <input type="hidden" asp-for="@Model.ServiceProject.ProjectId" />
             <div>
-                <input type="hidden" asp-for="@Model.UslugaProjekt.IdUsluga" />
-                <span asp-validation-for="UslugaProjekt.IdUsluga"></span>
+                <input type="hidden" asp-for="@Model.ServiceProject.ServiceId" />
+                <span asp-validation-for="ServiceProject.ServiceId"></span>
             </div>
             <div>
-                <input type="hidden" asp-for="@Model.UslugaProjekt.Opis" />
-                <span asp-validation-for="UslugaProjekt.Opis"></span>
+                <input type="hidden" asp-for="@Model.ServiceProject.Description" />
+                <span asp-validation-for="ServiceProject.Description"></span>
             </div>
             <div>
-                <input type="hidden" asp-for="@Model.UslugaProjekt.DataPrzypisaniaZadania" />
-                <span asp-validation-for="UslugaProjekt.DataPrzypisaniaZadania"></span>
+                <input type="hidden" asp-for="@Model.ServiceProject.AssignStart" />
+                <span asp-validation-for="ServiceProject.AssignStart"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.UslugaProjekt.Status" class="control-label">Edytuj status</label>
-                <select class="form-control" asp-for="@Model.UslugaProjekt.Status">
+                <label asp-for="@Model.ServiceProject.Status" class="control-label">Edytuj status</label>
+                <select class="form-control" asp-for="@Model.ServiceProject.Status">
                     <option class="form-control" value="W trakcie realizacji">W trakcie realizacji</option>
                     <option class="form-control" value="Zakończone">Zakończone</option>
                 </select>
-                <span asp-validation-for="@Model.UslugaProjekt.Status" class="text-danger"></span>
+                <span asp-validation-for="@Model.ServiceProject.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.UslugaProjekt.DataZakonczeniaZadania" class="control-label">Data zakończenia zadania</label>
-                <input class="form-control" type="datetime-local" asp-for="@Model.UslugaProjekt.DataZakonczeniaZadania" />
-                <span asp-validation-for="UslugaProjekt.DataZakonczeniaZadania" class="text-danger"></span>
+                <label asp-for="@Model.ServiceProject.AssignEnd" class="control-label">Data zakończenia zadania</label>
+                <input class="form-control" type="datetime-local" asp-for="@Model.ServiceProject.AssignEnd" />
+                <span asp-validation-for="ServiceProject.AssignEnd" class="text-danger"></span>
             </div>
             <div class="btn-group">
-                <a asp-action="ProjectDetails" asp-route-id="@Model.UslugaProjekt.IdProjekt" class="btn btn-primary">Wstecz</a>
+                <a asp-action="ProjectDetails" asp-route-id="@Model.ServiceProject.ProjectId" class="btn btn-primary">Wstecz</a>
                 <input type="submit" value="Potwierdź zmiany" class="btn btn-primary" />
-                @{ if (Model.UslugaProjekt.Status.Equals("Opóźnione"))
+                @{ if (Model.ServiceProject.Status.Equals("Opóźnione"))
                     {
                         <input type="submit" value="Zgłoś Opóźnienie" class="btn btn-primary" asp-action="TaskDelay" disabled="disabled" />
                     }

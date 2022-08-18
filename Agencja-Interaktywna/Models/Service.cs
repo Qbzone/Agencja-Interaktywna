@@ -7,15 +7,15 @@ namespace Interactive_Agency.Models
     {
         public Service()
         {
-            PakietUsluga = new HashSet<PackageService>();
-            UslugaProjekt = new HashSet<ServiceProject>();
+            PackageService = new HashSet<PackageService>();
+            ServiceProject = new HashSet<ServiceProject>();
         }
 
-        public int IdUsluga { get; set; }
-        public string Nazwa { get; set; }
-        public string Klasyfikacja { get; set; }
+        public int ServiceId { get; set; }
+        public string ServiceName { get; set; }
+        public string Classification { get; set; }
 
-        public virtual ICollection<PackageService> PakietUsluga { get; set; }
-        public virtual ICollection<ServiceProject> UslugaProjekt { get; set; }
+        public virtual ICollection<PackageService> PackageService { get; set; }
+        public virtual ICollection<ServiceProject> ServiceProject { get; set; }
     }
 }

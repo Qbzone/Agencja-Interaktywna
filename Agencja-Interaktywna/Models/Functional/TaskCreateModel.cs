@@ -7,8 +7,8 @@ namespace Interactive_Agency.Models.Functional
 {
     public class TaskCreateModel
     {
-        public ServiceProject UslugaProjekt { get; set; }
-        public List<Service> Uslugas { get; set; }
-        public Project Projekt { get; set; }
+        public ServiceProject ServiceProject { get; set; }
+        public List<Service> Services { get; set; }
+        public Project Project { get; set; }
     }
 }

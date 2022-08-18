@@ -9,20 +9,18 @@ namespace Interactive_Agency.Models.Functional
 {
     public class AssignCompanyModel : IValidatableObject
     {
-        public Client Klient { get; set; }
-
-        public Company Firma { get; set; }
-
+        public Client Client { get; set; }
+        public Company Company { get; set; }
         [NotMapped]
-        public string ErrorHandler1 { get; set; }
+        public string ErrorHandler { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            if (Firma.CompanyName == null)
+            if (Company.CompanyName == null)
             {
-                errors.Add(new ValidationResult($"Proszę wprowadzić nazwę firmy.", new List<string> { nameof(ErrorHandler1) }));
+                errors.Add(new ValidationResult($"Please enter your company name.", new List<string> { nameof(ErrorHandler) }));
             }
 
             return errors;
