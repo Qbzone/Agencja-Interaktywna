@@ -57,7 +57,7 @@ namespace Interactive_Agency.Controllers
 
                     if (check != null)
                     {
-                        ModelState.AddModelError("EmailAddress", "Podany adres e-mail już istnieje");
+                        ModelState.AddModelError("EmailAddress", "The email address you provided already exists.");
                     }
                     else
                     {
@@ -73,8 +73,8 @@ namespace Interactive_Agency.Controllers
 
                             SendVerificationLink(person);
 
-                            Message = "Rejestracja zakończona pomyślnie. Link do aktywacji konta został przesłany na twój adres e-mail " + 
-                                person.EmailAddress;
+                            Message = "Registration successfully completed. The link to activate your account has been sent to your email address " +
+                                person.EmailAddress + ".";
                             Status = true;
                         }
                     }
@@ -82,12 +82,12 @@ namespace Interactive_Agency.Controllers
             }
             else
             {
-                Message = "Nieprawidłowe żądanie";
+                Message = "Incorrect request.";
             }
 
             ViewBag.Message = Message;
             ViewBag.Status = Status;
-            
+
             return View(person);
         }
 
@@ -95,6 +95,7 @@ namespace Interactive_Agency.Controllers
         public async Task<IActionResult> Verify(string id)
         {
             bool Status = false;
+
             using (InteractiveAgencyContext dc = new InteractiveAgencyContext())
             {
                 var v = await dc.Person.Where(e => e.ActivationCode == new Guid(id)).FirstOrDefaultAsync();
@@ -102,21 +103,23 @@ namespace Interactive_Agency.Controllers
                 if (v != null)
                 {
                     v.IsEmailVerified = true;
-                    Client klient = new Client() 
+                    Client klient = new Client()
                     {
                         ClientId = v.PersonId,
                         Priority = "no"
-                     };
+                    };
 
                     dc.Client.Add(klient);
                     await dc.SaveChangesAsync();
+
                     Status = true;
                 }
                 else
                 {
-                    ViewBag.Message = "Nieprawidłowe żądanie";
+                    ViewBag.Message = "Incorrect request.";
                 }
             }
+
             ViewBag.Status = Status;
 
             return View();
@@ -129,20 +132,21 @@ namespace Interactive_Agency.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(PersonLogin login)
+        public async Task<IActionResult> Login(PersonLogin personLogin)
         {
             using (InteractiveAgencyContext dc = new InteractiveAgencyContext())
             {
-                var v = await dc.Person.Where(e => e.EmailAddress == login.EmailAddress).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.EmailAddress == personLogin.EmailAddress).FirstOrDefaultAsync();
                 if (v != null)
                 {
                     if (v.IsEmailVerified != false)
                     {
-                        if (Hash(login.Password) == v.Password)
+                        if (Hash(personLogin.Password) == v.Password)
                         {
                             ClaimsIdentity identity = null;
                             bool isAutheticate = false;
-                            if (v.Role == "Klient")
+
+                            if (v.Role == "Client")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
@@ -155,9 +159,9 @@ namespace Interactive_Agency.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return base.RedirectToAction("Index", "Klient");
+                                return base.RedirectToAction("Index", "Client");
                             }
-                            else if (v.Role == "Szef")
+                            else if (v.Role == "Boss")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
@@ -170,9 +174,9 @@ namespace Interactive_Agency.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return base.RedirectToAction("Index", "Szef");
+                                return base.RedirectToAction("Index", "Boss");
                             }
-                            else if (v.Role == "Programista")
+                            else if (v.Role == "Programmer")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
@@ -185,9 +189,9 @@ namespace Interactive_Agency.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return base.RedirectToAction("Index", "Programista");
+                                return base.RedirectToAction("Index", "Programmer");
                             }
-                            else if (v.Role == "Grafik")
+                            else if (v.Role == "Graphician")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
@@ -200,9 +204,9 @@ namespace Interactive_Agency.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return base.RedirectToAction("Index", "Grafik");
+                                return base.RedirectToAction("Index", "Graphician");
                             }
-                            else if (v.Role == "Pozycjoner")
+                            else if (v.Role == "Positioner")
                             {
                                 identity = new ClaimsIdentity(new[]
                                     {
@@ -215,7 +219,7 @@ namespace Interactive_Agency.Controllers
                                     var principal = new ClaimsPrincipal(identity);
                                     var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                                 }
-                                return base.RedirectToAction("Index", "Pozycjoner");
+                                return base.RedirectToAction("Index", "Positioner");
                             }
                             else if (v.Role == "Tester")
                             {
@@ -236,20 +240,20 @@ namespace Interactive_Agency.Controllers
                         }
                         else
                         {
-                            ModelState.AddModelError("Haslo", "Podane hasło jest niepoprawne");
+                            ModelState.AddModelError("Password", "The password you entered is incorrect.");
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie został jeszcze zweryfikowany");
+                        ModelState.AddModelError("EmailAddress", "The e-mail address provided has not yet been verified.");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("AdresEmail", "Podany adres e-mail nie istnieje");
+                    ModelState.AddModelError("EmailAddress", "The e-mail address provided does not exist.");
                 }
             }
-            return View(login);
+            return View(personLogin);
         }
 
         public IActionResult Contact()
@@ -264,31 +268,31 @@ namespace Interactive_Agency.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Token(PersonToken osoba)
+        public async Task<IActionResult> Token(PersonToken personToken)
         {
             bool Status = false;
             string Message = "";
 
-            using (Models.InteractiveAgencyContext dc = new Models.InteractiveAgencyContext())
+            using (InteractiveAgencyContext dc = new InteractiveAgencyContext())
             {
-                var v = await dc.Person.Where(e => e.EmailAddress == osoba.EmailAddress).FirstOrDefaultAsync();
+                var v = await dc.Person.Where(e => e.EmailAddress == personToken.EmailAddress).FirstOrDefaultAsync();
 
                 if (v != null)
                 {
                     SendPasswordReset(v);
-                    Message = "Link do zmiany hasła został przesłany na twój adres e-mail " + osoba.EmailAddress;
+                    Message = "The link to change your password was sent to your email address " + personToken.EmailAddress + ".";
                     Status = true;
                 }
                 else
                 {
-                    ModelState.AddModelError("EmailAddress", "Podany adres e-mail nie istnieje");
+                    ModelState.AddModelError("EmailAddress", "The email address you provided does not exist.");
                 }
             }
 
             ViewBag.Message = Message;
             ViewBag.Status = Status;
 
-            return View(osoba);
+            return View(personToken);
         }
 
         [HttpGet]
@@ -300,9 +304,9 @@ namespace Interactive_Agency.Controllers
 
                 if (v != null)
                 {
-                    PersonForgottenPassword oFP = new PersonForgottenPassword();
-                    oFP.EmailAddress = v.EmailAddress;
-                    return base.View(oFP);
+                    PersonForgottenPassword pFP = new PersonForgottenPassword();
+                    pFP.EmailAddress = v.EmailAddress;
+                    return base.View(pFP);
                 }
                 else
                 {
@@ -313,7 +317,7 @@ namespace Interactive_Agency.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgottenPassword(PersonForgottenPassword oFP)
+        public async Task<IActionResult> ForgottenPassword(PersonForgottenPassword pFP)
         {
             var Message = "";
 
@@ -321,26 +325,26 @@ namespace Interactive_Agency.Controllers
             {
                 using (InteractiveAgencyContext dc = new InteractiveAgencyContext())
                 {
-                    var v = await dc.Person.Where(e => e.EmailAddress == oFP.EmailAddress).FirstOrDefaultAsync();
+                    var v = await dc.Person.Where(e => e.EmailAddress == pFP.EmailAddress).FirstOrDefaultAsync();
 
                     if (v != null)
                     {
-                        oFP.Password = Hash(oFP.Password);
-                        v.Password = oFP.Password;
+                        pFP.Password = Hash(pFP.Password);
+                        v.Password = pFP.Password;
                         dc.Update<Person>(v);
                         dc.SaveChanges();
-                        Message = "Hasło zostało zaktualizowane pomyślnie";
+                        Message = "The password has been updated successfully.";
                         return base.RedirectToAction("Login", "Home");
                     }
                 }
             }
             else
             {
-                Message = "Nieprawidłowe żądanie";
+                Message = "Incorrect request.";
             }
             ViewBag.Message = Message;
 
-            return View(oFP);
+            return View(pFP);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -349,18 +353,18 @@ namespace Interactive_Agency.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public void SendVerificationLink(Person osoba)
+        public void SendVerificationLink(Person person)
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            string confirmationLink = Request.Scheme + "://" + Request.Host + "/Home/Verify/" + osoba.ActivationCode;
+            string confirmationLink = Request.Scheme + "://" + Request.Host + "/Home/Verify/" + person.ActivationCode;
 
             mail.From = new MailAddress("johnytestin@gmail.com");
-            mail.To.Add(osoba.EmailAddress);
-            mail.Subject = "Twoje konto jest w pełni utworzone";
-            mail.Body = "<br/><br/>Z dumą informujemy, iż twoje konto zostało pomyślnie utworzone. " + "" +
-                "Prosimy o wejście w wysłany przez nas link w celu aktywacji twojego konta. <br/><br/><a href='" +
+            mail.To.Add(person.EmailAddress);
+            mail.Subject = "Your account is fully established.";
+            mail.Body = "<br/><br/>We are proud to announce that your account has been successfully created. " + "" +
+                "Please follow the link we sent you to activate your account. <br/><br/><a href='" +
                 confirmationLink + "'>" + confirmationLink + "</a>";
             mail.IsBodyHtml = true;
 
@@ -372,18 +376,18 @@ namespace Interactive_Agency.Controllers
             SmtpServer.Send(mail);
         }
 
-        public void SendPasswordReset(Person osoba)
+        public void SendPasswordReset(Person person)
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            string resetLink = Request.Scheme + "://" + Request.Host + "/Home/ForgottenPassword/" + osoba.ActivationCode;
+            string resetLink = Request.Scheme + "://" + Request.Host + "/Home/ForgottenPassword/" + person.ActivationCode;
 
             mail.From = new MailAddress("johnytestin@gmail.com");
-            mail.To.Add(osoba.EmailAddress);
-            mail.Subject = "Resetowanie hasła";
-            mail.Body = "<br/><br/>Na ten adres e-mail złożono prośbę o zmianę hasła. " + "" +
-                "W celu zmiany hasła przypisanego do konta należy wejść w ten link. <br/><br/><a href='" +
+            mail.To.Add(person.EmailAddress);
+            mail.Subject = "Password reset.";
+            mail.Body = "<br/><br/>A request to change the password was made to this e-mail address. " + "" +
+                "To change the password assigned to your account, follow this link. <br/><br/><a href='" +
                 resetLink + "'>" + resetLink + "</a>";
             mail.IsBodyHtml = true;
 
@@ -395,10 +399,9 @@ namespace Interactive_Agency.Controllers
             SmtpServer.Send(mail);
         }
 
-        public static string Hash(string Value)
+        public static string Hash(string value)
         {
-            return Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(Value)));
+            return Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(value)));
         }
-
     }
 }

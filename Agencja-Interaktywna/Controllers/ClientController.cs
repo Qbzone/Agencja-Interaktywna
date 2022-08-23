@@ -19,12 +19,12 @@ namespace Interactive_Agency.Controllers
     [Authorize(Roles = "Client")]
     public class ClientController : Controller
     {
-        private readonly InteractiveAgencyContext _s16693context = new InteractiveAgencyContext();
+        private readonly InteractiveAgencyContext _interactiveAgencyContext = new InteractiveAgencyContext();
         public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
-            var pr = await _s16693context.Project
+            var pr = await _interactiveAgencyContext.Project
                 .Include(f => f.CompanyIdNavigation)
                     .ThenInclude(kf => kf.ClientCompany)
                         .ThenInclude(k => k.ClientIdNavigation)
@@ -32,7 +32,7 @@ namespace Interactive_Agency.Controllers
                 .Where(x => x.CompanyIdNavigation.ClientCompany.Any(e => e.ClientIdNavigation.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value))
                 .ToListAsync();
             
-            var kf = await _s16693context.ClientCompany
+            var kf = await _interactiveAgencyContext.ClientCompany
                 .Include(k => k.ClientIdNavigation)
                     .ThenInclude(o => o.ClientIdNavigation)
                 .FirstOrDefaultAsync(e => e.ClientIdNavigation.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
@@ -50,7 +50,7 @@ namespace Interactive_Agency.Controllers
         [HttpGet]
         public async Task<IActionResult> AssignCompany()
         {
-            var kl = await _s16693context.Client
+            var kl = await _interactiveAgencyContext.Client
                 .Include(o => o.ClientIdNavigation)
                     .FirstOrDefaultAsync(e => e.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
             
@@ -68,24 +68,24 @@ namespace Interactive_Agency.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newFirma = new Company()
+                var newCompany = new Company()
                 {
                     CompanyId = aCM.Company.CompanyId,
                     CompanyName = aCM.Company.CompanyName
                 };
 
-                _s16693context.Add(newFirma);
-                await _s16693context.SaveChangesAsync();
+                _interactiveAgencyContext.Add(newCompany);
+                await _interactiveAgencyContext.SaveChangesAsync();
 
                 var newKF = new ClientCompany()
                 {
                     ClientId = aCM.Client.ClientId,
-                    CompanyId = newFirma.CompanyId
+                    CompanyId = newCompany.CompanyId
                 };
 
-                _s16693context.Add(newKF);
+                _interactiveAgencyContext.Add(newKF);
 
-                await _s16693context.SaveChangesAsync();
+                await _interactiveAgencyContext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             else if (!ModelState.IsValid)
@@ -97,7 +97,7 @@ namespace Interactive_Agency.Controllers
 
         public async Task<IActionResult> Meetings()
         {
-            var meet = await _s16693context.EmployeeClient
+            var meet = await _interactiveAgencyContext.EmployeeClient
                 .Include(k => k.ClientIdNavigation)
                     .ThenInclude(o => o.ClientIdNavigation)
                 .Include(p => p.EmployeeIdNavigation)
@@ -114,7 +114,7 @@ namespace Interactive_Agency.Controllers
                 return NotFound();
             }
 
-            var project = await _s16693context.Project
+            var project = await _interactiveAgencyContext.Project
             .FirstOrDefaultAsync(e => e.ProjectId == id);
 
             if (project == null)
@@ -131,12 +131,12 @@ namespace Interactive_Agency.Controllers
 
         public async Task<IActionResult> Team(int? id)
         {
-            var team = await _s16693context.TeamProject
+            var team = await _interactiveAgencyContext.TeamProject
                 .Include(p => p.ProjectIdNavigation)
                 .Include(z => z.TeamIdNavigation)
                 .FirstOrDefaultAsync(x => x.ProjectId == id && x.AssignEnd == null);
 
-            var members = await _s16693context.EmployeeTeam
+            var members = await _interactiveAgencyContext.EmployeeTeam
                 .Include(z => z.TeamIdNavigation)
                 .Include(p => p.EmployeeIdNavigation)
                     .ThenInclude(o => o.EmployeeIdNavigation)
@@ -149,7 +149,7 @@ namespace Interactive_Agency.Controllers
 
         public async Task<IActionResult> Contract(int? id)
         {
-            var contract = await _s16693context.ProjectPackage
+            var contract = await _interactiveAgencyContext.ProjectPackage
                 .Include(pr => pr.ProjectIdNavigation)
                 .Include(pa => pa.PackageIdNavigation)
                 .Where(x => x.ProjectId == id && x.DealEnd == null)
@@ -161,7 +161,7 @@ namespace Interactive_Agency.Controllers
 
         public async Task<IActionResult> Profile()
         {
-            var kl = await _s16693context.Client
+            var kl = await _interactiveAgencyContext.Client
                 .Include(o => o.ClientIdNavigation)
                 .FirstOrDefaultAsync(i => i.ClientIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
            

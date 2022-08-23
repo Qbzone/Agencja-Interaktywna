@@ -66,7 +66,7 @@ VALUES (8);
 INSERT INTO Team
 VALUES ('Team Alpha');
 INSERT INTO Team
-VALUES ('Beta Team');
+VALUES ('Team Beta');
 
 INSERT INTO EmployeeTeam
 VALUES (4,1,'2020-10-10 12:00:00',NULL);
@@ -130,7 +130,7 @@ INSERT INTO ServiceProject
 VALUES(1,3,'2020-10-22 12:00:00','2021-12-12','Started','You need to promote the domain on forums and social networks');
 INSERT INTO ServiceProject
 VALUES(1,4,'2020-10-23 12:00:00','2021-12-12','Started','You have to run unit tests');
-INSERT INTO ServceProject
+INSERT INTO ServiceProject
 VALUES(2,1,'2020-10-20 12:00:00','2021-12-12','Started','You need to make a 200x200px project logo');
 INSERT INTO ServiceProject
 VALUES(2,2,'2020-10-21 12:00:00','2021-12-12','Started','You need to program the functionality of assigning a manager to a project');
