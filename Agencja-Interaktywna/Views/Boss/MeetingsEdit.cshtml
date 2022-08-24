@@ -3,7 +3,7 @@
     ViewData["Title"] = "MeetingEdit";
 }
 
-<h1>Edycja Spotkania</h1>
+<h1>Meeting edit</h1>
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-action="MeetingsEdit">
@@ -12,22 +12,22 @@
             <input type="hidden" asp-for="@Model.EmployeeId" />
             <input type="hidden" asp-for="@Model.MeetingStart" />
             <div class="form-group">
-                <label asp-for="EmployeeClient.MeetingLocation" class="control-label">Miejsce spotkania</label>
+                <label asp-for="EmployeeClient.MeetingLocation" class="control-label">Meeting location</label>
                 <input type="text" class="form-control" asp-for="@Model.EmployeeClient.MeetingLocation" />
                 <span asp-validation-for="EmployeeClient.MeetingLocation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmployeeClient.MeetingStart" class="control-label">Data rozpoczęcia spotkania</label>
+                <label asp-for="EmployeeClient.MeetingStart" class="control-label">Meeting start</label>
                 <input type="datetime-local" class="form-control" asp-for="@Model.EmployeeClient.MeetingStart" />
                 <span asp-validation-for="EmployeeClient.MeetingStart" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmployeeClient.MeetingEnd" class="control-label">Data zakończenia spotkania</label>
+                <label asp-for="EmployeeClient.MeetingEnd" class="control-label">Meeting end</label>
                 <input type="datetime-local" class="form-control" asp-for="@Model.EmployeeClient.MeetingEnd" />
                 <span asp-validation-for="EmployeeClient.MeetingEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.EmployeeClient.ClientId" class="control-label">Klient</label>
+                <label asp-for="@Model.EmployeeClient.ClientId" class="control-label">Client</label>
                 <select class="form-control" asp-for="@Model.EmployeeClient.ClientId">
                     @{
                         foreach (var item in Model.Clients)
@@ -39,7 +39,7 @@
                 <span asp-validation-for="@Model.EmployeeClient.ClientId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.EmployeeClient.EmployeeId" class="control-label">Pracownik</label>
+                <label asp-for="@Model.EmployeeClient.EmployeeId" class="control-label">Employee</label>
                 <select class="form-control" asp-for="@Model.EmployeeClient.EmployeeId">
                     @{
                         foreach (var item in Model.Employees)
@@ -51,12 +51,9 @@
                 <span asp-validation-for="@Model.EmployeeClient.EmployeeId" class="text-danger"></span>
             </div>
             <div class="btn-group">
-                <a asp-action="Meetings" class="btn btn-primary">Wstecz</a>
-                <input type="submit" value="Zatwierdź" class="btn btn-primary"/>
+                <a asp-action="Meetings" class="btn btn-primary">Return</a>
+                <input type="submit" value="Confirm" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-
-

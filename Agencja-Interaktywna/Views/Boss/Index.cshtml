@@ -3,14 +3,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h3>Witaj @ViewBag.userEmail </h3>
+<h3>Welcome @ViewBag.userEmail </h3>
 
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Logo projektu</th>
-            <th scope="col">Nazwa projektu</th>
-            <th scope="col">Podgląd</th>
+            <th scope="col">Project logo</th>
+            <th scope="col">Project name</th>
+            <th scope="col">Preview</th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +24,7 @@
                     @item.ProjectName
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-action="ProjectDetails" asp-route-id="@item.ProjectId">Podgląd</a>
+                    <a class="btn btn-primary" asp-action="ProjectDetails" asp-route-id="@item.ProjectId">Preview</a>
                 </td>
             </tr>
         }
@@ -32,5 +32,5 @@
 </table>
 
 <td>
-    <a asp-action="ProjectCreate" class="btn btn-primary">Dodaj nowy projekt</a>
+    <a asp-action="ProjectCreate" class="btn btn-primary">Add new project</a>
 </td>

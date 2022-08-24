@@ -4,14 +4,14 @@
     ViewData["Title"] = "Token";
 }
 
-<h1>Odzyskiwanie hasła</h1>
+<h1>Password recovery</h1>
 
 @if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
 {
     if (ViewBag.Message != null)
     {
         <div class="alert alert-success">
-            <strong>Sukces!</strong>@ViewBag.Message
+            <strong>Success!</strong>@ViewBag.Message
         </div>
     }
 }
@@ -24,12 +24,12 @@ else
             <form asp-action="Token">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="EmailAddress" class="control-label">Adres E-mail</label>
+                    <label asp-for="EmailAddress" class="control-label">E-mail address</label>
                     <input asp-for="EmailAddress" class="form-control" />
                     <span asp-validation-for="EmailAddress" class="text-danger"></span>
                 </div>
                 <div class="btn-group">
-                    <a asp-action="Login" class="btn btn-primary">Wstecz</a>
+                    <a asp-action="Login" class="btn btn-primary">Return</a>
                     <input type="submit" value="Wyślij" class="btn btn-primary" />
                 </div>
             </form>
@@ -38,5 +38,7 @@ else
 }
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

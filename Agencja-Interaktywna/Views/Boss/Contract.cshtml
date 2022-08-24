@@ -1,5 +1,7 @@
 ﻿@model List<Interactive_Agency.Models.ProjectPackage>
-@{ ViewData["Title"] = "Contact"; }
+@{
+    ViewData["Title"] = "Contact";
+}
 
 <h1>Contracts for the project</h1>
 
@@ -37,5 +39,4 @@
         }
     </tbody>
 </table>
-<a href="ProjectDetails" onClick="history.go(-1); return false;" class="btn btn-primary">Wstecz</a>
-
+<a href="ProjectDetails" onClick="history.go(-1); return false;" class="btn btn-primary">Return</a>

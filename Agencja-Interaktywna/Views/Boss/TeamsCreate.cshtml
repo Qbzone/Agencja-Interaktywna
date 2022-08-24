@@ -3,19 +3,19 @@
     ViewData["Title"] = "TeamCreate";
 }
 
-<h1>Tworzenie Zespołu</h1>
+<h1>Team Create</h1>
 
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-action="TeamsCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Team.TeamName" class="control-label">Nazwa</label>
+                <label asp-for="Team.TeamName" class="control-label">Team name</label>
                 <input type="text" class="form-control" asp-for="@Model.Team.TeamName" />
                 <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Employees" class="control-label">Lista pracowników</label>
+                <label asp-for="@Model.Employees" class="control-label">Employee list</label>
                 <table class="table">
                     @for (int i = 0; i < Model.Employees.Count; i++)
                     {
@@ -33,8 +33,8 @@
                 <span asp-validation-for="Employees" class="text-danger"></span>
             </div>
             <div class="btn-group">
-                <a asp-action="Teams" class="btn btn-primary">Wstecz</a>
-                <input type="submit" value="Zatwierdź" class="btn btn-primary" />
+                <a asp-action="Teams" class="btn btn-primary">Return</a>
+                <input type="submit" value="Confirm" class="btn btn-primary" />
             </div>
         </form>
     </div>

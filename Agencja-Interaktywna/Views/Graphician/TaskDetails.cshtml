@@ -3,28 +3,28 @@
     ViewData["Title"] = "TaskDetails";
 }
 
-<h1>Szczegóły Zadania</h1>
+<h1>Task Details</h1>
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="TaskDetails">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label class="control-label">Nazwa zadania: @Html.DisplayFor(model => model.ServiceIdNavigation.ServiceName)</label>
+                <label class="control-label">Task name: @Html.DisplayFor(model => model.ServiceIdNavigation.ServiceName)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Opis zadania: @Html.DisplayFor(model => model.Description)</label>
+                <label class="control-label">Task description: @Html.DisplayFor(model => model.Description)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Data rozpoczęcia zadania:  @Html.DisplayFor(model => model.AssignStart)</label>
+                <label class="control-label">Task start:  @Html.DisplayFor(model => model.AssignStart)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Termin oddania zadania:  @Html.DisplayFor(model => model.AssignEnd)</label>
+                <label class="control-label">Task end:  @Html.DisplayFor(model => model.AssignEnd)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Status zadania: @Html.DisplayFor(model => model.Status)</label>
+                <label class="control-label">Task status: @Html.DisplayFor(model => model.Status)</label>
             </div>
         </form>
     </div>
 </div>
-<a asp-action="ProjectDetails" asp-route-id="@Model.ProjectId" class="btn btn-primary">Wstecz</a>
+<a asp-action="ProjectDetails" asp-route-id="@Model.ProjectId" class="btn btn-primary">Return</a>

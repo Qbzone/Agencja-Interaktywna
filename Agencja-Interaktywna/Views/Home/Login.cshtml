@@ -4,7 +4,7 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Logowanie</h1>
+<h1>Login</h1>
 
 <hr />
 <div class="row">
@@ -12,20 +12,20 @@
         <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="EmailAddress" class="control-label">Adres E-mail</label>
+                <label asp-for="EmailAddress" class="control-label">E-mail address</label>
                 <input asp-for="EmailAddress" class="form-control" />
                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label">Hasło</label>
+                <label asp-for="Password" class="control-label">Password</label>
                 <input asp-for="Password" class="form-control" type="password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a asp-action="Token">Zapomniałeś hasła? Kliknij tutaj!</a>
+                <a asp-action="Token">Forgot your password? Click here!</a>
             </div>
             <div class="btn-group">
-                <a asp-action="Index" class="btn btn-primary">Wstecz</a>
+                <a asp-action="Index" class="btn btn-primary">Return</a>
                 <input type="submit" value="Zaloguj" class="btn btn-primary" />
             </div>
         </form>
@@ -33,5 +33,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

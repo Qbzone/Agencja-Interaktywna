@@ -2,12 +2,12 @@
 @{
     ViewData["Title"] = "ProjectDetails";
 }
-<h3>Nazwa projektu  @Html.DisplayFor(model => model.ProjectName)</h3>
+<h3>Project name  @Html.DisplayFor(model => model.ProjectName)</h3>
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Logo projektu</th>
-            <th scope="col">Akcje</th>
+            <th scope="col">Project logo</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -16,10 +16,10 @@
                 <img src="/@Model.ProjectLogo" alt="/@Model.ProjectLogo" height="100" width="100" />
             </td>
             <td>
-                <a asp-action="Team" asp-route-id="@Model.ProjectId" class="btn btn-primary">Wyświetl zespół</a>
-                <a asp-action="Contract" asp-route-id="@Model.ProjectId" class="btn btn-primary">Wyświetl umowę</a>
+                <a asp-action="Team" asp-route-id="@Model.ProjectId" class="btn btn-primary">Display team</a>
+                <a asp-action="Contract" asp-route-id="@Model.ProjectId" class="btn btn-primary">Display package</a>
             </td>
-        </tr>        
+        </tr>
     </tbody>
 </table>
-<a href="Index" onClick="history.go(-1); return false;" class="btn btn-primary">Wstecz</a>
+<a href="Index" onClick="history.go(-1); return false;" class="btn btn-primary">Return</a>

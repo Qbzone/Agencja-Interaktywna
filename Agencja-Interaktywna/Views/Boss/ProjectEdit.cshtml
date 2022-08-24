@@ -3,7 +3,7 @@
     ViewData["Title"] = "ProjectEdit";
 }
 
-<h1>Edycja projektu</h1>
+<h1>Project edit</h1>
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-action="ProjectEdit" enctype="multipart/form-data">
@@ -13,16 +13,16 @@
             <input type="hidden" asp-for="@Model.PackageId" />
             <input type="hidden" asp-for="@Model.Project.ProjectLogo" />
             <div class="form-group">
-                <label asp-for="Project.ProjectName" class="control-label">Nazwa</label>
+                <label asp-for="Project.ProjectName" class="control-label">Project name</label>
                 <input type="text" class="form-control" asp-for="@Model.Project.ProjectName" />
                 <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Project.ProjectLogo" class="control-label">Logo projektu</label>
+                <label asp-for="Project.ProjectLogo" class="control-label">Project logo</label>
                 <img src="/@Model.Project.ProjectLogo" alt="/@Model.Project.ProjectLogo" height="100" width="100" />
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Team.TeamId" class="control-label">Zespół</label>
+                <label asp-for="@Model.Team.TeamId" class="control-label">Team</label>
                 <select class="form-control" asp-for="@Model.Team.TeamId">
                     @{
                         foreach (var item in Model.Teams)
@@ -34,7 +34,7 @@
                 <span asp-validation-for="ErrorHandler4" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Project.CompanyId" class="control-label">Klient</label>
+                <label asp-for="@Model.Project.CompanyId" class="control-label">Client</label>
                 <select class="form-control" asp-for="@Model.Project.CompanyId">
                     @{
                         foreach (var item in Model.Companies)
@@ -46,7 +46,7 @@
                 <span asp-validation-for="ErrorHandler2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Package.PackageId" class="control-label">Pakiet</label>
+                <label asp-for="@Model.Package.PackageId" class="control-label">Package</label>
                 <select class="form-control" asp-for="@Model.Package.PackageId">
                     @{
                         foreach (var item in Model.Packages)
@@ -58,8 +58,8 @@
                 <span asp-validation-for="ErrorHandler3" class="text-danger"></span>
             </div>
             <div class="btn-group">
-                <a asp-action="ProjectDetails" asp-route-id="@Model.Project.ProjectId" class="btn btn-primary">Wstecz</a>
-                <input type="submit" value="Zatwierdź" class="btn btn-primary" />
+                <a asp-action="ProjectDetails" asp-route-id="@Model.Project.ProjectId" class="btn btn-primary">Retunr</a>
+                <input type="submit" value="Confirm" class="btn btn-primary" />
             </div>
         </form>
     </div>

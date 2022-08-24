@@ -4,14 +4,14 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Rejestracja</h1>
+<h1>Register</h1>
 
 @if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
 {
     if (ViewBag.Message != null)
     {
         <div class="alert alert-success">
-            <strong>Sukces!</strong>@ViewBag.Message
+            <strong>Success!</strong>@ViewBag.Message
         </div>
     }
 }
@@ -24,42 +24,42 @@ else
             <form asp-action="Register">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="EmailAddress" class="control-label">Adres E-mail</label>
+                    <label asp-for="EmailAddress" class="control-label">E-mail address</label>
                     <input asp-for="EmailAddress" class="form-control" type="email" />
                     <span asp-validation-for="EmailAddress" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Password" class="control-label">Hasło</label>
+                    <label asp-for="Password" class="control-label">Password</label>
                     <input asp-for="Password" class="form-control" type="password" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="ConfirmPassword" class="control-label">Potwierdź Hasło</label>
+                    <label asp-for="ConfirmPassword" class="control-label">Confirm password</label>
                     <input asp-for="ConfirmPassword" class="form-control" type="password" />
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="FirstName" class="control-label">Imię</label>
+                    <label asp-for="FirstName" class="control-label">First name</label>
                     <input asp-for="FirstName" class="form-control" type="text" />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="LastName" class="control-label"></label>
+                    <label asp-for="LastName" class="control-label">Last name</label>
                     <input asp-for="LastName" class="form-control" type="text" />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="PrivatePhoneNumber" class="control-label">Numer Telefonu - Prywatny</label>
+                    <label asp-for="PrivatePhoneNumber" class="control-label">Private phone number</label>
                     <input asp-for="PrivatePhoneNumber" class="form-control" type="text" />
                     <span asp-validation-for="PrivatePhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="BusinessPhoneNumber" class="control-label">Numer Telefonu - Służbowy</label>
+                    <label asp-for="BusinessPhoneNumber" class="control-label">Business phone number</label>
                     <input asp-for="BusinessPhoneNumber" class="form-control" type="text" />
                     <span asp-validation-for="BusinessPhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="btn-group">
-                    <a asp-action="Index" class="btn btn-primary">Wstecz</a>
+                    <a asp-action="Index" class="btn btn-primary">Return</a>
                     <input type="submit" value="Zarejestruj" class="btn btn-primary" />
                 </div>
             </form>
@@ -68,5 +68,7 @@ else
 }
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
