@@ -3,7 +3,7 @@
     ViewData["Title"] = "Profile";
 }
 
-<h1>Profil</h1>
+<h1>Profile</h1>
 
 <hr />
 <div class="row">
@@ -11,31 +11,31 @@
         <form asp-action="Profile">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label class="control-label">Imię: @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.FirstName)</label>
+                <label class="control-label">First name: @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.FirstName)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Nazwisko: @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.LastName)</label>
+                <label class="control-label">Last name: @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.LastName)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Numer telefonu prywatny:  @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.PrivatePhoneNumber)</label>
+                <label class="control-label">Private phone number:  @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.PrivatePhoneNumber)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Numer telefonu służbowy:  @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.BusinessPhoneNumber)</label>
+                <label class="control-label">Business phone number:  @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.BusinessPhoneNumber)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Adres e-mail: @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress)</label>
+                <label class="control-label">E-mail address: @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Stanowisko: @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.Role)</label>
+                <label class="control-label">Role: @Html.DisplayFor(model => model.EmployeeIdNavigation.EmployeeIdNavigation.Role)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Pesel: @Html.DisplayFor(model => model.EmployeeIdNavigation.PeselNumber)</label>
+                <label class="control-label">Pesel number: @Html.DisplayFor(model => model.EmployeeIdNavigation.PeselNumber)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Pensja: @Html.DisplayFor(model => model.EmployeeIdNavigation.Salary)</label>
+                <label class="control-label">Salary: @Html.DisplayFor(model => model.EmployeeIdNavigation.Salary)</label>
             </div>
             <div class="form-group">
-                <label class="control-label">Umowa: @Html.DisplayFor(model => model.ContractIdNavigation.ContractType)</label>
+                <label class="control-label">Contract: @Html.DisplayFor(model => model.ContractIdNavigation.ContractType)</label>
             </div>
         </form>
     </div>

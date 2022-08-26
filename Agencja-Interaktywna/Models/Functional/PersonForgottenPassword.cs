@@ -21,7 +21,7 @@ namespace Interactive_Agency.Models.Functional
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W]).{6,}$",
             ErrorMessage = "The password must have at least one lowercase letter, one uppercase letter, one numeric character, " +
             "one special character, and consist of at least 6 characters.")]
-        [Compare("Haslo", ErrorMessage = "Hasła muszą być takie same")]
+        [Compare("Password", ErrorMessage = "Passwords must be the same.")]
         public string ConfirmPassword { get; set; }
     }
 }

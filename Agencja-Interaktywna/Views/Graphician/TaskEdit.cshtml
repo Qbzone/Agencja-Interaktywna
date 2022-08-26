@@ -35,7 +35,7 @@
             </div>
             <div class="btn-group">
                 <a asp-action="ProjectDetails" asp-route-id="@Model.ServiceProject.ProjectId" class="btn btn-primary">Return</a>
-                <input type="submit" value="Potwierdź zmiany" class="btn btn-primary" />
+                <input type="submit" value="Confirm" class="btn btn-primary" />
                 @{
                     if (Model.ServiceProject.Status.Equals("Delay"))
                     {

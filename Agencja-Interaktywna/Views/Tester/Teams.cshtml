@@ -3,12 +3,12 @@
     ViewData["Title"] = "Teams";
 }
 
-<h1>Zespoły</h1>
+<h1>Teams</h1>
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Nazwa zespołu</th>
-            <th scope="col">Akcje</th>
+            <th scope="col">Team name</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
                     @item.TeamName
                 </td>
                 <td>
-                    <a asp-action="Team" asp-route-id="@item.TeamId" asp-route-view="@item.View" class="btn btn-primary">Wyświetl zespół</a>
+                    <a asp-action="Team" asp-route-id="@item.TeamId" asp-route-view="@item.View" class="btn btn-primary">Display team</a>
                 </td>
             </tr>
         }
