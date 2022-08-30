@@ -33,42 +33,33 @@ namespace Interactive_Agency.Controllers
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
-            var pr = await _interactiveAgencyContext.Project.ToListAsync();
+            var projects = await _interactiveAgencyContext.Project.ToListAsync();
 
-            return View(pr);
+            return View(projects);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ProjectDetails(int? id)
+        public async Task<IActionResult> ProjectDetails(int? projectId)
         {
-            if (id == null)
+            if (projectId == null)
             {
                 return NotFound();
             }
 
             var project = await _interactiveAgencyContext.Project
-            .FirstOrDefaultAsync(e => e.ProjectId == id);
-
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId);
             var tasks = await _interactiveAgencyContext.ServiceProject
-                .Include(p => p.ProjectIdNavigation)
-                .Include(z => z.ServiceIdNavigation)
-                .Where(e => e.ProjectId == id)
+                .Include(pr => pr.ProjectIdNavigation)
+                .Include(se => se.ServiceIdNavigation)
+                .Where(e => e.ProjectId == projectId)
                 .ToListAsync();
-
-            var pDM = new ProjectDetailsModel
+            var projectDetailsModel = new ProjectDetailsModel
             {
                 Project = project,
                 Services = tasks
             };
 
-            if (project == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return View(pDM);
-            }
+            return project == null ? NotFound() : View(projectDetailsModel);
         }
 
         [HttpGet]
@@ -77,55 +68,54 @@ namespace Interactive_Agency.Controllers
             var companies = from e in _interactiveAgencyContext.Company select e;
             var teams = from e in _interactiveAgencyContext.Team select e;
             var packages = from e in _interactiveAgencyContext.Package select e;
-
-            var pCM = new ProjectCreateModel
+            var projectCreateModel = new ProjectCreateModel
             {
                 Companies = await companies.ToListAsync(),
                 Teams = await teams.ToListAsync(),
                 Packages = await packages.ToListAsync()
             };
 
-            return View(pCM);
+            return View(projectCreateModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public async Task<IActionResult> ProjectCreate(ProjectCreateModel pCM)
+        public async Task<IActionResult> ProjectCreate(ProjectCreateModel projectCreateModel)
         {
             if (ModelState.IsValid)
             {
-                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(pCM.FormFile.FileName));
-                pCM.FormFile.CopyTo(new FileStream(fileName, FileMode.Create));
+                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(projectCreateModel.FormFile.FileName));
 
-                var newProjekt = new Project()
+                projectCreateModel.FormFile.CopyTo(new FileStream(fileName, FileMode.Create));
+
+                var newProject = new Project()
                 {
-                    ProjectName = pCM.Project.ProjectName,
-                    ProjectLogo = "images/" + Path.GetFileName(pCM.FormFile.FileName),
-                    CompanyId = pCM.Project.CompanyId
+                    ProjectName = projectCreateModel.Project.ProjectName,
+                    ProjectLogo = "images/" + Path.GetFileName(projectCreateModel.FormFile.FileName),
+                    CompanyId = projectCreateModel.Project.CompanyId
                 };
 
-                _interactiveAgencyContext.Add(newProjekt);
+                _interactiveAgencyContext.Add(newProject);
                 await _interactiveAgencyContext.SaveChangesAsync();
 
-                var newZP = new TeamProject()
+                var newTeamProject = new TeamProject()
                 {
-                    ProjectId = newProjekt.ProjectId,
-                    TeamId = (int)pCM.Team.TeamId,
+                    ProjectId = newProject.ProjectId,
+                    TeamId = (int)projectCreateModel.Team.TeamId,
                     AssignStart = DateTime.Now
                 };
-
-                var newPP = new ProjectPackage()
+                var newProjectPackage = new ProjectPackage()
                 {
-                    ProjectId = newProjekt.ProjectId,
-                    PackageId = (int)pCM.Package.PackageId,
+                    ProjectId = newProject.ProjectId,
+                    PackageId = (int)projectCreateModel.Package.PackageId,
                     DealStart = DateTime.Now
                 };
 
-                _interactiveAgencyContext.Add(newZP);
-                _interactiveAgencyContext.Add(newPP);
-
+                _interactiveAgencyContext.Add(newTeamProject);
+                _interactiveAgencyContext.Add(newProjectPackage);
                 await _interactiveAgencyContext.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             else if (!ModelState.IsValid)
@@ -134,41 +124,43 @@ namespace Interactive_Agency.Controllers
                 var teams = from e in _interactiveAgencyContext.Team select e;
                 var packages = from e in _interactiveAgencyContext.Package select e;
 
-                pCM.Teams = await teams.ToListAsync();
-                pCM.Packages = await packages.ToListAsync();
-                pCM.Companies = await companies.ToListAsync();
+                projectCreateModel.Teams = await teams.ToListAsync();
+                projectCreateModel.Packages = await packages.ToListAsync();
+                projectCreateModel.Companies = await companies.ToListAsync();
 
-                return View("ProjectCreate", pCM);
+                return View("ProjectCreate", projectCreateModel);
             }
-            return View(pCM);
+
+            return View(projectCreateModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ProjectEdit(int? id)
+        public async Task<IActionResult> ProjectEdit(int? projectId)
         {
-            if (id == null)
+            if (projectId == null)
             {
                 return NotFound();
             }
 
-            var project = await _interactiveAgencyContext.Project.FindAsync(id);
+            var project = await _interactiveAgencyContext.Project.FindAsync(projectId);
 
             if (project == null)
             {
                 return NotFound();
             }
 
-            var zp = await _interactiveAgencyContext.TeamProject.FirstOrDefaultAsync(x => x.ProjectId == project.ProjectId && x.AssignEnd == null);
-            var pp = await _interactiveAgencyContext.ProjectPackage.FirstOrDefaultAsync(x => x.ProjectId == project.ProjectId && x.DealEnd == null);
-            var team = await _interactiveAgencyContext.Team.FirstOrDefaultAsync(x => x.TeamId == zp.TeamId);
-            var package = await _interactiveAgencyContext.Package.FirstOrDefaultAsync(x => x.PackageId == pp.PackageId);
-            var TeamId = team.TeamId;
-            var PackageId = package.PackageId;
+            var teamProject = await _interactiveAgencyContext.TeamProject
+                .FirstOrDefaultAsync(e => e.ProjectId == project.ProjectId && e.AssignEnd == null);
+            var projectPackage = await _interactiveAgencyContext.ProjectPackage
+                .FirstOrDefaultAsync(e => e.ProjectId == project.ProjectId && e.DealEnd == null);
+            var team = await _interactiveAgencyContext.Team.FirstOrDefaultAsync(e => e.TeamId == teamProject.TeamId);
+            var package = await _interactiveAgencyContext.Package.FirstOrDefaultAsync(e => e.PackageId == projectPackage.PackageId);
+            var teamId = team.TeamId;
+            var packageId = package.PackageId;
             var companies = from e in _interactiveAgencyContext.Company select e;
             var teams = from e in _interactiveAgencyContext.Team select e;
             var packages = from e in _interactiveAgencyContext.Package select e;
-
-            var pEM = new ProjectEditModel
+            var projectEditModel = new ProjectEditModel
             {
                 Project = project,
                 Team = team,
@@ -176,123 +168,119 @@ namespace Interactive_Agency.Controllers
                 Companies = await companies.ToListAsync(),
                 Teams = await teams.ToListAsync(),
                 Packages = await packages.ToListAsync(),
-                TeamId = (int)TeamId,
-                PackageId = (int)PackageId
+                TeamId = (int)teamId,
+                PackageId = (int)packageId
             };
 
-            return View(pEM);
+            return View(projectEditModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public async Task<IActionResult> ProjectEdit(ProjectEditModel pEM)
+        public async Task<IActionResult> ProjectEdit(ProjectEditModel projectEditModel)
         {
             if (ModelState.IsValid)
             {
+                _interactiveAgencyContext.Update(projectEditModel.Project);
 
-                _interactiveAgencyContext.Update(pEM.Project);
-
-                var oldZP = await _interactiveAgencyContext.TeamProject
-                    .Where(x => x.TeamId == pEM.TeamId && x.ProjectId == pEM.Project.ProjectId && x.AssignEnd == null)
+                var oldTeamProject = await _interactiveAgencyContext.TeamProject
+                    .Where(e => e.TeamId == projectEditModel.TeamId && e.ProjectId == projectEditModel.Project.ProjectId && e.AssignEnd == null)
                     .FirstOrDefaultAsync();
-                var oldPP = await _interactiveAgencyContext.ProjectPackage
-                    .Where(x => x.PackageId == pEM.PackageId && x.ProjectId == pEM.Project.ProjectId && x.DealEnd == null)
+                var oldProjectPackage = await _interactiveAgencyContext.ProjectPackage
+                    .Where(e => e.PackageId == projectEditModel.PackageId && e.ProjectId == projectEditModel.Project.ProjectId && e.DealEnd == null)
                     .FirstOrDefaultAsync();
 
-                if (oldZP.TeamId != pEM.Team.TeamId)
+                if (oldTeamProject.TeamId != projectEditModel.Team.TeamId)
                 {
+                    oldTeamProject.AssignEnd = DateTime.Now;
 
-                    oldZP.AssignEnd = DateTime.Now;
-                    _interactiveAgencyContext.Update(oldZP);
+                    _interactiveAgencyContext.Update(oldTeamProject);
 
-                    var newZP = new TeamProject()
+                    var newTeamProject = new TeamProject()
                     {
-                        ProjectId = pEM.Project.ProjectId,
-                        TeamId = (int)pEM.Team.TeamId,
+                        ProjectId = projectEditModel.Project.ProjectId,
+                        TeamId = (int)projectEditModel.Team.TeamId,
                         AssignStart = DateTime.Now
                     };
 
-                    _interactiveAgencyContext.Add(newZP);
+                    _interactiveAgencyContext.Add(newTeamProject);
                     await _interactiveAgencyContext.SaveChangesAsync();
-
                 }
 
-                if (oldPP.PackageId != pEM.Package.PackageId)
+                if (oldProjectPackage.PackageId != projectEditModel.Package.PackageId)
                 {
+                    oldProjectPackage.DealEnd = DateTime.Now;
 
-                    oldPP.DealEnd = DateTime.Now;
-                    _interactiveAgencyContext.Update(oldPP);
+                    _interactiveAgencyContext.Update(oldProjectPackage);
 
-                    var newPP = new ProjectPackage()
+                    var newProjectPackage = new ProjectPackage()
                     {
-                        ProjectId = pEM.Project.ProjectId,
-                        PackageId = (int)pEM.Package.PackageId,
+                        ProjectId = projectEditModel.Project.ProjectId,
+                        PackageId = (int)projectEditModel.Package.PackageId,
                         DealStart = DateTime.Now
                     };
 
-                    _interactiveAgencyContext.Add(newPP);
+                    _interactiveAgencyContext.Add(newProjectPackage);
                     await _interactiveAgencyContext.SaveChangesAsync();
-
                 }
 
                 await _interactiveAgencyContext.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
 
+                return RedirectToAction(nameof(Index));
             }
             else if (!ModelState.IsValid)
             {
                 var companies = from e in _interactiveAgencyContext.Company select e;
                 var teams = from e in _interactiveAgencyContext.Team select e;
                 var packages = from e in _interactiveAgencyContext.Package select e;
-
-                var newPEM = new ProjectEditModel
+                var newProjectEditModel = new ProjectEditModel
                 {
-                    Project = pEM.Project,
-                    Team = pEM.Team,
-                    Package = pEM.Package,
+                    Project = projectEditModel.Project,
+                    Team = projectEditModel.Team,
+                    Package = projectEditModel.Package,
                     Companies = await companies.ToListAsync(),
                     Teams = await teams.ToListAsync(),
                     Packages = await packages.ToListAsync(),
-                    TeamId = (int)pEM.TeamId,
-                    PackageId = (int)pEM.PackageId
+                    TeamId = (int)projectEditModel.TeamId,
+                    PackageId = (int)projectEditModel.PackageId
                 };
-                
-                return View("ProjectEdit", newPEM);
+
+                return View("ProjectEdit", newProjectEditModel);
             }
-            return View(pEM);
+
+            return View(projectEditModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ProjectDelete(ProjectDetailsModel pDM)
+        public async Task<IActionResult> ProjectDelete(ProjectDetailsModel projectDetailsModel)
         {
-
-            foreach (TeamProject delZP in _interactiveAgencyContext.TeamProject)
+            foreach (TeamProject delTeamProject in _interactiveAgencyContext.TeamProject)
             {
-                if (delZP.ProjectId == pDM.Project.ProjectId)
+                if (delTeamProject.ProjectId == projectDetailsModel.Project.ProjectId)
                 {
-                    _interactiveAgencyContext.TeamProject.Remove(delZP);
+                    _interactiveAgencyContext.TeamProject.Remove(delTeamProject);
                 }
             }
 
-            foreach (ProjectPackage delPP in _interactiveAgencyContext.ProjectPackage)
+            foreach (ProjectPackage delProjectPackage in _interactiveAgencyContext.ProjectPackage)
             {
-                if (delPP.ProjectId == pDM.Project.ProjectId)
+                if (delProjectPackage.ProjectId == projectDetailsModel.Project.ProjectId)
                 {
-                    _interactiveAgencyContext.ProjectPackage.Remove(delPP);
+                    _interactiveAgencyContext.ProjectPackage.Remove(delProjectPackage);
                 }
             }
 
-            foreach (ServiceProject delZadP in _interactiveAgencyContext.ServiceProject)
+            foreach (ServiceProject delServiceProject in _interactiveAgencyContext.ServiceProject)
             {
-                if (delZadP.ProjectId == pDM.Project.ProjectId)
+                if (delServiceProject.ProjectId == projectDetailsModel.Project.ProjectId)
                 {
-                    _interactiveAgencyContext.ServiceProject.Remove(delZadP);
+                    _interactiveAgencyContext.ServiceProject.Remove(delServiceProject);
                 }
             }
 
-            var project = await _interactiveAgencyContext.Project.FindAsync(pDM.Project.ProjectId);
+            var project = await _interactiveAgencyContext.Project.FindAsync(projectDetailsModel.Project.ProjectId);
 
             _interactiveAgencyContext.Remove(project);
             await _interactiveAgencyContext.SaveChangesAsync();
@@ -300,12 +288,12 @@ namespace Interactive_Agency.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Contract(int? id)
+        public async Task<IActionResult> Contract(int? projectId)
         {
             var contract = await _interactiveAgencyContext.ProjectPackage
                 .Include(pr => pr.ProjectIdNavigation)
                 .Include(pa => pa.PackageIdNavigation)
-                .Where(x => x.ProjectId == id)
+                .Where(e => e.ProjectId == projectId)
                 .OrderByDescending(e => e.PackageId)
                 .ToListAsync();
 
@@ -315,10 +303,10 @@ namespace Interactive_Agency.Controllers
         public async Task<IActionResult> Meetings()
         {
             var meetings = await _interactiveAgencyContext.EmployeeClient
-                .Include(k => k.ClientIdNavigation)
-                    .ThenInclude(o => o.ClientIdNavigation)
-                .Include(p => p.EmployeeIdNavigation)
-                    .ThenInclude(po => po.EmployeeIdNavigation)
+                .Include(cl => cl.ClientIdNavigation)
+                    .ThenInclude(cli => cli.ClientIdNavigation)
+                .Include(em => em.EmployeeIdNavigation)
+                    .ThenInclude(emp => emp.EmployeeIdNavigation)
                 .ToListAsync();
 
             return View(meetings);
@@ -327,31 +315,30 @@ namespace Interactive_Agency.Controllers
         [HttpGet]
         public async Task<IActionResult> MeetingsCreate()
         {
-            var clients = await _interactiveAgencyContext.Client.Include(o => o.ClientIdNavigation).ToListAsync();
-            var employees = await _interactiveAgencyContext.Employee.Include(o => o.EmployeeIdNavigation).ToListAsync();
-
-            var mCM = new MeetingCreateModel
+            var clients = await _interactiveAgencyContext.Client.Include(cl => cl.ClientIdNavigation).ToListAsync();
+            var employees = await _interactiveAgencyContext.Employee.Include(em => em.EmployeeIdNavigation).ToListAsync();
+            var meetingCreateModel = new MeetingCreateModel
             {
                 Clients = clients,
                 Employees = employees
             };
 
-            return View(mCM);
+            return View(meetingCreateModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MeetingsCreate(MeetingCreateModel mCM)
+        public async Task<IActionResult> MeetingsCreate(MeetingCreateModel meetingCreateModel)
         {
             if (ModelState.IsValid)
             {
                 var newMeeting = new EmployeeClient()
                 {
-                    MeetingLocation = mCM.EmployeeClient.MeetingLocation,
-                    MeetingStart = mCM.EmployeeClient.MeetingStart,
-                    MeetingEnd = mCM.EmployeeClient.MeetingEnd,
-                    EmployeeId = mCM.EmployeeClient.EmployeeId,
-                    ClientId = mCM.EmployeeClient.ClientId
+                    MeetingLocation = meetingCreateModel.EmployeeClient.MeetingLocation,
+                    MeetingStart = meetingCreateModel.EmployeeClient.MeetingStart,
+                    MeetingEnd = meetingCreateModel.EmployeeClient.MeetingEnd,
+                    EmployeeId = meetingCreateModel.EmployeeClient.EmployeeId,
+                    ClientId = meetingCreateModel.EmployeeClient.ClientId
                 };
 
                 _interactiveAgencyContext.Add(newMeeting);
@@ -361,40 +348,40 @@ namespace Interactive_Agency.Controllers
             }
             else if (!ModelState.IsValid)
             {
-                var clients = await _interactiveAgencyContext.Client.Include(o => o.ClientIdNavigation).ToListAsync();
-                var employees = await _interactiveAgencyContext.Employee.Include(o => o.EmployeeIdNavigation).ToListAsync();
-
-                var newMCM = new MeetingCreateModel
+                var clients = await _interactiveAgencyContext.Client.Include(cl => cl.ClientIdNavigation).ToListAsync();
+                var employees = await _interactiveAgencyContext.Employee.Include(em => em.EmployeeIdNavigation).ToListAsync();
+                var newMeetingCreateModel = new MeetingCreateModel
                 {
                     Clients = clients,
                     Employees = employees
                 };
-                
-                return View("MeetingsCreate", newMCM);
+
+                return View("MeetingsCreate", newMeetingCreateModel);
             }
-            return View(mCM);
+
+            return View(meetingCreateModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> MeetingsEdit(int? id1, int? id2, string data)
+        public async Task<IActionResult> MeetingsEdit(int? clientId, int? employeeId, string date)
         {
-            if (id1 == null)
+            if (clientId == null)
             {
                 return NotFound();
             }
 
-            var fromDateAsDateTime = DateTime.Parse(data);
-            var meeting = await _interactiveAgencyContext.EmployeeClient.FirstOrDefaultAsync(x => x.ClientId == id1 & x.EmployeeId == id2 
-                & x.MeetingStart == fromDateAsDateTime);
+            var fromDateAsDateTime = DateTime.Parse(date);
+            var meeting = await _interactiveAgencyContext.EmployeeClient
+                .FirstOrDefaultAsync(x => x.ClientId == clientId & x.EmployeeId == employeeId & x.MeetingStart == fromDateAsDateTime);
+
             if (meeting == null)
             {
                 return NotFound();
             }
 
-            var clients = await _interactiveAgencyContext.Client.Include(o => o.ClientIdNavigation).ToListAsync();
-            var employees = await _interactiveAgencyContext.Employee.Include(o => o.EmployeeIdNavigation).ToListAsync();
-
-            var mEM = new MeetingEditModel
+            var clients = await _interactiveAgencyContext.Client.Include(cl => cl.ClientIdNavigation).ToListAsync();
+            var employees = await _interactiveAgencyContext.Employee.Include(em => em.EmployeeIdNavigation).ToListAsync();
+            var meetingEditModel = new MeetingEditModel
             {
                 EmployeeClient = meeting,
                 EmployeeId = (int)meeting.EmployeeId,
@@ -404,74 +391,76 @@ namespace Interactive_Agency.Controllers
                 Employees = employees
             };
 
-            return View(mEM);
+            return View(meetingEditModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MeetingsEdit(MeetingEditModel mEM)
+        public async Task<IActionResult> MeetingsEdit(MeetingEditModel meetingEditModel)
         {
             if (ModelState.IsValid)
             {
-                var oldPK = await _interactiveAgencyContext.EmployeeClient
-                    .Where(x => x.EmployeeId == mEM.EmployeeId && x.ClientId == mEM.ClientId && x.MeetingStart == mEM.MeetingStart)
+                var oldEmployeeClient = await _interactiveAgencyContext.EmployeeClient
+                    .Where(e => e.EmployeeId == meetingEditModel.EmployeeId && e.ClientId == meetingEditModel.ClientId
+                        && e.MeetingStart == meetingEditModel.MeetingStart)
                     .FirstOrDefaultAsync();
 
-                if (mEM.EmployeeClient.EmployeeId != oldPK.EmployeeId || mEM.EmployeeClient.ClientId != oldPK.ClientId || mEM.EmployeeClient.MeetingStart != oldPK.MeetingStart)
+                if (meetingEditModel.EmployeeClient.EmployeeId != oldEmployeeClient.EmployeeId
+                        || meetingEditModel.EmployeeClient.ClientId != oldEmployeeClient.ClientId
+                        || meetingEditModel.EmployeeClient.MeetingStart != oldEmployeeClient.MeetingStart)
                 {
-                    _interactiveAgencyContext.Remove(oldPK);
+                    _interactiveAgencyContext.Remove(oldEmployeeClient);
 
-                    var newPK = new EmployeeClient()
+                    var newEmployeeClient = new EmployeeClient()
                     {
-                        MeetingLocation = mEM.EmployeeClient.MeetingLocation,
-                        MeetingStart = mEM.EmployeeClient.MeetingStart,
-                        MeetingEnd = mEM.EmployeeClient.MeetingEnd,
-                        EmployeeId = mEM.EmployeeClient.EmployeeId,
-                        ClientId = mEM.EmployeeClient.ClientId
+                        MeetingLocation = meetingEditModel.EmployeeClient.MeetingLocation,
+                        MeetingStart = meetingEditModel.EmployeeClient.MeetingStart,
+                        MeetingEnd = meetingEditModel.EmployeeClient.MeetingEnd,
+                        EmployeeId = meetingEditModel.EmployeeClient.EmployeeId,
+                        ClientId = meetingEditModel.EmployeeClient.ClientId
                     };
 
-                    _interactiveAgencyContext.Add(newPK);
+                    _interactiveAgencyContext.Add(newEmployeeClient);
                     await _interactiveAgencyContext.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Meetings));
                 }
                 else
                 {
-                    _interactiveAgencyContext.Entry(oldPK).State = EntityState.Detached;
-                    _interactiveAgencyContext.Update(mEM.EmployeeClient);
+                    _interactiveAgencyContext.Entry(oldEmployeeClient).State = EntityState.Detached;
+                    _interactiveAgencyContext.Update(meetingEditModel.EmployeeClient);
                     await _interactiveAgencyContext.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Meetings));
                 }
-
             }
             else if (!ModelState.IsValid)
             {
-
-                var clients = await _interactiveAgencyContext.Client.Include(o => o.ClientIdNavigation).ToListAsync();
-                var employees = await _interactiveAgencyContext.Employee.Include(o => o.EmployeeIdNavigation).ToListAsync();
-
-                var newMEM = new MeetingEditModel
+                var clients = await _interactiveAgencyContext.Client.Include(cl => cl.ClientIdNavigation).ToListAsync();
+                var employees = await _interactiveAgencyContext.Employee.Include(em => em.EmployeeIdNavigation).ToListAsync();
+                var newMeetingEditModel = new MeetingEditModel
                 {
-                    EmployeeClient = mEM.EmployeeClient,
-                    EmployeeId = (int)mEM.EmployeeId,
-                    ClientId = (int)mEM.ClientId,
-                    MeetingStart = (DateTime)mEM.MeetingStart,
+                    EmployeeClient = meetingEditModel.EmployeeClient,
+                    EmployeeId = (int)meetingEditModel.EmployeeId,
+                    ClientId = (int)meetingEditModel.ClientId,
+                    MeetingStart = (DateTime)meetingEditModel.MeetingStart,
                     Clients = clients,
                     Employees = employees
                 };
-                
-                return View("MeetingsEdit", newMEM);
+
+                return View("MeetingsEdit", newMeetingEditModel);
             }
-            return View(mEM);
+
+            return View(meetingEditModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MeetingsDelete(int? id1, int? id2, string data)
+        public async Task<IActionResult> MeetingsDelete(int? clientId, int? employeeId, string date)
         {
-            var fromDateAsDateTime = DateTime.Parse(data);
-            var meeting = await _interactiveAgencyContext.EmployeeClient.FirstOrDefaultAsync(x => x.ClientId == id1 & x.EmployeeId == id2 & x.MeetingStart == fromDateAsDateTime);
+            var fromDateAsDateTime = DateTime.Parse(date);
+            var meeting = await _interactiveAgencyContext.EmployeeClient
+                .FirstOrDefaultAsync(x => x.ClientId == clientId & x.EmployeeId == employeeId & x.MeetingStart == fromDateAsDateTime);
 
             _interactiveAgencyContext.Remove(meeting);
             await _interactiveAgencyContext.SaveChangesAsync();
@@ -482,18 +471,11 @@ namespace Interactive_Agency.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var sz = await _interactiveAgencyContext.Employee
-                .Include(o => o.EmployeeIdNavigation)
-                .FirstOrDefaultAsync(i => i.EmployeeIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+            var boss = await _interactiveAgencyContext.Employee
+                .Include(em => em.EmployeeIdNavigation)
+                .FirstOrDefaultAsync(e => e.EmployeeIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
 
-            if (sz == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return View(sz);
-            }
+            return boss == null ? NotFound() : View(boss);
         }
 
         [HttpGet]
@@ -505,85 +487,81 @@ namespace Interactive_Agency.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Team(int? id, string view)
+        public async Task<IActionResult> Team(int? teamId, string view)
         {
             if (view.Equals("Project"))
             {
                 var team = await _interactiveAgencyContext.TeamProject
-                    .Include(p => p.ProjectIdNavigation)
-                    .Include(z => z.TeamIdNavigation)
-                    .FirstOrDefaultAsync(x => x.ProjectId == id && x.AssignEnd == null);
-
-
+                    .Include(pr => pr.ProjectIdNavigation)
+                    .Include(te => te.TeamIdNavigation)
+                    .FirstOrDefaultAsync(e => e.ProjectId == teamId && e.AssignEnd == null);
                 var members = await _interactiveAgencyContext.EmployeeTeam
-                    .Include(z => z.TeamIdNavigation)
-                    .Include(p => p.EmployeeIdNavigation)
-                        .ThenInclude(o => o.EmployeeIdNavigation)
-                        .Where(x => x.TeamId == team.TeamId)
+                    .Include(te => te.TeamIdNavigation)
+                    .Include(em => em.EmployeeIdNavigation)
+                        .ThenInclude(emp => emp.EmployeeIdNavigation)
+                        .Where(e => e.TeamId == team.TeamId)
                         .ToListAsync();
+
                 return View(members);
             }
             else if (view.Equals("Teams"))
             {
                 var members = await _interactiveAgencyContext.EmployeeTeam
-                    .Include(z => z.TeamIdNavigation)
-                    .Include(p => p.EmployeeIdNavigation)
-                        .ThenInclude(o => o.EmployeeIdNavigation)
-                        .Where(x => x.TeamId == id)
+                    .Include(te => te.TeamIdNavigation)
+                    .Include(em => em.EmployeeIdNavigation)
+                        .ThenInclude(emp => emp.EmployeeIdNavigation)
+                        .Where(e => e.TeamId == teamId)
                         .ToListAsync();
+
                 return View(members);
             }
 
             return NotFound();
-
         }
 
         [HttpGet]
         public async Task<IActionResult> TeamsCreate()
         {
             var employee = await _interactiveAgencyContext.Employee
-                .Include(o => o.EmployeeIdNavigation)
-                .Select(x => new SelectListItem()
+                .Include(em => em.EmployeeIdNavigation)
+                .Select(e => new SelectListItem()
                 {
-                    Text = x.EmployeeIdNavigation.EmailAddress,
-                    Value = x.EmployeeId.ToString()
+                    Text = e.EmployeeIdNavigation.EmailAddress,
+                    Value = e.EmployeeId.ToString()
                 }).ToListAsync();
-
-            var tCM = new TeamCreateModel
+            var teamCreateModel = new TeamCreateModel
             {
                 Employees = employee
             };
 
-            return View(tCM);
+            return View(teamCreateModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TeamsCreate(TeamCreateModel tCM)
+        public async Task<IActionResult> TeamsCreate(TeamCreateModel teamCreateModel)
         {
-
             if (ModelState.IsValid)
             {
                 var newTeam = new Team()
                 {
-                    TeamName = tCM.Team.TeamName
+                    TeamName = teamCreateModel.Team.TeamName
                 };
+                var employeeIds = teamCreateModel.Employees.Where(e => e.Selected).Select(f => f.Value);
 
-                var employeeIds = tCM.Employees.Where(x => x.Selected).Select(y => y.Value);
-
-                if (employeeIds.Count() == 0)
+                if (!employeeIds.Any())
                 {
                     var employees = await _interactiveAgencyContext.Employee
-                        .Include(o => o.EmployeeIdNavigation)
-                        .Select(x => new SelectListItem()
+                        .Include(em => em.EmployeeIdNavigation)
+                        .Select(e => new SelectListItem()
                         {
-                            Text = x.EmployeeIdNavigation.EmailAddress,
-                            Value = x.EmployeeId.ToString()
+                            Text = e.EmployeeIdNavigation.EmailAddress,
+                            Value = e.EmployeeId.ToString()
                         }).ToListAsync();
 
-                    tCM.Employees = employees;
+                    teamCreateModel.Employees = employees;
 
-                    return View("TeamsCreate", tCM);
+                    return View("TeamsCreate", teamCreateModel);
                 }
 
                 _interactiveAgencyContext.Add(newTeam);
@@ -591,51 +569,53 @@ namespace Interactive_Agency.Controllers
 
                 foreach (var id in employeeIds)
                 {
-                    var PZ = new EmployeeTeam()
+                    var employeeTeam = new EmployeeTeam()
                     {
                         EmployeeId = int.Parse(id),
                         TeamId = (int)newTeam.TeamId,
                         AssignStart = DateTime.Now
                     };
-                    _interactiveAgencyContext.Add(PZ);
+
+                    _interactiveAgencyContext.Add(employeeTeam);
                 }
 
                 await _interactiveAgencyContext.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Teams));
             }
             else if (!ModelState.IsValid)
             {
                 var employees = await _interactiveAgencyContext.Employee
-                .Include(o => o.EmployeeIdNavigation)
-                .Select(x => new SelectListItem()
-                {
-                    Text = x.EmployeeIdNavigation.EmailAddress,
-                    Value = x.EmployeeId.ToString()
-                }).ToListAsync();
+                    .Include(em => em.EmployeeIdNavigation)
+                    .Select(e => new SelectListItem()
+                    {
+                        Text = e.EmployeeIdNavigation.EmailAddress,
+                        Value = e.EmployeeId.ToString()
+                    }).ToListAsync();
 
-                var newTCM = new TeamCreateModel
+                var newTeamCreateModel = new TeamCreateModel
                 {
                     Employees = employees
                 };
 
-                return View("TeamsCreate", newTCM);
+                return View("TeamsCreate", newTeamCreateModel);
             }
-            return View(tCM);
+
+            return View(teamCreateModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> TeamsEdit(int? id)
+        public async Task<IActionResult> TeamsEdit(int? teamId)
         {
-            if (id == null)
+            if (teamId == null)
             {
                 return NotFound();
             }
 
-
             var team = await _interactiveAgencyContext.Team
-                .Include(z => z.EmployeeTeam)
-                .ThenInclude(p => p.EmployeeIdNavigation).AsNoTracking()
-                .SingleOrDefaultAsync(z => z.TeamId == id);
+                .Include(et => et.EmployeeTeam)
+                    .ThenInclude(em => em.EmployeeIdNavigation).AsNoTracking()
+                .SingleOrDefaultAsync(e => e.TeamId == teamId);
 
             if (team == null)
             {
@@ -643,103 +623,109 @@ namespace Interactive_Agency.Controllers
             }
 
             var allEmployees = await _interactiveAgencyContext.Employee
-                .Include(o => o.EmployeeIdNavigation)
-                .Select(x => new CheckBoxItem()
+                .Include(em => em.EmployeeIdNavigation)
+                .Select(e => new CheckBoxItem()
                 {
-                    Id = x.EmployeeId,
-                    Name = x.EmployeeIdNavigation.EmailAddress,
-                    IsChecked = x.EmployeeTeam.Any(x => x.TeamId == team.TeamId) ? true : false
+                    Id = e.EmployeeId,
+                    Name = e.EmployeeIdNavigation.EmailAddress,
+                    IsChecked = e.EmployeeTeam.Any(x => x.TeamId == team.TeamId)
                 }).ToListAsync();
 
-            var tEM = new TeamEditModel()
+            var teamEditModel = new TeamEditModel()
             {
                 Team = team,
                 Employees = allEmployees,
             };
 
-            return View(tEM);
+            return View(teamEditModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TeamsEdit(TeamEditModel tEM)
+        public async Task<IActionResult> TeamsEdit(TeamEditModel teamEditModel)
         {
             if (ModelState.IsValid)
             {
-                _interactiveAgencyContext.Update(tEM.Team);
+                _interactiveAgencyContext.Update(teamEditModel.Team);
+
                 List<EmployeeTeam> employeeList = new List<EmployeeTeam>();
 
-                foreach (var item in tEM.Employees)
+                foreach (var item in teamEditModel.Employees)
                 {
                     if (item.IsChecked == true)
                     {
-                        var PZ = new EmployeeTeam()
+                        var employeeTeam = new EmployeeTeam()
                         {
                             EmployeeId = item.Id,
-                            TeamId = (int)tEM.Team.TeamId,
+                            TeamId = (int)teamEditModel.Team.TeamId,
                             AssignStart = DateTime.Now
                         };
-                        _interactiveAgencyContext.Add(PZ);
+
+                        _interactiveAgencyContext.Add(employeeTeam);
                     }
                 }
 
-                var dt = await _interactiveAgencyContext.EmployeeTeam.Where(x => x.TeamId == tEM.Team.TeamId).ToListAsync();
-                foreach (var item in dt)
+                var delEmployee = await _interactiveAgencyContext.EmployeeTeam.Where(e => e.TeamId == teamEditModel.Team.TeamId).ToListAsync();
+
+                foreach (var item in delEmployee)
                 {
                     _interactiveAgencyContext.EmployeeTeam.Remove(item);
                     await _interactiveAgencyContext.SaveChangesAsync();
                 }
 
-                var idS = await _interactiveAgencyContext.EmployeeTeam.Where(x => x.TeamId == tEM.Team.TeamId).ToListAsync();
+                var addEmployee = await _interactiveAgencyContext.EmployeeTeam.Where(e => e.TeamId == teamEditModel.Team.TeamId).ToListAsync();
+
                 foreach (var item in employeeList)
                 {
-                    if (idS.Contains(item))
+                    if (addEmployee.Contains(item))
                     {
                         _interactiveAgencyContext.EmployeeTeam.Add(item);
                         await _interactiveAgencyContext.SaveChangesAsync();
                     }
                 }
+
                 await _interactiveAgencyContext.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Teams));
             }
 
             else if (!ModelState.IsValid)
             {
                 var allEmployees = await _interactiveAgencyContext.Employee
-                .Include(o => o.EmployeeIdNavigation)
-                .Select(x => new CheckBoxItem()
+                    .Include(em => em.EmployeeIdNavigation)
+                    .Select(e => new CheckBoxItem()
+                    {
+                        Id = e.EmployeeId,
+                        Name = e.EmployeeIdNavigation.EmailAddress,
+                        IsChecked = e.EmployeeTeam.Any(f => f.TeamId == teamEditModel.Team.TeamId)
+                    }).ToListAsync();
+                var newTeamEditModel = new TeamEditModel()
                 {
-                    Id = x.EmployeeId,
-                    Name = x.EmployeeIdNavigation.EmailAddress,
-                    IsChecked = x.EmployeeTeam.Any(x => x.TeamId == tEM.Team.TeamId) ? true : false
-                }).ToListAsync();
-
-                var newTEM = new TeamEditModel()
-                {
-                    Team = tEM.Team,
+                    Team = teamEditModel.Team,
                     Employees = allEmployees,
                 };
 
-                return View("TeamsEdit", newTEM);
+                return View("TeamsEdit", newTeamEditModel);
             }
-            return View(tEM);
+
+            return View(teamEditModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TeamsDelete(int? id)
+        public async Task<IActionResult> TeamsDelete(int? teamId)
         {
-            foreach (var delPZ in _interactiveAgencyContext.EmployeeTeam)
+            foreach (var delEmployee in _interactiveAgencyContext.EmployeeTeam)
             {
-                if (delPZ.TeamId == id)
+                if (delEmployee.TeamId == teamId)
                 {
-                    _interactiveAgencyContext.EmployeeTeam.Remove(delPZ);
+                    _interactiveAgencyContext.EmployeeTeam.Remove(delEmployee);
                 }
             }
 
-            var zespol = await _interactiveAgencyContext.Team.FindAsync(id);
+            var team = await _interactiveAgencyContext.Team.FindAsync(teamId);
 
-            _interactiveAgencyContext.Remove(zespol);
+            _interactiveAgencyContext.Remove(team);
             await _interactiveAgencyContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Teams));
@@ -751,17 +737,17 @@ namespace Interactive_Agency.Controllers
             return View();
         }
 
-        public async Task<IActionResult> TaskDetails(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskDetails(int? projectId, int? serviceId, string date)
         {
-            if (id1 == null)
+            if (projectId == null)
             {
                 return NotFound();
             }
 
-            var fromDateAsDateTime = DateTime.Parse(data);
+            var fromDateAsDateTime = DateTime.Parse(date);
             var serviceProject = await _interactiveAgencyContext.ServiceProject
-                .Include(x => x.ServiceIdNavigation)
-                .FirstOrDefaultAsync(x => x.ProjectId == id1 & x.ServiceId == id2 & x.AssignStart == fromDateAsDateTime);
+                .Include(se => se.ServiceIdNavigation)
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId & e.ServiceId == serviceId & e.AssignStart == fromDateAsDateTime);
 
             if (serviceProject == null)
             {
@@ -772,138 +758,159 @@ namespace Interactive_Agency.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> TaskCreate(int? id)
+        public async Task<IActionResult> TaskCreate(int? projectId)
         {
-            var package = await _interactiveAgencyContext.ProjectPackage.FirstOrDefaultAsync(x => x.ProjectId == id && x.DealEnd == null);
-            var pU = await _interactiveAgencyContext.PackageService.Where(x => x.PackageId == package.PackageId).Include(u => u.ServiceIdNavigation).ToListAsync();
-            List<Service> services = new List<Service>();
-            foreach (var item in pU)
+            var projectPackage = await _interactiveAgencyContext.ProjectPackage
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId && e.DealEnd == null);
+            var packageServices = await _interactiveAgencyContext.PackageService
+                .Where(e => e.PackageId == projectPackage.PackageId)
+                .Include(se => se.ServiceIdNavigation)
+                .ToListAsync();
+
+            List<Service> tasks = new List<Service>();
+
+            foreach (var item in packageServices)
             {
-                services.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(x => x.ServiceId == item.ServiceId));
+                tasks.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(e => e.ServiceId == item.ServiceId));
             }
 
-            var project = await _interactiveAgencyContext.Project.FindAsync(id);
-
-            var tCM = new TaskCreateModel
+            var project = await _interactiveAgencyContext.Project.FindAsync(projectId);
+            var taskCreateModel = new TaskCreateModel
             {
-                Services = services,
+                Services = tasks,
                 Project = project
             };
 
-            return View(tCM);
+            return View(taskCreateModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TaskCreate(TaskCreateModel tCM)
+        public async Task<IActionResult> TaskCreate(TaskCreateModel taskCreateModel)
         {
             if (ModelState.IsValid)
             {
                 var newTask = new ServiceProject()
                 {
-                    ProjectId = tCM.Project.ProjectId,
-                    ServiceId = tCM.ServiceProject.ServiceId,
-                    Description = tCM.ServiceProject.Description,
-                    AssignStart = tCM.ServiceProject.AssignStart,
-                    AssignEnd = tCM.ServiceProject.AssignEnd,
-                    Status = tCM.ServiceProject.Status
+                    ProjectId = taskCreateModel.Project.ProjectId,
+                    ServiceId = taskCreateModel.ServiceProject.ServiceId,
+                    Description = taskCreateModel.ServiceProject.Description,
+                    AssignStart = taskCreateModel.ServiceProject.AssignStart,
+                    AssignEnd = taskCreateModel.ServiceProject.AssignEnd,
+                    Status = taskCreateModel.ServiceProject.Status
                 };
 
                 _interactiveAgencyContext.Add(newTask);
                 await _interactiveAgencyContext.SaveChangesAsync();
 
-                return RedirectToAction("ProjectDetails", new { id = tCM.Project.ProjectId });
+                return RedirectToAction("ProjectDetails", new { projectId = taskCreateModel.Project.ProjectId });
             }
             else if (!ModelState.IsValid)
             {
-                var package = await _interactiveAgencyContext.ProjectPackage.FirstOrDefaultAsync(x => x.ProjectId == tCM.Project.ProjectId && x.DealEnd == null);
-                var pU = await _interactiveAgencyContext.PackageService.Where(x => x.PackageId == package.PackageId).Include(u => u.ServiceIdNavigation).ToListAsync();
+                var projectPackage = await _interactiveAgencyContext.ProjectPackage
+                    .FirstOrDefaultAsync(e => e.ProjectId == taskCreateModel.Project.ProjectId && e.DealEnd == null);
+                var packageServices = await _interactiveAgencyContext.PackageService
+                    .Where(e => e.PackageId == projectPackage.PackageId)
+                    .Include(se => se.ServiceIdNavigation)
+                    .ToListAsync();
+
                 List<Service> services = new List<Service>();
 
-                foreach (var item in pU)
+                foreach (var item in packageServices)
                 {
-                    services.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(x => x.ServiceId == item.ServiceId));
+                    services.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(e => e.ServiceId == item.ServiceId));
                 }
 
-                var newTCM = new TaskCreateModel
+                var newTaskCreateModel = new TaskCreateModel
                 {
                     Services = services,
-                    Project = tCM.Project
+                    Project = taskCreateModel.Project
                 };
 
-                return View("TaskCreate", newTCM);
+                return View("TaskCreate", newTaskCreateModel);
             }
-            return View(tCM);
+
+            return View(taskCreateModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> TaskEdit(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskEdit(int? projectId, int? serviceId, string date)
         {
-            if (id1 == null)
+            if (projectId == null)
             {
                 return NotFound();
             }
 
-            var fromDateAsDateTime = DateTime.Parse(data);
-            var serviceProject = await _interactiveAgencyContext.ServiceProject.FirstOrDefaultAsync(x => x.ProjectId == id1 & x.ServiceId == id2 & x.AssignStart == fromDateAsDateTime);
+            var fromDateAsDateTime = DateTime.Parse(date);
+            var serviceProject = await _interactiveAgencyContext.ServiceProject
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId & e.ServiceId == serviceId & e.AssignStart == fromDateAsDateTime);
+
             if (serviceProject == null)
             {
                 return NotFound();
             }
 
-            var package = await _interactiveAgencyContext.ProjectPackage.FirstOrDefaultAsync(x => x.ProjectId == id1 && x.DealEnd == null);
-            var pU = await _interactiveAgencyContext.PackageService.Where(x => x.PackageId == package.PackageId).Include(u => u.ServiceIdNavigation).ToListAsync();
+            var projectPackage = await _interactiveAgencyContext.ProjectPackage
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId && e.DealEnd == null);
+            var packageServices = await _interactiveAgencyContext.PackageService
+                .Where(e => e.PackageId == projectPackage.PackageId)
+                .Include(se => se.ServiceIdNavigation)
+                .ToListAsync();
+
             List<Service> services = new List<Service>();
-            foreach (var item in pU)
+
+            foreach (var item in packageServices)
             {
-                services.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(x => x.ServiceId == item.ServiceId));
+                services.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(e => e.ServiceId == item.ServiceId));
             }
 
-            var tEM = new TaskEditModel
+            var taskEditModel = new TaskEditModel
             {
                 ServiceProject = serviceProject,
                 Services = services
             };
 
-            return View(tEM);
+            return View(taskEditModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TaskEdit(TaskEditModel tEM)
+        public async Task<IActionResult> TaskEdit(TaskEditModel taskEditModel)
         {
             if (ModelState.IsValid)
             {
-                _interactiveAgencyContext.Update(tEM.ServiceProject);
+                _interactiveAgencyContext.Update(taskEditModel.ServiceProject);
                 await _interactiveAgencyContext.SaveChangesAsync();
 
-                return RedirectToAction("ProjectDetails", new { id = tEM.ServiceProject.ProjectId });
-
+                return RedirectToAction("ProjectDetails", new { projectId = taskEditModel.ServiceProject.ProjectId });
             }
             else if (!ModelState.IsValid)
             {
-                return View("TaskEdit", tEM);
+                return View("TaskEdit", taskEditModel);
             }
-            return View(tEM);
+
+            return View(taskEditModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TaskDelete(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskDelete(int? projectId, int? serviceId, string date)
         {
-            var fromDateAsDateTime = DateTime.Parse(data);
-            var task = await _interactiveAgencyContext.ServiceProject.FirstOrDefaultAsync(x => x.ProjectId == id1 & x.ServiceId == id2 & x.AssignStart == fromDateAsDateTime);
+            var fromDateAsDateTime = DateTime.Parse(date);
+            var task = await _interactiveAgencyContext.ServiceProject
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId & e.ServiceId == serviceId & e.AssignStart == fromDateAsDateTime);
 
             _interactiveAgencyContext.Remove(task);
             await _interactiveAgencyContext.SaveChangesAsync();
 
-            return RedirectToAction("ProjectDetails", new { id = id1 });
+            return RedirectToAction("ProjectDetails", new { projectId = projectId });
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Index", "Home");
         }
     }

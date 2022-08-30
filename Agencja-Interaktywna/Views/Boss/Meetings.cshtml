@@ -36,11 +36,11 @@
                     @item.ClientIdNavigation.ClientIdNavigation.LastName
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-action="MeetingsEdit" asp-route-id1="@item.ClientId" asp-route-id2="@item.EmployeeId"
-                   asp-route-data="@item.MeetingStart">Edit</a>
+                    <a class="btn btn-primary" asp-action="MeetingsEdit" asp-route-clientId="@item.ClientId" asp-route-employeeId="@item.EmployeeId"
+                   asp-route-date="@item.MeetingStart">Edit</a>
                 </td>
                 <td>
-                    <form asp-action="MeetingsDelete" asp-route-id1="@item.ClientId" asp-route-id2="@item.EmployeeId" asp-route-data="@item.MeetingStart"
+                    <form asp-action="MeetingsDelete" asp-route-clientId="@item.ClientId" asp-route-employeeId="@item.EmployeeId" asp-route-date="@item.MeetingStart"
                       onclick="return confirm('Are you sure you want to delete the selected meeting?')">
                         <input type="submit" value="Delete" class="btn btn-primary" />
                     </form>

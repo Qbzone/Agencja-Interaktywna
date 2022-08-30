@@ -22,9 +22,9 @@
                 <img src="/@Model.Project.ProjectLogo" alt="/@Model.Project.ProjectLogo" height="100" width="100" />
             </td>
             <td>
-                <a asp-action="Team" asp-route-id="@Model.Project.ProjectId" asp-route-view="@View" class="btn btn-primary">Display team</a>
-                <a asp-action="Contract" asp-route-id="@Model.Project.ProjectId" class="btn btn-primary">Display package</a>
-                <a asp-action="ProjectEdit" asp-route-id="@Model.Project.ProjectId" class="btn btn-primary">Edit project</a>
+                <a asp-action="Team" asp-route-teamId="@Model.Project.ProjectId" asp-route-view="@View" class="btn btn-primary">Display team</a>
+                <a asp-action="Contract" asp-route-projectId="@Model.Project.ProjectId" class="btn btn-primary">Display package</a>
+                <a asp-action="ProjectEdit" asp-route-projectId="@Model.Project.ProjectId" class="btn btn-primary">Edit project</a>
             </td>
             <td>
                 <form asp-action="ProjectDelete" onclick="return confirm('Are you sure you want to delete the selected project?')">
@@ -61,14 +61,14 @@
                     @item.Status
                 </td>
                 <td>
-                    <a asp-action="TaskDetails" asp-route-id1="@Model.Project.ProjectId" asp-route-id2="@item.ServiceId"
-                   asp-route-data="@item.AssignStart" class="btn btn-primary">Details</a>
-                    <a asp-action="TaskEdit" asp-route-id1="@Model.Project.ProjectId" asp-route-id2="@item.ServiceId"
-                   asp-route-data="@item.AssignStart" class="btn btn-primary">Edit</a>
+                    <a asp-action="TaskDetails" asp-route-projectId="@Model.Project.ProjectId" asp-route-serviceId="@item.ServiceId"
+                   asp-route-date="@item.AssignStart" class="btn btn-primary">Details</a>
+                    <a asp-action="TaskEdit" asp-route-projectId="@Model.Project.ProjectId" asp-route-serviceId="@item.ServiceId"
+                   asp-route-date="@item.AssignStart" class="btn btn-primary">Edit</a>
                 </td>
                 <td>
-                    <form asp-action="TaskDelete" asp-route-id1="@Model.Project.ProjectId" asp-route-id2="@item.ServiceId"
-                      asp-route-data="@item.AssignStart" onclick="return confirm('Are you sure you want to delete the selected task?')">
+                    <form asp-action="TaskDelete" asp-route-projectId="@Model.Project.ProjectId" asp-route-serviceId="@item.ServiceId"
+                      asp-route-date="@item.AssignStart" onclick="return confirm('Are you sure you want to delete the selected task?')">
                         <input type="submit" value="Delete" class="btn btn-primary" />
                     </form>
                 </td>
@@ -77,4 +77,4 @@
     </tbody>
 </table>
 <a asp-action="Index" class="btn btn-primary">Return</a>
-<a asp-action="TaskCreate" asp-route-id="@Model.Project.ProjectId" class="btn btn-primary">Add task</a>
+<a asp-action="TaskCreate" asp-route-projectId="@Model.Project.ProjectId" class="btn btn-primary">Add task</a>

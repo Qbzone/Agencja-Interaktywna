@@ -8,9 +8,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Nazwa zespołu</th>
-            <th scope="col">Akcje</th>
-            <th scope="col">Usunięcie</th>
+            <th scope="col">Team name</th>
+            <th scope="col">Actions</th>
+            <th scope="col">Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -22,11 +22,11 @@
                     @item.TeamName
                 </td>
                 <td>
-                    <a asp-action="Team" asp-route-id="@item.TeamId" asp-route-view="@item.View" class="btn btn-primary">Display team</a>
-                    <a asp-action="TeamsEdit" asp-route-id="@item.TeamId" class="btn btn-primary">Edit</a>
+                    <a asp-action="Team" asp-route-teamId="@item.TeamId" asp-route-view="@item.View" class="btn btn-primary">Display team</a>
+                    <a asp-action="TeamsEdit" asp-route-teamId="@item.TeamId" class="btn btn-primary">Edit</a>
                 </td>
                 <td>
-                    <form asp-action="TeamsDelete" asp-route-id="@item.TeamId"
+                    <form asp-action="TeamsDelete" asp-route-teamId="@item.TeamId"
                       onclick="return confirm('Are you sure you want to remove the selected team?')">
                         <input type="submit" value="Delete" class="btn btn-primary" />
                     </form>
