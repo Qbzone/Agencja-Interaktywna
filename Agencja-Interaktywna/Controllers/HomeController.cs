@@ -91,24 +91,25 @@ namespace Interactive_Agency.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Verify(string personId)
+        public async Task<IActionResult> Verify(string id)
         {
             bool Status = false;
 
             InteractiveAgencyContext iAContext = new InteractiveAgencyContext();
             {
-                var verify = await iAContext.Person.Where(e => e.ActivationCode == new Guid(personId)).FirstOrDefaultAsync();
+                var verify = await iAContext.Person.Where(e => e.ActivationCode == new Guid(id)).FirstOrDefaultAsync();
 
                 if (verify != null)
                 {
                     verify.IsEmailVerified = true;
-                    Client klient = new Client()
+
+                    Client client = new Client()
                     {
                         ClientId = verify.PersonId,
                         Priority = "No"
                     };
 
-                    iAContext.Client.Add(klient);
+                    iAContext.Client.Add(client);
                     await iAContext.SaveChangesAsync();
 
                     Status = true;
@@ -309,11 +310,11 @@ namespace Interactive_Agency.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ForgottenPassword(string persondId)
+        public async Task<IActionResult> ForgottenPassword(string id)
         {
             InteractiveAgencyContext iAContext = new InteractiveAgencyContext();
             {
-                var forgotten = await iAContext.Person.Where(e => e.ActivationCode == new Guid(persondId)).FirstOrDefaultAsync();
+                var forgotten = await iAContext.Person.Where(e => e.ActivationCode == new Guid(id)).FirstOrDefaultAsync();
 
                 if (forgotten != null)
                 {
