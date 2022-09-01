@@ -10,8 +10,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Logo projektu</th>
-            <th scope="col">Akcje</th>
+            <th scope="col">Project logo</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
                 <img src="/@Model.Project.ProjectLogo" alt="/@Model.Project.ProjectLogo" height="100" width="100" />
             </td>
             <td>
-                <a asp-action="Team" asp-route-id="@Model.Project.ProjectId" asp-route-view="@View" class="btn btn-primary">Display team</a>
+                <a asp-action="Team" asp-route-teamId="@Model.Project.ProjectId" asp-route-view="@View" class="btn btn-primary">Display team</a>
             </td>
         </tr>
     </tbody>
@@ -49,19 +49,19 @@
                     @item.Status
                 </td>
                 <td>
-                    <a asp-action="TaskDetails" asp-route-id1="@Model.Project.ProjectId" asp-route-id2="@item.ServiceId"
-                   asp-route-data="@item.AssignStart" class="btn btn-primary">Details</a>
+                    <a asp-action="TaskDetails" asp-route-projectId="@Model.Project.ProjectId" asp-route-serviceId="@item.ServiceId"
+                   asp-route-date="@item.AssignStart" class="btn btn-primary">Details</a>
                     @{
                         if (item.Status.Equals("Finished"))
                         {
-                            <a asp-action="TaskEdit" asp-route-id1="@Model.Project.ProjectId" asp-route-id2="@item.ServiceId"
-                   asp-route-data="@item.AssignStart" class="btn btn-primary-disabled-href"
+                            <a asp-action="TaskEdit" asp-route-projectId="@Model.Project.ProjectId" asp-route-serviceId="@item.ServiceId"
+                   asp-route-date="@item.AssignStart" class="btn btn-primary-disabled-href"
                        new { onclick="javascript:return false;" }>Edit</a>
                         }
                         else
                         {
-                            <a asp-action="TaskEdit" asp-route-id1="@Model.Project.ProjectId" asp-route-id2="@item.ServiceId"
-                   asp-route-data="@item.AssignStart" class="btn btn-primary">Edit</a>
+                            <a asp-action="TaskEdit" asp-route-projectId="@Model.Project.ProjectId" asp-route-serviceId="@item.ServiceId"
+                   asp-route-date="@item.AssignStart" class="btn btn-primary">Edit</a>
                         }
                     }
                 </td>

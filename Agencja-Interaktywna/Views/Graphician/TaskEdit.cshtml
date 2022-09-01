@@ -34,7 +34,7 @@
                 <span asp-validation-for="@Model.ServiceProject.Status" class="text-danger"></span>
             </div>
             <div class="btn-group">
-                <a asp-action="ProjectDetails" asp-route-id="@Model.ServiceProject.ProjectId" class="btn btn-primary">Return</a>
+                <a asp-action="ProjectDetails" asp-route-projectId="@Model.ServiceProject.ProjectId" class="btn btn-primary">Return</a>
                 <input type="submit" value="Confirm" class="btn btn-primary" />
                 @{
                     if (Model.ServiceProject.Status.Equals("Delay"))

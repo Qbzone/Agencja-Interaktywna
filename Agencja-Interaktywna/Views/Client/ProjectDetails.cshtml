@@ -16,8 +16,8 @@
                 <img src="/@Model.ProjectLogo" alt="/@Model.ProjectLogo" height="100" width="100" />
             </td>
             <td>
-                <a asp-action="Team" asp-route-id="@Model.ProjectId" class="btn btn-primary">Display team</a>
-                <a asp-action="Contract" asp-route-id="@Model.ProjectId" class="btn btn-primary">Display package</a>
+                <a asp-action="Team" asp-route-teamId="@Model.ProjectId" class="btn btn-primary">Display team</a>
+                <a asp-action="Contract" asp-route-projectId="@Model.ProjectId" class="btn btn-primary">Display package</a>
             </td>
         </tr>
     </tbody>

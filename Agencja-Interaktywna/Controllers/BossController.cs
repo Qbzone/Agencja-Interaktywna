@@ -53,13 +53,13 @@ namespace Interactive_Agency.Controllers
                 .Include(se => se.ServiceIdNavigation)
                 .Where(e => e.ProjectId == projectId)
                 .ToListAsync();
-            var projectDetailsModel = new ProjectDetailsModel
+            var projectDetails = new ProjectDetailsModel
             {
                 Project = project,
                 Services = tasks
             };
 
-            return project == null ? NotFound() : View(projectDetailsModel);
+            return project == null ? NotFound() : View(projectDetails);
         }
 
         [HttpGet]
@@ -68,32 +68,32 @@ namespace Interactive_Agency.Controllers
             var companies = from e in _interactiveAgencyContext.Company select e;
             var teams = from e in _interactiveAgencyContext.Team select e;
             var packages = from e in _interactiveAgencyContext.Package select e;
-            var projectCreateModel = new ProjectCreateModel
+            var projectCreate = new ProjectCreateModel
             {
                 Companies = await companies.ToListAsync(),
                 Teams = await teams.ToListAsync(),
                 Packages = await packages.ToListAsync()
             };
 
-            return View(projectCreateModel);
+            return View(projectCreate);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public async Task<IActionResult> ProjectCreate(ProjectCreateModel projectCreateModel)
+        public async Task<IActionResult> ProjectCreate(ProjectCreateModel projectCreate)
         {
             if (ModelState.IsValid)
             {
-                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(projectCreateModel.FormFile.FileName));
+                var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/images", Path.GetFileName(projectCreate.FormFile.FileName));
 
-                projectCreateModel.FormFile.CopyTo(new FileStream(fileName, FileMode.Create));
+                projectCreate.FormFile.CopyTo(new FileStream(fileName, FileMode.Create));
 
                 var newProject = new Project()
                 {
-                    ProjectName = projectCreateModel.Project.ProjectName,
-                    ProjectLogo = "images/" + Path.GetFileName(projectCreateModel.FormFile.FileName),
-                    CompanyId = projectCreateModel.Project.CompanyId
+                    ProjectName = projectCreate.Project.ProjectName,
+                    ProjectLogo = "images/" + Path.GetFileName(projectCreate.FormFile.FileName),
+                    CompanyId = projectCreate.Project.CompanyId
                 };
 
                 _interactiveAgencyContext.Add(newProject);
@@ -102,13 +102,13 @@ namespace Interactive_Agency.Controllers
                 var newTeamProject = new TeamProject()
                 {
                     ProjectId = newProject.ProjectId,
-                    TeamId = (int)projectCreateModel.Team.TeamId,
+                    TeamId = (int)projectCreate.Team.TeamId,
                     AssignStart = DateTime.Now
                 };
                 var newProjectPackage = new ProjectPackage()
                 {
                     ProjectId = newProject.ProjectId,
-                    PackageId = (int)projectCreateModel.Package.PackageId,
+                    PackageId = (int)projectCreate.Package.PackageId,
                     DealStart = DateTime.Now
                 };
 
@@ -124,14 +124,14 @@ namespace Interactive_Agency.Controllers
                 var teams = from e in _interactiveAgencyContext.Team select e;
                 var packages = from e in _interactiveAgencyContext.Package select e;
 
-                projectCreateModel.Teams = await teams.ToListAsync();
-                projectCreateModel.Packages = await packages.ToListAsync();
-                projectCreateModel.Companies = await companies.ToListAsync();
+                projectCreate.Teams = await teams.ToListAsync();
+                projectCreate.Packages = await packages.ToListAsync();
+                projectCreate.Companies = await companies.ToListAsync();
 
-                return View("ProjectCreate", projectCreateModel);
+                return View("ProjectCreate", projectCreate);
             }
 
-            return View(projectCreateModel);
+            return View(projectCreate);
         }
 
         [HttpGet]
@@ -160,7 +160,7 @@ namespace Interactive_Agency.Controllers
             var companies = from e in _interactiveAgencyContext.Company select e;
             var teams = from e in _interactiveAgencyContext.Team select e;
             var packages = from e in _interactiveAgencyContext.Package select e;
-            var projectEditModel = new ProjectEditModel
+            var projectEdit = new ProjectEditModel
             {
                 Project = project,
                 Team = team,
@@ -172,26 +172,26 @@ namespace Interactive_Agency.Controllers
                 PackageId = (int)packageId
             };
 
-            return View(projectEditModel);
+            return View(projectEdit);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public async Task<IActionResult> ProjectEdit(ProjectEditModel projectEditModel)
+        public async Task<IActionResult> ProjectEdit(ProjectEditModel projectEdit)
         {
             if (ModelState.IsValid)
             {
-                _interactiveAgencyContext.Update(projectEditModel.Project);
+                _interactiveAgencyContext.Update(projectEdit.Project);
 
                 var oldTeamProject = await _interactiveAgencyContext.TeamProject
-                    .Where(e => e.TeamId == projectEditModel.TeamId && e.ProjectId == projectEditModel.Project.ProjectId && e.AssignEnd == null)
+                    .Where(e => e.TeamId == projectEdit.TeamId && e.ProjectId == projectEdit.Project.ProjectId && e.AssignEnd == null)
                     .FirstOrDefaultAsync();
                 var oldProjectPackage = await _interactiveAgencyContext.ProjectPackage
-                    .Where(e => e.PackageId == projectEditModel.PackageId && e.ProjectId == projectEditModel.Project.ProjectId && e.DealEnd == null)
+                    .Where(e => e.PackageId == projectEdit.PackageId && e.ProjectId == projectEdit.Project.ProjectId && e.DealEnd == null)
                     .FirstOrDefaultAsync();
 
-                if (oldTeamProject.TeamId != projectEditModel.Team.TeamId)
+                if (oldTeamProject.TeamId != projectEdit.Team.TeamId)
                 {
                     oldTeamProject.AssignEnd = DateTime.Now;
 
@@ -199,8 +199,8 @@ namespace Interactive_Agency.Controllers
 
                     var newTeamProject = new TeamProject()
                     {
-                        ProjectId = projectEditModel.Project.ProjectId,
-                        TeamId = (int)projectEditModel.Team.TeamId,
+                        ProjectId = projectEdit.Project.ProjectId,
+                        TeamId = (int)projectEdit.Team.TeamId,
                         AssignStart = DateTime.Now
                     };
 
@@ -208,7 +208,7 @@ namespace Interactive_Agency.Controllers
                     await _interactiveAgencyContext.SaveChangesAsync();
                 }
 
-                if (oldProjectPackage.PackageId != projectEditModel.Package.PackageId)
+                if (oldProjectPackage.PackageId != projectEdit.Package.PackageId)
                 {
                     oldProjectPackage.DealEnd = DateTime.Now;
 
@@ -216,8 +216,8 @@ namespace Interactive_Agency.Controllers
 
                     var newProjectPackage = new ProjectPackage()
                     {
-                        ProjectId = projectEditModel.Project.ProjectId,
-                        PackageId = (int)projectEditModel.Package.PackageId,
+                        ProjectId = projectEdit.Project.ProjectId,
+                        PackageId = (int)projectEdit.Package.PackageId,
                         DealStart = DateTime.Now
                     };
 
@@ -234,22 +234,22 @@ namespace Interactive_Agency.Controllers
                 var companies = from e in _interactiveAgencyContext.Company select e;
                 var teams = from e in _interactiveAgencyContext.Team select e;
                 var packages = from e in _interactiveAgencyContext.Package select e;
-                var newProjectEditModel = new ProjectEditModel
+                var newProjectEdit = new ProjectEditModel
                 {
-                    Project = projectEditModel.Project,
-                    Team = projectEditModel.Team,
-                    Package = projectEditModel.Package,
+                    Project = projectEdit.Project,
+                    Team = projectEdit.Team,
+                    Package = projectEdit.Package,
                     Companies = await companies.ToListAsync(),
                     Teams = await teams.ToListAsync(),
                     Packages = await packages.ToListAsync(),
-                    TeamId = (int)projectEditModel.TeamId,
-                    PackageId = (int)projectEditModel.PackageId
+                    TeamId = (int)projectEdit.TeamId,
+                    PackageId = (int)projectEdit.PackageId
                 };
 
-                return View("ProjectEdit", newProjectEditModel);
+                return View("ProjectEdit", newProjectEdit);
             }
 
-            return View(projectEditModel);
+            return View(projectEdit);
         }
 
         [HttpPost]
@@ -317,13 +317,13 @@ namespace Interactive_Agency.Controllers
         {
             var clients = await _interactiveAgencyContext.Client.Include(cl => cl.ClientIdNavigation).ToListAsync();
             var employees = await _interactiveAgencyContext.Employee.Include(em => em.EmployeeIdNavigation).ToListAsync();
-            var meetingCreateModel = new MeetingCreateModel
+            var meetingCreate = new MeetingCreateModel
             {
                 Clients = clients,
                 Employees = employees
             };
 
-            return View(meetingCreateModel);
+            return View(meetingCreate);
         }
 
         [HttpPost]
@@ -350,13 +350,13 @@ namespace Interactive_Agency.Controllers
             {
                 var clients = await _interactiveAgencyContext.Client.Include(cl => cl.ClientIdNavigation).ToListAsync();
                 var employees = await _interactiveAgencyContext.Employee.Include(em => em.EmployeeIdNavigation).ToListAsync();
-                var newMeetingCreateModel = new MeetingCreateModel
+                var newMeetingCreate = new MeetingCreateModel
                 {
                     Clients = clients,
                     Employees = employees
                 };
 
-                return View("MeetingsCreate", newMeetingCreateModel);
+                return View("MeetingsCreate", newMeetingCreate);
             }
 
             return View(meetingCreateModel);
@@ -381,7 +381,7 @@ namespace Interactive_Agency.Controllers
 
             var clients = await _interactiveAgencyContext.Client.Include(cl => cl.ClientIdNavigation).ToListAsync();
             var employees = await _interactiveAgencyContext.Employee.Include(em => em.EmployeeIdNavigation).ToListAsync();
-            var meetingEditModel = new MeetingEditModel
+            var meetingEdit = new MeetingEditModel
             {
                 EmployeeClient = meeting,
                 EmployeeId = (int)meeting.EmployeeId,
@@ -391,7 +391,7 @@ namespace Interactive_Agency.Controllers
                 Employees = employees
             };
 
-            return View(meetingEditModel);
+            return View(meetingEdit);
         }
 
         [HttpPost]
@@ -400,18 +400,18 @@ namespace Interactive_Agency.Controllers
         {
             if (ModelState.IsValid)
             {
-                var oldEmployeeClient = await _interactiveAgencyContext.EmployeeClient
+                var oldMeeting = await _interactiveAgencyContext.EmployeeClient
                     .Where(e => e.EmployeeId == meetingEditModel.EmployeeId && e.ClientId == meetingEditModel.ClientId
                         && e.MeetingStart == meetingEditModel.MeetingStart)
                     .FirstOrDefaultAsync();
 
-                if (meetingEditModel.EmployeeClient.EmployeeId != oldEmployeeClient.EmployeeId
-                        || meetingEditModel.EmployeeClient.ClientId != oldEmployeeClient.ClientId
-                        || meetingEditModel.EmployeeClient.MeetingStart != oldEmployeeClient.MeetingStart)
+                if (meetingEditModel.EmployeeClient.EmployeeId != oldMeeting.EmployeeId
+                        || meetingEditModel.EmployeeClient.ClientId != oldMeeting.ClientId
+                        || meetingEditModel.EmployeeClient.MeetingStart != oldMeeting.MeetingStart)
                 {
-                    _interactiveAgencyContext.Remove(oldEmployeeClient);
+                    _interactiveAgencyContext.Remove(oldMeeting);
 
-                    var newEmployeeClient = new EmployeeClient()
+                    var newMeeting = new EmployeeClient()
                     {
                         MeetingLocation = meetingEditModel.EmployeeClient.MeetingLocation,
                         MeetingStart = meetingEditModel.EmployeeClient.MeetingStart,
@@ -420,14 +420,14 @@ namespace Interactive_Agency.Controllers
                         ClientId = meetingEditModel.EmployeeClient.ClientId
                     };
 
-                    _interactiveAgencyContext.Add(newEmployeeClient);
+                    _interactiveAgencyContext.Add(newMeeting);
                     await _interactiveAgencyContext.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Meetings));
                 }
                 else
                 {
-                    _interactiveAgencyContext.Entry(oldEmployeeClient).State = EntityState.Detached;
+                    _interactiveAgencyContext.Entry(oldMeeting).State = EntityState.Detached;
                     _interactiveAgencyContext.Update(meetingEditModel.EmployeeClient);
                     await _interactiveAgencyContext.SaveChangesAsync();
 
@@ -438,7 +438,7 @@ namespace Interactive_Agency.Controllers
             {
                 var clients = await _interactiveAgencyContext.Client.Include(cl => cl.ClientIdNavigation).ToListAsync();
                 var employees = await _interactiveAgencyContext.Employee.Include(em => em.EmployeeIdNavigation).ToListAsync();
-                var newMeetingEditModel = new MeetingEditModel
+                var newMeetingEdit = new MeetingEditModel
                 {
                     EmployeeClient = meetingEditModel.EmployeeClient,
                     EmployeeId = (int)meetingEditModel.EmployeeId,
@@ -448,7 +448,7 @@ namespace Interactive_Agency.Controllers
                     Employees = employees
                 };
 
-                return View("MeetingsEdit", newMeetingEditModel);
+                return View("MeetingsEdit", newMeetingEdit);
             }
 
             return View(meetingEditModel);
@@ -529,12 +529,12 @@ namespace Interactive_Agency.Controllers
                     Text = e.EmployeeIdNavigation.EmailAddress,
                     Value = e.EmployeeId.ToString()
                 }).ToListAsync();
-            var teamCreateModel = new TeamCreateModel
+            var teamCreate = new TeamCreateModel
             {
                 Employees = employee
             };
 
-            return View(teamCreateModel);
+            return View(teamCreate);
         }
 
         [HttpPost]
@@ -593,12 +593,12 @@ namespace Interactive_Agency.Controllers
                         Value = e.EmployeeId.ToString()
                     }).ToListAsync();
 
-                var newTeamCreateModel = new TeamCreateModel
+                var newTeamCreate = new TeamCreateModel
                 {
                     Employees = employees
                 };
 
-                return View("TeamsCreate", newTeamCreateModel);
+                return View("TeamsCreate", newTeamCreate);
             }
 
             return View(teamCreateModel);
@@ -631,13 +631,13 @@ namespace Interactive_Agency.Controllers
                     IsChecked = e.EmployeeTeam.Any(x => x.TeamId == team.TeamId)
                 }).ToListAsync();
 
-            var teamEditModel = new TeamEditModel()
+            var teamEdit = new TeamEditModel()
             {
                 Team = team,
                 Employees = allEmployees,
             };
 
-            return View(teamEditModel);
+            return View(teamEdit);
         }
 
         [HttpPost]
@@ -699,13 +699,13 @@ namespace Interactive_Agency.Controllers
                         Name = e.EmployeeIdNavigation.EmailAddress,
                         IsChecked = e.EmployeeTeam.Any(f => f.TeamId == teamEditModel.Team.TeamId)
                     }).ToListAsync();
-                var newTeamEditModel = new TeamEditModel()
+                var newTeamEdit = new TeamEditModel()
                 {
                     Team = teamEditModel.Team,
                     Employees = allEmployees,
                 };
 
-                return View("TeamsEdit", newTeamEditModel);
+                return View("TeamsEdit", newTeamEdit);
             }
 
             return View(teamEditModel);
@@ -775,13 +775,13 @@ namespace Interactive_Agency.Controllers
             }
 
             var project = await _interactiveAgencyContext.Project.FindAsync(projectId);
-            var taskCreateModel = new TaskCreateModel
+            var taskCreate = new TaskCreateModel
             {
                 Services = tasks,
                 Project = project
             };
 
-            return View(taskCreateModel);
+            return View(taskCreate);
         }
 
         [HttpPost]
@@ -821,13 +821,13 @@ namespace Interactive_Agency.Controllers
                     services.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(e => e.ServiceId == item.ServiceId));
                 }
 
-                var newTaskCreateModel = new TaskCreateModel
+                var newTaskCreate = new TaskCreateModel
                 {
                     Services = services,
                     Project = taskCreateModel.Project
                 };
 
-                return View("TaskCreate", newTaskCreateModel);
+                return View("TaskCreate", newTaskCreate);
             }
 
             return View(taskCreateModel);
