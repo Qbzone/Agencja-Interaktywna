@@ -17,193 +17,197 @@ namespace Interactive_Agency.Controllers
     public class ProgrammerController : Controller
     {
         private readonly InteractiveAgencyContext _interactiveAgencyContext = new InteractiveAgencyContext();
+
         public async Task<IActionResult> Index()
         {
             ViewBag.userEmail = HttpContext.User.Identity.Name;
 
             var teams = await _interactiveAgencyContext.Team
-                    .Include(pz => pz.EmployeeTeam)
-                        .ThenInclude(p => p.EmployeeIdNavigation)
-                            .ThenInclude(o => o.EmployeeIdNavigation)
-                    .Where(x => x.EmployeeTeam.Any(e => e.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
-            
-            List<Project> projects = new List<Project>();
-   
-            foreach(var item in teams)
-            {
+                    .Include(et => et.EmployeeTeam)
+                        .ThenInclude(em => em.EmployeeIdNavigation)
+                            .ThenInclude(emp => emp.EmployeeIdNavigation)
+                    .Where(e => e.EmployeeTeam
+                        .Any(f => f.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress == HttpContext.User
+                            .FindFirst(ClaimTypes.Name).Value)).ToListAsync();
 
+            List<Project> projects = new List<Project>();
+
+            foreach (var item in teams)
+            {
                 projects.AddRange(await _interactiveAgencyContext.Project
-                .Include(zp => zp.TeamProject)
-                    .ThenInclude(z => z.TeamIdNavigation)
-                .Where(x => x.TeamProject.Any(e => e.TeamId == item.TeamId && e.AssignEnd == null)).ToListAsync());
+                    .Include(tp => tp.TeamProject)
+                        .ThenInclude(te => te.TeamIdNavigation)
+                    .Where(e => e.TeamProject
+                        .Any(f => f.TeamId == item.TeamId && f.AssignEnd == null)).ToListAsync());
             }
 
             return View(projects);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ProjectDetails(int? id)
+        public async Task<IActionResult> ProjectDetails(int? projectId)
         {
-            if (id == null)
+            if (projectId == null)
             {
                 return NotFound();
             }
 
             var project = await _interactiveAgencyContext.Project
-            .FirstOrDefaultAsync(e => e.ProjectId == id);
-
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId);
             var tasks = await _interactiveAgencyContext.ServiceProject
-                .Include(p => p.ProjectIdNavigation)
-                .Include(z => z.ServiceIdNavigation)
-                .Where(e => e.ProjectId == id && e.ServiceIdNavigation.Classification == HttpContext.User.FindFirst(ClaimTypes.Role).Value)
+                .Include(pr => pr.ProjectIdNavigation)
+                .Include(se => se.ServiceIdNavigation)
+                .Where(e => e.ProjectId == projectId && e.ServiceIdNavigation.Classification == HttpContext.User.FindFirst(ClaimTypes.Role).Value)
                 .ToListAsync();
-
-            var pDM = new ProjectDetailsModel
+            var projectDetails = new ProjectDetailsModel
             {
                 Project = project,
                 Services = tasks
             };
 
-            if (project == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return View(pDM);
-            }
+            return project == null ? NotFound() : View(projectDetails);
         }
 
         [HttpGet]
         public async Task<IActionResult> Teams()
         {
             var teams = await _interactiveAgencyContext.Team
-                    .Include(pz => pz.EmployeeTeam)
-                        .ThenInclude(p => p.EmployeeIdNavigation)
-                            .ThenInclude(o => o.EmployeeIdNavigation)
-                    .Where(x => x.EmployeeTeam.Any(e => e.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value)).ToListAsync();
+                    .Include(et => et.EmployeeTeam)
+                        .ThenInclude(em => em.EmployeeIdNavigation)
+                            .ThenInclude(emp => emp.EmployeeIdNavigation)
+                    .Where(e => e.EmployeeTeam
+                        .Any(f => f.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress == HttpContext.User
+                            .FindFirst(ClaimTypes.Name).Value)).ToListAsync();
 
             return View(teams);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Team(int? id, string view)
+        public async Task<IActionResult> Team(int? teamId, string view)
         {
             if (view.Equals("Project"))
             {
                 var team = await _interactiveAgencyContext.TeamProject
-                    .Include(p => p.ProjectIdNavigation)
-                    .Include(z => z.TeamIdNavigation)
-                    .FirstOrDefaultAsync(x => x.ProjectId == id && x.AssignEnd == null);
-
-
+                    .Include(pr => pr.ProjectIdNavigation)
+                    .Include(te => te.TeamIdNavigation)
+                    .FirstOrDefaultAsync(e => e.ProjectId == teamId && e.AssignEnd == null);
                 var members = await _interactiveAgencyContext.EmployeeTeam
-                    .Include(z => z.TeamIdNavigation)
-                    .Include(p => p.EmployeeIdNavigation)
-                        .ThenInclude(o => o.EmployeeIdNavigation)
-                        .Where(x => x.TeamId == team.TeamId)
+                    .Include(te => te.TeamIdNavigation)
+                    .Include(em => em.EmployeeIdNavigation)
+                        .ThenInclude(emp => emp.EmployeeIdNavigation)
+                        .Where(e => e.TeamId == team.TeamId)
                         .ToListAsync();
+
                 return View(members);
             }
             else if (view.Equals("Teams"))
             {
                 var members = await _interactiveAgencyContext.EmployeeTeam
-                    .Include(z => z.TeamIdNavigation)
-                    .Include(p => p.EmployeeIdNavigation)
-                        .ThenInclude(o => o.EmployeeIdNavigation)
-                        .Where(x => x.TeamId == id)
+                    .Include(te => te.TeamIdNavigation)
+                    .Include(em => em.EmployeeIdNavigation)
+                        .ThenInclude(emp => emp.EmployeeIdNavigation)
+                        .Where(e => e.TeamId == teamId)
                         .ToListAsync();
+
                 return View(members);
             }
 
             return NotFound();
-
         }
 
         [HttpGet]
-        public async Task<IActionResult> TaskEdit(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskEdit(int? projectId, int? serviceId, string date)
         {
-            if (id1 == null)
+            if (projectId == null)
             {
                 return NotFound();
             }
 
-            var fromDateAsDateTime = DateTime.Parse(data);
-            var serviceProject = await _interactiveAgencyContext.ServiceProject.FirstOrDefaultAsync(x => x.ProjectId == id1 & x.ServiceId == id2 & x.AssignStart == fromDateAsDateTime);
+            var fromDateAsDateTime = DateTime.Parse(date);
+            var serviceProject = await _interactiveAgencyContext.ServiceProject
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId & e.ServiceId == serviceId & e.AssignStart == fromDateAsDateTime);
+
             if (serviceProject == null)
             {
                 return NotFound();
             }
 
-            var package = await _interactiveAgencyContext.ProjectPackage.FirstOrDefaultAsync(x => x.ProjectId == id1 && x.DealEnd == null);
-            var pU = await _interactiveAgencyContext.PackageService.Where(x => x.PackageId == package.PackageId).Include(u => u.ServiceIdNavigation).ToListAsync();
+            var package = await _interactiveAgencyContext.ProjectPackage
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId && e.DealEnd == null);
+            var packageServices = await _interactiveAgencyContext.PackageService
+                .Where(e => e.PackageId == package.PackageId)
+                .Include(se => se.ServiceIdNavigation)
+                .ToListAsync();
+
             List<Service> services = new List<Service>();
-            foreach (var item in pU)
+
+            foreach (var item in packageServices)
             {
-                services.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(x => x.ServiceId == item.ServiceId));
+                services.Add(await _interactiveAgencyContext.Service.FirstOrDefaultAsync(e => e.ServiceId == item.ServiceId));
             }
 
-            var tEM = new TaskEditModel
+            var taskEdit = new TaskEditModel
             {
                 ServiceProject = serviceProject,
                 Services = services
             };
 
-            return View(tEM);
+            return View(taskEdit);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TaskEdit(TaskEditModel tEM)
+        public async Task<IActionResult> TaskEdit(TaskEditModel taskEdit)
         {
             if (ModelState.IsValid)
             {
-                _interactiveAgencyContext.Update(tEM.ServiceProject);
+                _interactiveAgencyContext.Update(taskEdit.ServiceProject);
                 await _interactiveAgencyContext.SaveChangesAsync();
 
-                return RedirectToAction("ProjectDetails", new { id = tEM.ServiceProject.ProjectId });
-
+                return RedirectToAction("ProjectDetails", new { projectId = taskEdit.ServiceProject.ProjectId });
             }
             else if (!ModelState.IsValid)
             {
-                return View("TaskEdit", tEM);
+                return View("TaskEdit", taskEdit);
             }
-            return View(tEM);
+
+            return View(taskEdit);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TaskDelay(TaskEditModel tEM)
+        public async Task<IActionResult> TaskDelay(TaskEditModel taskEdit)
         {
             if (ModelState.IsValid)
             {
-                DateTime tmpDate = (DateTime)tEM.ServiceProject.AssignEnd;
-                tEM.ServiceProject.AssignEnd = tmpDate.AddDays(7);
-                tEM.ServiceProject.Status = "Opóźnione";
-                _interactiveAgencyContext.Update(tEM.ServiceProject);
+                DateTime tmpDate = (DateTime)taskEdit.ServiceProject.AssignEnd;
+                taskEdit.ServiceProject.AssignEnd = tmpDate.AddDays(7);
+                taskEdit.ServiceProject.Status = "Delayed";
+
+                _interactiveAgencyContext.Update(taskEdit.ServiceProject);
                 await _interactiveAgencyContext.SaveChangesAsync();
 
-                return RedirectToAction("ProjectDetails", new { id = tEM.ServiceProject.ProjectId });
-
+                return RedirectToAction("ProjectDetails", new { projectId = taskEdit.ServiceProject.ProjectId });
             }
             else if (!ModelState.IsValid)
             {
-                return View("TaskEdit", tEM);
+                return View("TaskEdit", taskEdit);
             }
-            return View(tEM);
+
+            return View(taskEdit);
         }
 
-        public async Task<IActionResult> TaskDetails(int? id1, int? id2, string data)
+        public async Task<IActionResult> TaskDetails(int? projectId, int? serviceId, string date)
         {
-            if (id1 == null)
+            if (projectId == null)
             {
                 return NotFound();
             }
 
-            var fromDateAsDateTime = DateTime.Parse(data);
+            var fromDateAsDateTime = DateTime.Parse(date);
             var serviceProject = await _interactiveAgencyContext.ServiceProject
-                .Include(x => x.ServiceIdNavigation)
-                .FirstOrDefaultAsync(x => x.ProjectId == id1 & x.ServiceId == id2 & x.AssignStart == fromDateAsDateTime);
+                .Include(se => se.ServiceIdNavigation)
+                .FirstOrDefaultAsync(e => e.ProjectId == projectId & e.ServiceId == serviceId & e.AssignStart == fromDateAsDateTime);
 
             if (serviceProject == null)
             {
@@ -216,34 +220,26 @@ namespace Interactive_Agency.Controllers
         public async Task<IActionResult> Meetings()
         {
             var meetings = await _interactiveAgencyContext.EmployeeClient
-                .Include(k => k.ClientIdNavigation)
-                    .ThenInclude(o => o.ClientIdNavigation)
-                .Include(p => p.EmployeeIdNavigation)
-                    .ThenInclude(po => po.EmployeeIdNavigation)
-                .Where(e => e.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value).ToListAsync();
+                .Include(cl => cl.ClientIdNavigation)
+                    .ThenInclude(cli => cli.ClientIdNavigation)
+                .Include(em => em.EmployeeIdNavigation)
+                    .ThenInclude(emp => emp.EmployeeIdNavigation)
+                .Where(e => e.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress == HttpContext.User
+                    .FindFirst(ClaimTypes.Name).Value).ToListAsync();
 
             return View(meetings);
         }
 
-
-
         public async Task<IActionResult> Profile()
         {
-            var kl = await _interactiveAgencyContext.EmployeeContract
-                .Include(p => p.EmployeeIdNavigation)
-                    .ThenInclude(o => o.EmployeeIdNavigation)
-                .Include(u => u.ContractIdNavigation)
-                .FirstOrDefaultAsync(i => i.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress == HttpContext.User.FindFirst(ClaimTypes.Name).Value);
+            var employeeContract = await _interactiveAgencyContext.EmployeeContract
+                .Include(em => em.EmployeeIdNavigation)
+                    .ThenInclude(emp => emp.EmployeeIdNavigation)
+                .Include(co => co.ContractIdNavigation)
+                .FirstOrDefaultAsync(e => e.EmployeeIdNavigation.EmployeeIdNavigation.EmailAddress == HttpContext.User
+                .FindFirst(ClaimTypes.Name).Value);
 
-            if (kl == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return View(kl);
-            }
-
+            return employeeContract == null ? NotFound() : View(employeeContract);
         }
 
         public IActionResult Contact()
@@ -255,6 +251,7 @@ namespace Interactive_Agency.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Index", "Home");
         }
     }
