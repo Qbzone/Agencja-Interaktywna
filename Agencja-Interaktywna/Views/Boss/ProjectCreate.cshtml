@@ -4,19 +4,20 @@
 }
 
 <h1>Project create</h1>
+
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-action="ProjectCreate" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger" />
             <div class="form-group">
                 <label asp-for="Project.ProjectName" class="control-label">Project name</label>
                 <input type="text" class="form-control" asp-for="@Model.Project.ProjectName" />
-                <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler1" class="text-danger" />
             </div>
             <div class="form-group">
                 <label asp-for="FormFile" class="control-label">Project logo</label>
                 <input asp-for="FormFile" class="form-control" />
-                <span asp-validation-for="FormFile" class="text-danger"></span>
+                <span asp-validation-for="FormFile" class="text-danger" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Team.TeamId" class="control-label">Team</label>
@@ -29,7 +30,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="ErrorHandler4" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler4" class="text-danger" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Project.CompanyId" class="control-label">Client</label>
@@ -42,7 +43,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="ErrorHandler2" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler2" class="text-danger" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Package.PackageId" class="control-label">Package</label>
@@ -55,7 +56,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="ErrorHandler3" class="text-danger"></span>
+                <span asp-validation-for="ErrorHandler3" class="text-danger" />
             </div>
             <div class="btn-group">
                 <a asp-action="Index" class="btn btn-primary">Return</a>

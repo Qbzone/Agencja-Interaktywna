@@ -2,7 +2,9 @@
 @{
     ViewData["Title"] = "ProjectDetails";
 }
+
 <h3>Project name  @Html.DisplayFor(model => model.ProjectName)</h3>
+
 <table class="table">
     <thead>
         <tr>
@@ -22,4 +24,5 @@
         </tr>
     </tbody>
 </table>
+
 <a href="Index" onClick="history.go(-1); return false;" class="btn btn-primary">Return</a>

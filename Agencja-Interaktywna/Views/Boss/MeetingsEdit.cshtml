@@ -4,27 +4,28 @@
 }
 
 <h1>Meeting edit</h1>
+
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-action="MeetingsEdit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger" />
             <input type="hidden" asp-for="@Model.ClientId" />
             <input type="hidden" asp-for="@Model.EmployeeId" />
             <input type="hidden" asp-for="@Model.MeetingStart" />
             <div class="form-group">
                 <label asp-for="EmployeeClient.MeetingLocation" class="control-label">Meeting location</label>
                 <input type="text" class="form-control" asp-for="@Model.EmployeeClient.MeetingLocation" />
-                <span asp-validation-for="EmployeeClient.MeetingLocation" class="text-danger"></span>
+                <span asp-validation-for="EmployeeClient.MeetingLocation" class="text-danger" />
             </div>
             <div class="form-group">
                 <label asp-for="EmployeeClient.MeetingStart" class="control-label">Meeting start</label>
                 <input type="datetime-local" class="form-control" asp-for="@Model.EmployeeClient.MeetingStart" />
-                <span asp-validation-for="EmployeeClient.MeetingStart" class="text-danger"></span>
+                <span asp-validation-for="EmployeeClient.MeetingStart" class="text-danger" />
             </div>
             <div class="form-group">
                 <label asp-for="EmployeeClient.MeetingEnd" class="control-label">Meeting end</label>
                 <input type="datetime-local" class="form-control" asp-for="@Model.EmployeeClient.MeetingEnd" />
-                <span asp-validation-for="EmployeeClient.MeetingEnd" class="text-danger"></span>
+                <span asp-validation-for="EmployeeClient.MeetingEnd" class="text-danger" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.EmployeeClient.ClientId" class="control-label">Client</label>
@@ -36,7 +37,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.EmployeeClient.ClientId" class="text-danger"></span>
+                <span asp-validation-for="@Model.EmployeeClient.ClientId" class="text-danger" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.EmployeeClient.EmployeeId" class="control-label">Employee</label>
@@ -48,7 +49,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="@Model.EmployeeClient.EmployeeId" class="text-danger"></span>
+                <span asp-validation-for="@Model.EmployeeClient.EmployeeId" class="text-danger" />
             </div>
             <div class="btn-group">
                 <a asp-action="Meetings" class="btn btn-primary">Return</a>

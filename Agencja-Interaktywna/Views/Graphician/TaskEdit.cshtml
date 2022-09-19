@@ -4,26 +4,27 @@
 }
 
 <h1>Task edit</h1>
+
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-action="TaskEdit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger" />
             <input type="hidden" asp-for="@Model.ServiceProject.ProjectId" />
             <div>
                 <input type="hidden" asp-for="@Model.ServiceProject.ServiceId" />
-                <span asp-validation-for="ServiceProject.ServiceId"></span>
+                <span asp-validation-for="ServiceProject.ServiceId" />
             </div>
             <div>
                 <input type="hidden" asp-for="@Model.ServiceProject.Description" />
-                <span asp-validation-for="ServiceProject.Description"></span>
+                <span asp-validation-for="ServiceProject.Description" />
             </div>
             <div>
                 <input type="hidden" asp-for="@Model.ServiceProject.AssignStart" />
-                <span asp-validation-for="ServiceProject.AssignStart"></span>
+                <span asp-validation-for="ServiceProject.AssignStart" />
             </div>
             <div>
                 <input type="hidden" asp-for="@Model.ServiceProject.AssignEnd" />
-                <span asp-validation-for="ServiceProject.AssignStart"></span>
+                <span asp-validation-for="ServiceProject.AssignStart" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.ServiceProject.Status" class="control-label">Edit status</label>
@@ -31,7 +32,7 @@
                     <option class="form-control" value="In progress">In progress</option>
                     <option class="form-control" value="Finished">Finished</option>
                 </select>
-                <span asp-validation-for="@Model.ServiceProject.Status" class="text-danger"></span>
+                <span asp-validation-for="@Model.ServiceProject.Status" class="text-danger" />
             </div>
             <div class="btn-group">
                 <a asp-action="ProjectDetails" asp-route-projectId="@Model.ServiceProject.ProjectId" class="btn btn-primary">Return</a>

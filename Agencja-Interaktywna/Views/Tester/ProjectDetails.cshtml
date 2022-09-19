@@ -4,9 +4,11 @@
 }
 
 <h3>Project name  @Html.DisplayFor(model => model.Project.ProjectName)</h3>
+
 @{
     string View = "Project";
 }
+
 <table class="table">
     <thead>
         <tr>
@@ -69,4 +71,5 @@
         }
     </tbody>
 </table>
+
 <a asp-action="Index" class="btn btn-primary">Return</a>

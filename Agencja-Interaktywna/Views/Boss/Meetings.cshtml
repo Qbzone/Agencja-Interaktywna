@@ -4,6 +4,7 @@
 }
 
 <h1>Meetings</h1>
+
 <table class="table">
     <thead>
         <tr>
@@ -36,12 +37,12 @@
                     @item.ClientIdNavigation.ClientIdNavigation.LastName
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-action="MeetingsEdit" asp-route-clientId="@item.ClientId" asp-route-employeeId="@item.EmployeeId"
-                   asp-route-date="@item.MeetingStart">Edit</a>
+                    <a class="btn btn-primary" asp-action="MeetingsEdit" asp-route-clientId="@item.ClientId"
+                   asp-route-employeeId="@item.EmployeeId" asp-route-date="@item.MeetingStart">Edit</a>
                 </td>
                 <td>
-                    <form asp-action="MeetingsDelete" asp-route-clientId="@item.ClientId" asp-route-employeeId="@item.EmployeeId" asp-route-date="@item.MeetingStart"
-                      onclick="return confirm('Are you sure you want to delete the selected meeting?')">
+                    <form asp-action="MeetingsDelete" asp-route-clientId="@item.ClientId" asp-route-employeeId="@item.EmployeeId"
+                      asp-route-date="@item.MeetingStart" onclick="return confirm('Are you sure you want to delete the selected meeting?')">
                         <input type="submit" value="Delete" class="btn btn-primary" />
                     </form>
                 </td>
@@ -49,4 +50,5 @@
         }
     </tbody>
 </table>
+
 <a class="btn btn-primary" asp-action="MeetingsCreate">Create meeting</a>

@@ -4,16 +4,17 @@
 }
 
 <h3>Project name:  @Html.DisplayFor(model => model.Project.ProjectName)</h3>
+
 @{
     string View = "Project";
 }
+
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Project logo</th>
             <th scope="col">Actions</th>
             <th scope="col">Delete</th>
-
         </tr>
     </thead>
     <tbody>
@@ -35,7 +36,9 @@
         </tr>
     </tbody>
 </table>
+
 <h3>Tasks for the project</h3>
+
 <table class="table">
     <thead>
         <tr>
@@ -44,7 +47,6 @@
             <th scope="col">Task status</th>
             <th scope="col">Actions</th>
             <th scope="col">Delete</th>
-
         </tr>
     </thead>
     <tbody>
@@ -76,5 +78,6 @@
         }
     </tbody>
 </table>
+
 <a asp-action="Index" class="btn btn-primary">Return</a>
 <a asp-action="TaskCreate" asp-route-projectId="@Model.Project.ProjectId" class="btn btn-primary">Add task</a>

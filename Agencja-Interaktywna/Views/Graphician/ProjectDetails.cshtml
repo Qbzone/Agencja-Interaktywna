@@ -4,9 +4,11 @@
 }
 
 <h3>Project name  @Html.DisplayFor(model => model.Project.ProjectName)</h3>
+
 @{
-    string Widok = "Project";
+    string View = "Project";
 }
+
 <table class="table">
     <thead>
         <tr>
@@ -20,12 +22,14 @@
                 <img src="/@Model.Project.ProjectLogo" alt="/@Model.Project.ProjectLogo" height="100" width="100" />
             </td>
             <td>
-                <a asp-action="Team" asp-route-teamId="@Model.Project.ProjectId" asp-route-view="@Widok" class="btn btn-primary">Display team</a>
+                <a asp-action="Team" asp-route-teamId="@Model.Project.ProjectId" asp-route-view="@View" class="btn btn-primary">Display team</a>
             </td>
         </tr>
     </tbody>
 </table>
+
 <h3>Tasks</h3>
+
 <table class="table">
     <thead>
         <tr>
@@ -69,4 +73,5 @@
         }
     </tbody>
 </table>
+
 <a asp-action="Index" class="btn btn-primary">Return</a>
