@@ -14,6 +14,8 @@ INSERT INTO Person
 VALUES ('Jerzy','Kozak','595951958','923456789','jerzykozak@wp.pl','VutSf+LocAw3LnENngk6ETkPx88C2wUqcjP+DcptQbM=','true','62ebf753-dfd9-4e45-ad50-ae9174fece3f','Positioner'); 
 INSERT INTO Person
 VALUES ('Andrzej','Tama','595911958','923466789','AndziejTamownik@wp.pl','VutSf+LocAw3LnENngk6ETkPx88C2wUqcjP+DcptQbM=','true','62ebf753-dfd9-4e45-ad50-ae9174fece4f','Boss'); 
+INSERT INTO Person
+VALUES ('Dean','Thomas','595911958','923466789','ThomasDean@gmail.com','VutSf+LocAw3LnENngk6ETkPx88C2wUqcjP+DcptQbM=','true','62ebf753-dfd9-4e45-ad50-ae9174fece4c','Admin'); 
  
 INSERT INTO Client
 VALUES (1, 'No');

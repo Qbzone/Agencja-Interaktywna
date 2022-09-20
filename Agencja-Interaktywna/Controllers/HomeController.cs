@@ -249,6 +249,23 @@ namespace Interactive_Agency.Controllers
 
                                 return base.RedirectToAction("Index", "Tester");
                             }
+                            else if (verified.Role == "Admin")
+                            {
+                                identity = new ClaimsIdentity(new[]
+                                {
+                                    new Claim(ClaimTypes.Name, verified.EmailAddress),
+                                    new Claim(ClaimTypes.Role, verified.Role)
+                                }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                isAutheticate = true;
+
+                                if (isAutheticate)
+                                {
+                                    var principal = new ClaimsPrincipal(identity);
+                                    var log = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                }
+
+                                return base.RedirectToAction("Index", "Admin");
+                            }
                         }
                         else
                         {
