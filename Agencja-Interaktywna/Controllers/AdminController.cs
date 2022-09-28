@@ -29,6 +29,46 @@ namespace Agencja_Interaktywna.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Companies()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Contracts()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Packages()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Persons()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> ProgrammingLanguages()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Projects()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Services()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Teams()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
