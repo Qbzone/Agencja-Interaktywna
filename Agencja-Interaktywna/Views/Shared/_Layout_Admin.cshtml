@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index">
                     <img src="/images/Agencja_Interaktywna_Logo.png" alt="/images/Agencja_Interaktywna_Logo.png" />
@@ -46,7 +46,7 @@
                     <a asp-area="" asp-controller="Admin" asp-action="Persons">Persons</a>
                 </li>
                 <li>
-                    <a asp-area="" asp-controller="Admin" asp-action="ProgrammingLanguages">Programming Languages</a>
+                    <a asp-area="" asp-controller="Admin" asp-action="ProgrammingLanguages">Programming</a>
                 </li>
                 <li>
                     <a asp-area="" asp-controller="Admin" asp-action="Projects">Projects</a>
@@ -60,7 +60,7 @@
             </ul>
         </div>
         <div class="container">
-            <main role="main" class="pb-3">
+            <main role="main" class="pb-3 pt-5">
                 @RenderBody()
             </main>
         </div>

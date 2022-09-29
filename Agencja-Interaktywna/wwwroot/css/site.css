@@ -44,10 +44,6 @@ html {
     border-bottom: 1px solid #e5e5e5;
 }
 
-.box-shadow {
-    box-shadow: 0 1rem .75rem rgba(0, 0, 0, 10%);
-}
-
 button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
@@ -66,7 +62,7 @@ body {
 }
 
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     white-space: nowrap;
@@ -90,7 +86,7 @@ body {
     height: 100%;
     margin-left: -150px;
     overflow-y: auto;
-    background: #222222;
+    background-image: url(../../../../images/Sidebar.jpg);
 }
 
 .sidebar-nav {
@@ -110,12 +106,12 @@ body {
         .sidebar-nav li a {
             display: block;
             text-decoration: none;
-            color: #999999;
+            color: #000000;
         }
 
             .sidebar-nav li a:hover {
                 text-decoration: none;
-                color: #ffffff;
+                color: #007bff;
                 background: rgba(255,255,255,0.2);
             }
 
