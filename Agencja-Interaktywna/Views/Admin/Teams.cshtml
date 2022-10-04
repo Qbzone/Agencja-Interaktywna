@@ -1,5 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<Interactive_Agency.Models.Team>
 @{
+    ViewData["Title"] = "Teams";
 }
+
+<h1>Teams</h1>
+
+<a asp-action="TeamsCreate" class="btn btn-primary">Create team</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Team name</th>
+            <th scope="col">Actions</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            item.View = "Teams";
+            <tr>
+                <td>
+                    @item.TeamName
+                </td>
+                <td>
+                    <a asp-action="TeamDetails" asp-route-teamId="@item.TeamId" class="btn btn-primary">Display team</a>
+                    <a asp-action="TeamsEdit" asp-route-teamId="@item.TeamId" class="btn btn-primary">Edit</a>
+                </td>
+                <td>
+                    <form asp-action="TeamsDelete" asp-route-teamId="@item.TeamId"
+                      onclick="return confirm('Are you sure you want to remove the selected team?')">
+                        <input type="submit" value="Delete" class="btn btn-primary" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
