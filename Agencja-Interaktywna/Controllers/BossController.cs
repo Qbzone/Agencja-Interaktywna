@@ -634,7 +634,7 @@ namespace Interactive_Agency.Controllers
             var teamEdit = new TeamEditModel()
             {
                 Team = team,
-                Employees = allEmployees,
+                Employees = allEmployees
             };
 
             return View(teamEdit);
@@ -688,7 +688,6 @@ namespace Interactive_Agency.Controllers
 
                 return RedirectToAction(nameof(Teams));
             }
-
             else if (!ModelState.IsValid)
             {
                 var allEmployees = await _interactiveAgencyContext.Employee
@@ -702,7 +701,7 @@ namespace Interactive_Agency.Controllers
                 var newTeamEdit = new TeamEditModel()
                 {
                     Team = teamEditModel.Team,
-                    Employees = allEmployees,
+                    Employees = allEmployees
                 };
 
                 return View("TeamsEdit", newTeamEdit);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.WebPages.Html;
@@ -173,6 +174,132 @@ namespace Agencja_Interaktywna.Controllers
             }
 
             return View(teamCreateModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TeamsEdit(int? teamId)
+        {
+            if (teamId == null)
+            {
+                return NotFound();
+            }
+
+            var team = await _interactiveAgencyContext.Team
+                .Include(et => et.EmployeeTeam)
+                    .ThenInclude(em => em.EmployeeIdNavigation).AsNoTracking()
+                .SingleOrDefaultAsync(e => e.TeamId == teamId);
+
+            if (team == null)
+            {
+                return NotFound();
+            }
+
+            var allEmployees = await _interactiveAgencyContext.Employee
+                .Include(em => em.EmployeeIdNavigation)
+                .Select(e => new CheckBoxItem()
+                {
+                    Id = e.EmployeeId,
+                    Name = e.EmployeeIdNavigation.EmailAddress,
+                    IsChecked = e.EmployeeTeam.Any(x => x.TeamId == team.TeamId)
+                }).ToListAsync();
+
+            var teamEdit = new TeamEditModel()
+            {
+                Team = team,
+                Employees = allEmployees
+            };
+
+            return View(teamEdit);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TeamsEdit(TeamEditModel teamEditModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _interactiveAgencyContext.Update(teamEditModel.Team);
+
+                List<EmployeeTeam> employeeList = new List<EmployeeTeam>();
+
+                foreach (var item in teamEditModel.Employees)
+                {
+                    if (item.IsChecked == true)
+                    {
+                        var employeeTeam = new EmployeeTeam()
+                        {
+                            EmployeeId = item.Id,
+                            TeamId = (int)teamEditModel.Team.TeamId,
+                            AssignStart = DateTime.Now
+                        };
+
+                        _interactiveAgencyContext.Add(employeeTeam);
+                    }
+                }
+
+                var delEmployee = await _interactiveAgencyContext.EmployeeTeam.Where(e => e.TeamId == teamEditModel.Team.TeamId).ToListAsync();
+
+                foreach (var item in delEmployee)
+                {
+                    _interactiveAgencyContext.EmployeeTeam.Remove(item);
+                    await _interactiveAgencyContext.SaveChangesAsync();
+                }
+
+                var addEmployee = await _interactiveAgencyContext.EmployeeTeam.Where(e => e.TeamId == teamEditModel.Team.TeamId).ToListAsync();
+
+                foreach (var item in employeeList)
+                {
+                    if (addEmployee.Contains(item))
+                    {
+                        _interactiveAgencyContext.EmployeeTeam.Add(item);
+                        await _interactiveAgencyContext.SaveChangesAsync();
+                    }
+                }
+
+                await _interactiveAgencyContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Teams));
+            }
+            else if (!ModelState.IsValid)
+            {
+                var allEmployees = await _interactiveAgencyContext.Employee
+                    .Include(em => em.EmployeeIdNavigation)
+                    .Select(e => new CheckBoxItem()
+                    {
+                        Id = e.EmployeeId,
+                        Name = e.EmployeeIdNavigation.EmailAddress,
+                        IsChecked = e.EmployeeTeam.Any(f => f.TeamId == teamEditModel.Team.TeamId)
+                    }).ToListAsync();
+                var newTeamEdit = new TeamEditModel()
+                {
+                    Team = teamEditModel.Team,
+                    Employees = allEmployees
+                };
+
+                return View("TeamsEdit", newTeamEdit);
+            }
+
+            return View(teamEditModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TeamsDelete(int? teamId)
+        {
+            foreach (var delEmployee in _interactiveAgencyContext.EmployeeTeam)
+            {
+                if (delEmployee.TeamId == teamId)
+                {
+                    _interactiveAgencyContext.EmployeeTeam.Remove(delEmployee);
+                }
+            }
+
+            var team = await _interactiveAgencyContext.Team.FindAsync(teamId);
+
+            _interactiveAgencyContext.Remove(team);
+            await _interactiveAgencyContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Teams));
         }
 
         [HttpPost]
