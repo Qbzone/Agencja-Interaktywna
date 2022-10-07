@@ -21,7 +21,7 @@ namespace Interactive_Agency.Models.Functional
         {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            if (Team.TeamName == null)
+            if (Team.TeamName == null || Team.TeamName == "")
             {
                 errors.Add(new ValidationResult($"Please select a team.", new List<string> { nameof(ErrorHandler1) }));
             }
