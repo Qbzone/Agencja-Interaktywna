@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label asp-for="Project.ProjectName" class="control-label">Project name</label>
                 <input type="text" class="form-control" asp-for="@Model.Project.ProjectName" />
-                <span asp-validation-for="ErrorHandler1" class="text-danger" />
+                <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Project.ProjectLogo" class="control-label">Project logo</label>
@@ -32,7 +32,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="ErrorHandler4" class="text-danger" />
+                <span asp-validation-for="ErrorHandler4" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Project.CompanyId" class="control-label">Client</label>
@@ -44,7 +44,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="ErrorHandler2" class="text-danger" />
+                <span asp-validation-for="ErrorHandler2" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Package.PackageId" class="control-label">Package</label>
@@ -56,7 +56,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="ErrorHandler3" class="text-danger" />
+                <span asp-validation-for="ErrorHandler3" class="text-danger"></span>
             </div>
             <div class="btn-group">
                 <a asp-action="ProjectDetails" asp-route-projectId="@Model.Project.ProjectId" class="btn btn-primary">Return</a>

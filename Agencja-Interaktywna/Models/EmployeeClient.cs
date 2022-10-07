@@ -26,10 +26,6 @@ namespace Interactive_Agency.Models
             {
                 errors.Add(new ValidationResult($"Please select a client.", new List<string> { nameof(ClientId) }));
             }
-            if (MeetingLocation == null)
-            {
-                errors.Add(new ValidationResult($"Please enter the meeting place.", new List<string> { nameof(MeetingLocation) }));
-            }
             if (MeetingStart == null)
             {
                 errors.Add(new ValidationResult($"Please enter the start date of the meeting.", new List<string> { nameof(MeetingStart) }));
@@ -41,6 +37,10 @@ namespace Interactive_Agency.Models
             if (MeetingStart > MeetingEnd)
             {
                 errors.Add(new ValidationResult($"The start date of the meeting must be earlier than the end date of the meeting.", new List<string> { nameof(MeetingStart) }));
+            }
+            if (MeetingLocation == null)
+            {
+                errors.Add(new ValidationResult($"Please enter the meeting place.", new List<string> { nameof(MeetingLocation) }));
             }
 
             return errors;
