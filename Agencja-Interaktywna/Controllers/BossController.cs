@@ -714,18 +714,47 @@ namespace Interactive_Agency.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TeamsDelete(int? teamId)
         {
-            foreach (var delEmployee in _interactiveAgencyContext.EmployeeTeam)
+            if (!_interactiveAgencyContext.TeamProject.Where(e => e.TeamId == teamId).Any())
             {
-                if (delEmployee.TeamId == teamId)
+                foreach (var delEmployee in _interactiveAgencyContext.EmployeeTeam)
                 {
-                    _interactiveAgencyContext.EmployeeTeam.Remove(delEmployee);
+                    if (delEmployee.TeamId == teamId)
+                    {
+                        _interactiveAgencyContext.EmployeeTeam.Remove(delEmployee);
+                    }
                 }
+
+                var team = await _interactiveAgencyContext.Team.FindAsync(teamId);
+
+                _interactiveAgencyContext.Remove(team);
+                await _interactiveAgencyContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Teams));
             }
+            else if (_interactiveAgencyContext.TeamProject.Where(e => e.TeamId == teamId && e.AssignEnd != null).Any())
+            {
+                foreach (var delTeamProject in _interactiveAgencyContext.TeamProject)
+                {
+                    if (delTeamProject.AssignEnd != null)
+                    {
+                        _interactiveAgencyContext.TeamProject.Remove(delTeamProject);
+                    }
+                }
+                foreach (var delEmployee in _interactiveAgencyContext.EmployeeTeam)
+                {
+                    if (delEmployee.TeamId == teamId)
+                    {
+                        _interactiveAgencyContext.EmployeeTeam.Remove(delEmployee);
+                    }
+                }
 
-            var team = await _interactiveAgencyContext.Team.FindAsync(teamId);
+                var team = await _interactiveAgencyContext.Team.FindAsync(teamId);
 
-            _interactiveAgencyContext.Remove(team);
-            await _interactiveAgencyContext.SaveChangesAsync();
+                _interactiveAgencyContext.Remove(team);
+                await _interactiveAgencyContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Teams));
+            }
 
             return RedirectToAction(nameof(Teams));
         }
