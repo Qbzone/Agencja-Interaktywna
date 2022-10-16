@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label asp-for="Team.TeamName" class="control-label">Team name</label>
                 <input type="text" class="form-control" asp-for="@Model.Team.TeamName" />
-                <span asp-validation-for="ErrorHandler1" class="text-danger"></span>
+                <span asp-validation-for="TeamErrorHandler" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Employees" class="control-label">Employee list</label>

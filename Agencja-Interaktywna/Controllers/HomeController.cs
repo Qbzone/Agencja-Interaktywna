@@ -57,7 +57,7 @@ namespace Interactive_Agency.Controllers
 
                     if (check != null)
                     {
-                        ModelState.AddModelError("EmailAddress", "Provided e-mail address alread exists.");
+                        ModelState.AddModelError("EmailAddress", "Provided e-mail address already exists. Please enter new one.");
                     }
                     else
                     {

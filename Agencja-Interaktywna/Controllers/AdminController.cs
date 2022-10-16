@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.WebPages.Html;
@@ -94,16 +95,18 @@ namespace Agencja_Interaktywna.Controllers
         [HttpGet]
         public async Task<IActionResult> TeamsCreate()
         {
-            var employee = await _interactiveAgencyContext.Employee
+            var employees = await _interactiveAgencyContext.Employee
                 .Include(em => em.EmployeeIdNavigation)
                 .Select(e => new SelectListItem()
                 {
                     Text = e.EmployeeIdNavigation.EmailAddress,
                     Value = e.EmployeeId.ToString()
                 }).ToListAsync();
+            var teams = await _interactiveAgencyContext.Team
+                .ToListAsync();
             var teamCreate = new TeamCreateModel
             {
-                Employees = employee
+                Employees = employees,
             };
 
             return View(teamCreate);
@@ -113,6 +116,19 @@ namespace Agencja_Interaktywna.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TeamsCreate(TeamCreateModel teamCreateModel)
         {
+            if (teamCreateModel.Team.TeamName == null || teamCreateModel.Team.TeamName == "")
+            {
+                ModelState.AddModelError("TeamErrorHandler", "Please insert team name.");
+            }
+            if (_interactiveAgencyContext.Team.Where(e => e.TeamName == teamCreateModel.Team.TeamName).Any())
+            {
+                ModelState.AddModelError("TeamErrorHandler", "Provided team name already exists. Please enter new one.");
+            }
+            if (!teamCreateModel.Employees.Where(x => x.Selected).Select(y => y.Value).Any())
+            {
+                ModelState.AddModelError("Employees", "Please select at least one employee.");
+            }
+
             if (ModelState.IsValid)
             {
                 var newTeam = new Team()
@@ -216,6 +232,19 @@ namespace Agencja_Interaktywna.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TeamsEdit(TeamEditModel teamEditModel)
         {
+            if (teamEditModel.Team.TeamName == null || teamEditModel.Team.TeamName == "")
+            {
+                ModelState.AddModelError("TeamErrorHandler", "Please insert team name.");
+            }
+            if (_interactiveAgencyContext.Team.Where(e => e.TeamId != teamEditModel.Team.TeamId && e.TeamName == teamEditModel.Team.TeamName).Any())
+            {
+                ModelState.AddModelError("TeamErrorHandler", "Provided team name already exists. Please enter new one.");
+            }
+            if (!teamEditModel.Employees.Where(x => x.IsChecked).Any())
+            {
+                ModelState.AddModelError("Employees", "Please select at least one employee.");
+            }
+
             if (ModelState.IsValid)
             {
                 _interactiveAgencyContext.Update(teamEditModel.Team);
