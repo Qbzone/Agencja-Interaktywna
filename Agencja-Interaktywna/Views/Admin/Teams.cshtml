@@ -28,10 +28,23 @@
                     <a asp-action="TeamsEdit" asp-route-teamId="@item.TeamId" class="btn btn-primary">Edit</a>
                 </td>
                 <td>
-                    <form asp-action="TeamsDelete" asp-route-teamId="@item.TeamId"
+                    @{
+                        if (item.TeamProject.Where(e => e.AssignEnd == null).Any())
+                        {
+                            <form asp-action="TeamsDelete" asp-route-teamId="@item.TeamId"
+                      onclick="return confirm('You cannot delete team with active projects!')">
+                                <input type="submit" value="Delete" class="btn btn-primary" />
+                                <!--<input type="submit" value="Delete" class="btn btn-primary-disabled-href" />-->
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="TeamsDelete" asp-route-teamId="@item.TeamId"
                       onclick="return confirm('Are you sure you want to remove the selected team?')">
-                        <input type="submit" value="Delete" class="btn btn-primary" />
-                    </form>
+                                <input type="submit" value="Delete" class="btn btn-primary" />
+                            </form>
+                        }
+                    }
                 </td>
             </tr>
         }

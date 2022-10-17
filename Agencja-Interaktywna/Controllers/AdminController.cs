@@ -74,7 +74,10 @@ namespace Agencja_Interaktywna.Controllers
         [HttpGet]
         public async Task<IActionResult> Teams()
         {
-            var teams = await _interactiveAgencyContext.Team.ToListAsync();
+            var teams = await _interactiveAgencyContext.Team
+                .Include(tp => tp.TeamProject)
+                .Include(et => et.EmployeeTeam)
+                .ToListAsync();
 
             return View(teams);
         }
