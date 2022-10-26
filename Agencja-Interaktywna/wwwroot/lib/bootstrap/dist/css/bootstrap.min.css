@@ -4573,7 +4573,6 @@ input[type=submit].btn-block {
     -ms-flex-pack: justify;
     justify-content: space-between;
     padding: .5rem 1rem;
-    background-image: url("../../../../images/Banner.jpg")
 }
 
 .navbar > .container,
