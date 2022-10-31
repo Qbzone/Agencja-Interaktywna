@@ -10,7 +10,10 @@
 <table class="table">
     <thead>
         <tr>
+            <th scope="col">Team id</th>
             <th scope="col">Team name</th>
+            <th scope="col">Team members</th>
+            <th scope="col">Team projects</th>
             <th scope="col">Actions</th>
             <th scope="col">Delete</th>
         </tr>
@@ -21,7 +24,16 @@
             item.View = "Teams";
             <tr>
                 <td>
+                    @item.TeamId
+                </td>
+                <td>
                     @item.TeamName
+                </td>
+                <td>
+                    @item.MembersCount
+                </td>
+                <td>
+                    @item.ProjectsCount
                 </td>
                 <td>
                     <a asp-action="TeamDetails" asp-route-teamId="@item.TeamId" class="btn btn-primary">Display team</a>
@@ -34,7 +46,6 @@
                             <form asp-action="TeamsDelete" asp-route-teamId="@item.TeamId"
                       onclick="return confirm('You cannot delete team with active projects!')">
                                 <input type="submit" value="Delete" class="btn btn-primary" />
-                                <!--<input type="submit" value="Delete" class="btn btn-primary-disabled-href" />-->
                             </form>
                         }
                         else

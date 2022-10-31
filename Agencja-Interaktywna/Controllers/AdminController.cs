@@ -79,6 +79,18 @@ namespace Agencja_Interaktywna.Controllers
                 .Include(et => et.EmployeeTeam)
                 .ToListAsync();
 
+            foreach (Team item in teams)
+            {
+                item.MembersCount = _interactiveAgencyContext.EmployeeTeam
+                    .Include(te => te.TeamIdNavigation)
+                    .Where(e => e.TeamId == item.TeamId)
+                    .Count();
+                item.ProjectsCount = _interactiveAgencyContext.TeamProject
+                    .Include(te => te.TeamIdNavigation)
+                    .Where(e => e.TeamId == item.TeamId & e.AssignEnd == null)
+                    .Count();
+            }
+
             return View(teams);
         }
 

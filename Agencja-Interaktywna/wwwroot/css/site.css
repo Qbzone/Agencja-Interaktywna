@@ -6,9 +6,9 @@ for details on configuring this project to bundle and minify static web assets. 
     width: 100%;
     overflow: visible;
     z-index: 99;
-    padding-top: 10px;
     height: 100px;
     background-image: url(../../../../images/Banner.jpg);
+    padding: 0 10px 0 10px;
 }
 
 a.navbar-brand {
@@ -34,6 +34,19 @@ a {
     border-color: #1861ac;
 }
 
+.navbar-nav {
+    /*padding-left: 75%;*/
+}
+
+    .navbar-nav .nav-link {
+        text-align: right;
+        padding-right: 10px;
+    }
+
+.btn-nav-link {
+    text-align: right;
+    padding-right: 10px;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

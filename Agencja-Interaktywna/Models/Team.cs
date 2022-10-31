@@ -17,6 +17,10 @@ namespace Interactive_Agency.Models
         public string TeamName { get; set; }
         [NotMapped]
         public string View { get; set; }
+        [NotMapped]
+        public int MembersCount { get; set; }
+        [NotMapped]
+        public int ProjectsCount { get; set; }
 
         public virtual ICollection<EmployeeTeam> EmployeeTeam { get; set; }
         public virtual ICollection<TeamProject> TeamProject { get; set; }
