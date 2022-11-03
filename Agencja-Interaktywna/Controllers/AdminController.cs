@@ -72,12 +72,25 @@ namespace Agencja_Interaktywna.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Teams()
+        public async Task<IActionResult> Teams(string searchString)
         {
-            var teams = await _interactiveAgencyContext.Team
+            var teams = new List<Team>();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                teams = await _interactiveAgencyContext.Team
+                .Include(tp => tp.TeamProject)
+                .Include(et => et.EmployeeTeam)
+                .Where(e => e.TeamName.Contains(searchString))
+                .ToListAsync();
+            }
+            else
+            {
+                teams = await _interactiveAgencyContext.Team
                 .Include(tp => tp.TeamProject)
                 .Include(et => et.EmployeeTeam)
                 .ToListAsync();
+            }
 
             foreach (Team item in teams)
             {

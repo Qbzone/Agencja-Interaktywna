@@ -5,15 +5,20 @@
 
 <h1>Teams</h1>
 
-<a asp-action="TeamsCreate" class="btn btn-primary">Create team</a>
-
+<a asp-action="TeamsCreate" class="btn btn-primary btn-margin">Create team</a>
+<form asp-controller="Admin" asp-action="Teams" method="get">
+    <p>
+        Team Name: <input type="text" name="searchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Team id</th>
             <th scope="col">Team name</th>
             <th scope="col">Team members</th>
-            <th scope="col">Team projects</th>
+            <th scope="col">Active projects</th>
             <th scope="col">Actions</th>
             <th scope="col">Delete</th>
         </tr>
